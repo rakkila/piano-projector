@@ -1,3 +1,10 @@
+/**
+ * 
+ * Server Setup
+ * Run in browser as "127.0.0.1:3000" 
+ *
+ */
+
 
 var http = require('http');
 var fs = require('fs');
