@@ -16,10 +16,10 @@ Soundfont.instrument(ac, './soundfonts/acoustic_grand_piano-ogg.js').then(functi
 
      var input = WebMidi.inputs[0];
 
+
    //  Listening for a 'note on' message (on all channels) 
-     input.addListener('noteon', "all", function(e) 
-      { 
- 
+     input.addListener('noteon', "all", function(e){ 
+
           let note = e.note.name,
               octave = e.note.octave,
               velocity = e.rawVelocity / 120;
@@ -27,19 +27,14 @@ Soundfont.instrument(ac, './soundfonts/acoustic_grand_piano-ogg.js').then(functi
           console.log("Note: " + note + " | Octave: " + octave + " | Velocity: " + velocity);
 
           let key = e.note.name + e.note.octave;
-          piano.play(key, 0, { duration: 5, gain: velocity});
+          piano.play(key, 1, { duration: 5, gain: velocity}).stop(ac.currentTime + 1);
 
-            input.addListener('noteoff', 'all', function(e){
-            console.log("OFF");
-            piano.play(key).stop(ac.currentTime);  
-        //    piano.stop(ac.currentTime);   
-        });
       });
 
-    //  input.addListener('noteoff', 'all', function(e){
-   //       piano.stop();   
-   //   });
-
+      input.addListener('noteoff', 'all', function(e){
+         // piano.stop();         
+      });
+  
   });
 
 });
