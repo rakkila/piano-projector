@@ -5,68 +5,70 @@
  */
 
 window.onload = function () {
+
+  //Loading soundfont 
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfonts/",
 		instrument: "acoustic_grand_piano",
+    onfailure: function() {console.log('Failed to load soundfont' + instrument)},
 		onsuccess: function() {
 
-      WebMidi.enable(function(err) { 
-    
+       WebMidi.enable(function(err) { 
           if (err) 
             console.log("WebMidi could not be enabled");
           else
             console.log("WebMidi is enabled!");
 
-        var input = WebMidi.inputs[0];
+          //Fetching MIDI input
+          var input = WebMidi.inputs[0];
 
-      //  Listening for a 'note on' message (on all channels) 
+          //Listening for a 'note on' message (on all channels) 
           input.addListener('noteon', "all", function(e){ 
           
-          let octave = e.note.octave + 2,
-              note = e.note.name;
+              let octave = e.note.octave + 2,
+                  note = e.note.name;
 
-          switch(note){
-            case 'C#': note = 'Db'; break;
-            case 'D#': note = 'Eb'; break;
-            case 'F#': note = 'Gb'; break;
-            case 'G#': note = 'Ab'; break;
-            case 'A#': note = 'Bb'; break;
-            default: break;
-          }
+              //Convert # to b
+              switch(note){
+                  case 'C#': note = 'Db'; break;
+                  case 'D#': note = 'Eb'; break;
+                  case 'F#': note = 'Gb'; break;
+                  case 'G#': note = 'Ab'; break;
+                  case 'A#': note = 'Bb'; break;
+                  default: break;
+              }
 
-          let key = note + octave;
-          console.log('Key: ' + key);
+              let key = note + octave;
+              console.log('Key: ' + key);
 
-          MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity, 0);
+              //Play pressed note (0 delay)
+              MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity, 0);
 
           });
 
+          //Listening for a 'note off' message (on all channels) 
           input.addListener('noteoff', 'all', function(e){
                   let octave = e.note.octave + 2,
                       note = e.note.name;
 
                   switch(note){
-                          case 'C#': note = 'Db'; break;
-                          case 'D#': note = 'Eb'; break;
-                          case 'F#': note = 'Gb'; break;
-                          case 'G#': note = 'Ab'; break;
-                          case 'A#': note = 'Bb'; break;
-                          default: break;
-                        }
+                      case 'C#': note = 'Db'; break;
+                      case 'D#': note = 'Eb'; break;
+                      case 'F#': note = 'Gb'; break;
+                      case 'G#': note = 'Ab'; break;
+                      case 'A#': note = 'Bb'; break;
+                      default: break;
+                  }
                 
                   let key = note + octave;
 
+                  //Stop playing the note corresponding to the 'noteoff' message
+                  //0 delay, add delay for "sustain pedal"-effect
                   MIDI.noteOff(0, MIDI.keyToNote[key], 0);
           });
-      
       });
-
-    //});
-
-
 		}
 	});
-
 };
 
 
