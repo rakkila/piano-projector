@@ -4,40 +4,63 @@
  * Using WebMidi for eventListeners
  */
 
-var ac = new AudioContext();
-Soundfont.instrument(ac, './soundfonts/acoustic_grand_piano-ogg.js').then(function (piano){
+/*
+window.onload = function () {
+	MIDI.loadPlugin({
+		soundfontUrl: "./soundfonts/",
+		instrument: "acoustic_grand_piano",
+		onprogress: function(state, progress) {
+			console.log(state, progress);
+		},
+		onsuccess: function() {
+			var delay = 0; // play one note every quarter second
+			var note = 50; // the MIDI note
+			var velocity = 127; // how hard the note hits
+			// play the note
+			MIDI.setVolume(0, 127);
+			MIDI.noteOn(0, note, velocity, delay);
+			MIDI.noteOff(0, note, delay + 0.75);
+		}
+	});
+};
 
-  WebMidi.enable(function(err) { 
- 
-      if (err) 
-        console.log("WebMidi could not be enabled");
-      else
-        console.log("WebMidi is enabled!");
+*/
 
-     var input = WebMidi.inputs[0];
-
-
-   //  Listening for a 'note on' message (on all channels) 
-     input.addListener('noteon', "all", function(e){ 
-
-          let note = e.note.name,
-              octave = e.note.octave,
-              velocity = e.rawVelocity / 120;
-
-          console.log("Note: " + note + " | Octave: " + octave + " | Velocity: " + velocity);
-
-          let key = e.note.name + e.note.octave;
-          piano.play(key, 1, { duration: 5, gain: velocity}).stop(ac.currentTime + 1);
-
-      });
-
-      input.addListener('noteoff', 'all', function(e){
-         // piano.stop();         
-      });
-  
-  });
-
-});
+eventjs.add(window, "load", function(event) {
+	
+		MIDI.loader = new sketch.ui.Timer;
+		MIDI.loadPlugin({
+			soundfontUrl: "./soundfonts/",
+			onprogress: function(state, progress) {
+				MIDI.loader.setValue(progress * 100);
+			},
+			onsuccess: function() {
+				/// this is the language we are running in
+				var title = document.getElementById("title");
+				title.innerHTML = "Sound being generated with " + MIDI.api + " " + JSON.stringify(MIDI.supports);
+				/// this sets up the MIDI.Player and gets things going...
+				player = MIDI.Player;
+				player.timeWarp = 1; // speed the song is played back
+				player.loadFile('MIDI-files/purple_rain.mid', player.start);
+				/// control the piano keys colors
+				var colorMap = MIDI.Synesthesia.map();
+				player.addListener(function(data) {
+					var pianoKey = data.note - 21;
+					var d = colorElements[pianoKey];
+					if (d) {
+						if (data.message === 144) {
+							var map = colorMap[data.note - 27];
+							if (map) d.style.background = map.hex;
+							d.style.color = "#fff";
+						} else {
+							d.style.background = "";
+							d.style.color = "";
+						}
+					}
+				});
+			}
+		});
+	});
 
 
 
