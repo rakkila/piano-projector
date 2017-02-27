@@ -40,18 +40,18 @@ eventjs.add(window, "load", function(event) {
 		MIDI.loader = new sketch.ui.Timer;
 		MIDI.loadPlugin({
 			soundfontUrl: "./soundfont/",
-			instrument: "acoustic_grand_piano",
+			instrument: ["acoustic_grand_piano"],
 			onprogress: function(state, progress) {
-				MIDI.loader.setValue(progress * 100);
 			},
 			onsuccess: function() {
-			
+
 				player = MIDI.Player;
-				player.timeWarp = 1; // speed the song is played back
+				//player.timeWarp = 1; // speed the song is played back
 				player.loadFile('MIDI-files/purple_rain.mid', player.start);
+				MIDI.programChange(0, 0);
 	
 				player.addListener(function(data) {
-					console.log(data.message);
+					console.log(data.note);
 				});
 			}
 		});
