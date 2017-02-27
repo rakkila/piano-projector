@@ -5,13 +5,20 @@
  */
 
 window.onload = function () {
-
   //Loading soundfont 
+  let instruments = ['acoustic_grand_piano', 'electric_guitar_clean'];
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfonts/",
-		instrument: "acoustic_grand_piano",
-    onfailure: function() {console.log('Failed to load soundfont' + instrument)},
+        instrument: instruments,
+    onfailure: function() {console.log('Failed to load soundfont')},
 		onsuccess: function() {
+
+//---------------------------------------------------------------------------
+        var player = MIDI.Player;
+		player.timeWarp = 1.5; // speed the song is played back
+		player.loadFile('MIDI-files/purple_rain.mid', player.start);
+		//MIDI.programChange(0, MIDI.GM.byName[instruments].number);
+//---------------------------------------------------------------------------	
 
        WebMidi.enable(function(err) { 
           if (err) 
