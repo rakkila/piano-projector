@@ -1,44 +1,73 @@
 /**
  * Fetching MIDI-data from MIDI Input
- * Using soundfont-player.js for loading soundfont and play sound
- * Using WebMidi for eventListeners
+ * Using MIDI.js for loading soundfont and play sound
+ * Using WebMidi for event listeners
  */
 
-var ac = new AudioContext();
-Soundfont.instrument(ac, './soundfonts/acoustic_grand_piano-ogg.js').then(function (piano){
+window.onload = function () {
+	MIDI.loadPlugin({
+		soundfontUrl: "./soundfonts/",
+		instrument: "acoustic_grand_piano",
+		onsuccess: function() {
 
-  WebMidi.enable(function(err) { 
- 
-      if (err) 
-        console.log("WebMidi could not be enabled");
-      else
-        console.log("WebMidi is enabled!");
+      WebMidi.enable(function(err) { 
+    
+          if (err) 
+            console.log("WebMidi could not be enabled");
+          else
+            console.log("WebMidi is enabled!");
 
-     var input = WebMidi.inputs[0];
+        var input = WebMidi.inputs[0];
 
+      //  Listening for a 'note on' message (on all channels) 
+          input.addListener('noteon', "all", function(e){ 
+          
+          let octave = e.note.octave + 2,
+              note = e.note.name;
 
-   //  Listening for a 'note on' message (on all channels) 
-     input.addListener('noteon', "all", function(e){ 
+          switch(note){
+            case 'C#': note = 'Db'; break;
+            case 'D#': note = 'Eb'; break;
+            case 'F#': note = 'Gb'; break;
+            case 'G#': note = 'Ab'; break;
+            case 'A#': note = 'Bb'; break;
+            default: break;
+          }
 
-          let note = e.note.name,
-              octave = e.note.octave,
-              velocity = e.rawVelocity / 120;
+          let key = note + octave;
+          console.log('Key: ' + key);
 
-          console.log("Note: " + note + " | Octave: " + octave + " | Velocity: " + velocity);
+          MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity, 0);
 
-          let key = e.note.name + e.note.octave;
-          piano.play(key, 1, { duration: 5, gain: velocity}).stop(ac.currentTime + 1);
+          });
 
+          input.addListener('noteoff', 'all', function(e){
+                  let octave = e.note.octave + 2,
+                      note = e.note.name;
+
+                  switch(note){
+                          case 'C#': note = 'Db'; break;
+                          case 'D#': note = 'Eb'; break;
+                          case 'F#': note = 'Gb'; break;
+                          case 'G#': note = 'Ab'; break;
+                          case 'A#': note = 'Bb'; break;
+                          default: break;
+                        }
+                
+                  let key = note + octave;
+
+                  MIDI.noteOff(0, MIDI.keyToNote[key], 0);
+          });
+      
       });
 
-      input.addListener('noteoff', 'all', function(e){
-         // piano.stop();         
-      });
-  
-  });
+    //});
 
-});
 
+		}
+	});
+
+};
 
 
 
