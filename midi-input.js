@@ -6,15 +6,18 @@
 
 window.onload = function () {
 
+  //initMidiPlayer();
+
   //Loading soundfont 
+;
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfonts/",
-		instrument: "acoustic_grand_piano",
-    onfailure: function() {console.log('Failed to load soundfont' + instrument)},
+        instrument: 'acoustic_grand_piano',
+    onfailure: function() {console.log('Failed to load soundfont')},
 		onsuccess: function() {
 
        WebMidi.enable(function(err) { 
-          if (err) 
+          if(err) 
             console.log("WebMidi could not be enabled");
           else
             console.log("WebMidi is enabled!");
@@ -26,41 +29,21 @@ window.onload = function () {
           input.addListener('noteon', "all", function(e){ 
           
               let octave = e.note.octave + 2,
-                  note = e.note.name;
+                  note = sharpToFlat(e.note.name),   
+                  key = note + octave;
 
-              //Convert # to b
-              switch(note){
-                  case 'C#': note = 'Db'; break;
-                  case 'D#': note = 'Eb'; break;
-                  case 'F#': note = 'Gb'; break;
-                  case 'G#': note = 'Ab'; break;
-                  case 'A#': note = 'Bb'; break;
-                  default: break;
-              }
-
-              let key = note + octave;
-              console.log('Key: ' + key);
+              console.log('Key: ' + key + '  | Velocity: ' + e.rawVelocity);
 
               //Play pressed note (0 delay)
-              MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity, 0);
+              MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
 
           });
 
           //Listening for a 'note off' message (on all channels) 
           input.addListener('noteoff', 'all', function(e){
                   let octave = e.note.octave + 2,
-                      note = e.note.name;
-
-                  switch(note){
-                      case 'C#': note = 'Db'; break;
-                      case 'D#': note = 'Eb'; break;
-                      case 'F#': note = 'Gb'; break;
-                      case 'G#': note = 'Ab'; break;
-                      case 'A#': note = 'Bb'; break;
-                      default: break;
-                  }
-                
-                  let key = note + octave;
+                      note = sharpToFlat(e.note.name),
+                      key = note + octave;
 
                   //Stop playing the note corresponding to the 'noteoff' message
                   //0 delay, add delay for "sustain pedal"-effect
@@ -72,5 +55,17 @@ window.onload = function () {
 };
 
 
+function sharpToFlat(note){
 
+    switch(note){
+        case 'C#': note = 'Db'; break;
+        case 'D#': note = 'Eb'; break;
+        case 'F#': note = 'Gb'; break;
+        case 'G#': note = 'Ab'; break;
+        case 'A#': note = 'Bb'; break;
+        default: break;
+    }
+    
+    return note;
+}
  
