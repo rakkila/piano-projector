@@ -6,13 +6,13 @@
 
 window.onload = function () {
 
-  initMidiPlayer();
+  startMidiPlayer();
 
   //Loading soundfont
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfonts/",
         instrument: 'acoustic_grand_piano',
-    onfailure: function() {console.log('Failed to load soundfont')},
+    onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
 	onsuccess: function() {
 
          WebMidi.enable(function(err) { 
