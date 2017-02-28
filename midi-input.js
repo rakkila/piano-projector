@@ -6,7 +6,6 @@
 
 window.onload = function () {
 
-  startMidiPlayer();
 
   //Loading soundfont
 	MIDI.loadPlugin({

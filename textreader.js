@@ -1,3 +1,4 @@
+
 $.get('text.txt', function(data) {
     
    console.log(data)
