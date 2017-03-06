@@ -7,6 +7,7 @@
 window.onload = function () {
 
     playSong('./songs-mp3/roses.mp3');
+    updateClock();
 
     //Loading soundfont
 	MIDI.loadPlugin({
@@ -34,7 +35,7 @@ window.onload = function () {
                         note = sharpToFlat(e.note.name),   
                         key = note + octave;
 
-                    console.log('Key: ' + key + '  | Velocity: ' + e.rawVelocity);
+                    console.log('Key: ' + key + '  | NoteOn: ' + time);
 
                     //Play pressed note (0 delay)
                     MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
@@ -46,6 +47,8 @@ window.onload = function () {
                         let octave = e.note.octave + 2,
                             note = sharpToFlat(e.note.name),
                             key = note + octave;
+
+                        console.log('Key: ' + key + '  | NoteOff: ' + time);
 
                         //Stop playing the note corresponding to the 'noteoff' message
                         //0 delay, add delay for "sustain pedal"-effect
