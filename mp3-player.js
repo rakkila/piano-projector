@@ -7,7 +7,6 @@ function playSong(url){
 }
 
 function updateClock() {
-
     if(time < 2000)
         time++;
 
@@ -15,7 +14,7 @@ function updateClock() {
 }
 
 function startClock() {
-    setTimeout(startClock, 100);
+    setTimeout(updateClock, 100);
 }
 
 
