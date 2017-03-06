@@ -2,11 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-
+        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
         <title>Piano-projector</title>
 
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
+       
     </head>
 
     <body>
@@ -46,7 +47,7 @@
                 var renderer = new THREE.WebGLRenderer();
 
                 renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.setClearColor( 0xc0c0c0 );
+                renderer.setClearColor( 0xfaf0e6 );
 
                 document.body.appendChild( renderer.domElement );
                 document.addEventListener('keyup', KeyUpfunction,false);

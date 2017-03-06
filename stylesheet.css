@@ -1,7 +1,11 @@
-body {background-color: linen;}
+body {
+	  background-color: linen;
+      margin: 0px;
+      overflow: hidden;
+}
 
  h1 {
-	font-size: 30px;
+	font-size: 40px;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	color: #000;
    text-align: center;
