@@ -3,14 +3,14 @@ var time = 0;
 function playSong(url){
     var song = new Audio(url);
     song.volume = 0.3;
-    //song.play();
+    song.play();
 }
 
 function startClock() {
 
     if(time < 2000)
         time++;
-        
+
     updateClock();
 }
 

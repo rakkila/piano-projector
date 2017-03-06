@@ -6,7 +6,7 @@
 
 window.onload = function () {
 
-    playSong('./songs-mp3/roses.mp3');
+    playSong('./songs-mp3/jason_mraz.mp3');
     updateClock();
 
     //Loading soundfont
@@ -35,7 +35,7 @@ window.onload = function () {
                         note = sharpToFlat(e.note.name),   
                         key = note + octave;
 
-                    console.log('Key: ' + key + '  | NoteOn: ' + time);
+                    console.log("on" + '/' + key + '/' + time);
 
                     //Play pressed note (0 delay)
                     MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
@@ -48,7 +48,7 @@ window.onload = function () {
                             note = sharpToFlat(e.note.name),
                             key = note + octave;
 
-                        console.log('Key: ' + key + '  | NoteOff: ' + time);
+                    console.log("off" + '/' + key + '/' + time);
 
                         //Stop playing the note corresponding to the 'noteoff' message
                         //0 delay, add delay for "sustain pedal"-effect

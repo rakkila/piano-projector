@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * Reading textfile of music events.
  * 
@@ -19,15 +18,10 @@ class EventReader
     }
 }
 
-=======
->>>>>>> f766b21217a1481ee73b9442a1a59bc12dce4fb4
-
 $.get('text.txt', function(data) {
 
    //var res = data.split("/", 3);
 var res = data.split("/");
-
-    console.log(res);
 
     let eventSize = (res.length)/3;
  //   console.log(eventSize);
@@ -43,7 +37,7 @@ var res = data.split("/");
 
             j = j + 3;
 
-           console.log(ar[i].note + ' ' + ar[i].starttime + ' ' + ar[i].stoptime);
+           //console.log(ar[i].note + ' ' + ar[i].starttime + ' ' + ar[i].stoptime);
         }
 }, 'text');
 
