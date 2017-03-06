@@ -7,11 +7,12 @@
 
 class EventReader 
 {
-    constructor(note, starttime, stoptime) 
+    constructor(note, starttime, stoptime, points) 
     {
         this.note = note;
         this.starttime = starttime;
         this.stoptime = stoptime;
+        this.points = points;
     }
 
         toString () {
@@ -19,13 +20,11 @@ class EventReader
     }
 }
 
-$.get('text.txt', function(data) {
+var thearr = $.get('text.txt', function(data) {
 
-   //var res = data.split("/", 3);
 var res = data.split("/");
 
     let eventSize = (res.length)/3;
- //   console.log(eventSize);
 
     let j = 0;
 
@@ -34,12 +33,13 @@ var res = data.split("/");
         for(let i = 0; i < ar.length; i += 1)
         { 
 
-            ar[i] = new EventReader(res[j], res[j+1], res[j+2]);
+            ar[i] = new EventReader(res[j], res[j+1], res[j+2], 0);
 
             j = j + 3;
 
            //console.log(ar[i].note + ' ' + ar[i].starttime + ' ' + ar[i].stoptime);
         }
+        return ar;
 }, 'text');
 
 /*

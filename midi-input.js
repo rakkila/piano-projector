@@ -36,6 +36,7 @@ window.onload = function () {
                         key = note + octave;
 
                     console.log("on" + '/' + key + '/' + time);
+                    noteon(key, time);
 
                     //Play pressed note (0 delay)
                     MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
@@ -49,6 +50,7 @@ window.onload = function () {
                             key = note + octave;
 
                     console.log("off" + '/' + key + '/' + time);
+                    noteoff(key, time);
 
                         //Stop playing the note corresponding to the 'noteoff' message
                         //0 delay, add delay for "sustain pedal"-effect
