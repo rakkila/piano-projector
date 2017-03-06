@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Reading textfile of music events.
  * 
@@ -18,6 +19,8 @@ class EventReader
     }
 }
 
+=======
+>>>>>>> f766b21217a1481ee73b9442a1a59bc12dce4fb4
 
 $.get('text.txt', function(data) {
 

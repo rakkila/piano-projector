@@ -6,9 +6,9 @@
 
 window.onload = function () {
 
-  startMidiPlayer();
+    playSong('./songs-mp3/roses.mp3');
 
-  //Loading soundfont
+    //Loading soundfont
 	MIDI.loadPlugin({
 		soundfontUrl: "./soundfonts/",
         instrument: 'acoustic_grand_piano',
