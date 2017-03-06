@@ -1,3 +1,9 @@
+/**
+ * Reading textfile of music events.
+ * 
+ * 
+ */
+
 class EventReader 
 {
     constructor(note, starttime, stoptime) 
@@ -18,17 +24,23 @@ $.get('text.txt', function(data) {
    //var res = data.split("/", 3);
 var res = data.split("/");
 
+    console.log(res);
+
+    let eventSize = (res.length)/3;
+ //   console.log(eventSize);
+
     let j = 0;
-    var ar = new Array(3);
+
+    var ar = new Array(eventSize);
     
         for(let i = 0; i < ar.length; i += 1)
         { 
-            //var temp = new EventReader(res[j], res[j+1], res[j+2]);
+
             ar[i] = new EventReader(res[j], res[j+1], res[j+2]);
 
-            j = i + 3;
+            j = j + 3;
 
-           console.log(ar[i].note);
+           console.log(ar[i].note + ' ' + ar[i].starttime + ' ' + ar[i].stoptime);
         }
 }, 'text');
 
