@@ -6,15 +6,15 @@ function playSong(url){
     song.play();
 }
 
-function startClock() {
+function updateClock() {
 
     if(time < 2000)
         time++;
 
-    updateClock();
+    startClock();
 }
 
-function updateClock() {
+function startClock() {
     setTimeout(startClock, 100);
 }
 

@@ -7,7 +7,7 @@
 window.onload = function () {
 
     playSong('./songs-mp3/jason_mraz.mp3');
-    updateClock();
+    startClock();
 
     //Loading soundfont
 	MIDI.loadPlugin({
