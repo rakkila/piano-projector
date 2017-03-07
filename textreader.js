@@ -20,7 +20,7 @@ class EventReader
     }
 }
 
-
+/*
 var thearr = $.get('text.txt', function(data) {
 
 var res = data.split("/");
@@ -43,7 +43,7 @@ var res = data.split("/");
         return ar;
 }, 'text');
 
-/*
+
 function save_content_to_file(content, filename){
 
     var dlg = false;

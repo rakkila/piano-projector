@@ -1,21 +1,22 @@
 
 
-function noteon(keyOn, timeOn)
+function noteon(keyOn, timeOn, pArray)
 {
     let points = 0;
-    
-    for(let i = 0; i < ar.length; i += 1)
-    {
-        if (keyOn == ar[i].note)
-        {
-            console.log('YES!');
-            if((ar[i].starttime < timeOn + 20 || ar[i].starttime > timeOn - 20) && timeOn < ar[i].stoptime)
 
-            ar[i].points = ar[i].points + 50;
+    for(let i = 0; i < pArray.length; i++)
+    {
+        if (keyOn == pArray[i].note)
+        {
+            
+            if((pArray[i].starttime < timeOn + 10 || pArray[i].starttime > timeOn - 10) && timeOn < pArray[i].stoptime)
+                console.log('YES!');
+
+            //pArray[i].points = pArray[i].points + 50;
 
         }
         else
-            continue
+            continue;
     }
 }
 

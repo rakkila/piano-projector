@@ -17,6 +17,9 @@ class Keyboard{
             onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
             onsuccess: function() {
 
+                var pArray = [];
+                pArray = parseSongData("jason_mraz");
+
                 WebMidi.enable(function(err){ 
                     if(err) 
                         console.log("WebMidi could not be enabled");
@@ -37,7 +40,7 @@ class Keyboard{
                                 key = note + octave;
 
                             console.log("on" + '/' + key + '/' + time);
-                            //noteon(key, time);
+                            noteon(key, time, pArray);
 
                             //Play pressed note (0 delay)
                             MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
