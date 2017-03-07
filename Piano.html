@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
         <title>Piano-projector</title>
 
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
        
     </head>
@@ -23,6 +22,8 @@
 
                 var clock = new THREE.Clock(true);
                 var time = clock.getElapsedTime();
+
+                var speed = 10;
 
                 var start = false;
                 var start1 = false;
@@ -70,7 +71,7 @@
 
                   var material = new THREE.MeshLambertMaterial( { color: 0x9400D3 } );
                   var object = new THREE.Mesh( geometry, material );
-                  object.position.y = 10;
+                  object.position.y = speed;
                   object.position.x = -4;
                   object.rotation.x += 0.3;
                   object.rotation.y += 0.3;
@@ -84,7 +85,7 @@
                 {   
                   var material = new THREE.MeshLambertMaterial( { color: 0x006400 } );
                   var object = new THREE.Mesh( geometry, material );
-                  object.position.y = 10;
+                  object.position.y = speed;
                   object.position.x = -2;
                   object.rotation.x += 0.3;
                   object.rotation.y += 0.3;
@@ -98,7 +99,7 @@
                 { 
                   var material = new THREE.MeshLambertMaterial( { color: 0x8B0000 } );
                   var object = new THREE.Mesh( geometry, material );
-                  object.position.y = 10;
+                  object.position.y = speed;
                   object.position.x = 0;
                   object.rotation.x += 0.3;
                   object.rotation.y += 0.3;
@@ -113,7 +114,7 @@
                   var material = new THREE.MeshLambertMaterial( { color: 0xffff00 } );
                   var object = new THREE.Mesh( geometry, material );
                  
-                  object.position.y = 10;
+                  object.position.y = speed;
                   object.position.x = 2;
                   object.rotation.x += 0.3;
                   object.rotation.y += 0.3;
@@ -127,7 +128,7 @@
                 { 
                   var material = new THREE.MeshLambertMaterial( { color: 0x00008B } );
                   var object = new THREE.Mesh( geometry, material );
-                  object.position.y = 10;
+                  object.position.y = speed;
                   object.position.x = 4;
                   object.rotation.x += 0.3;
                   object.rotation.y += 0.3;
