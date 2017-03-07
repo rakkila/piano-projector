@@ -2,28 +2,39 @@
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-        <title>Piano-projector</title>
-
         <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-
-       
+        <title>Piano-projector</title>
     </head>
-
     <body>
-     <script src="lib\three.js-master\docs\build\three.js"></script>
-     <script src="lib\three.js-master\src\core\Clock.js"></script>
-            <script>
+        <script src="lib\three.js-master\docs\build\three.js"></script>
+        <script src="lib\three.js-master\src\core\Clock.js"></script>
+        <script>
            
                 var scene = new THREE.Scene();
                 var aspect = window.innerWidth / window.innerHeight;
-                var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
-               
-                var geometry = new THREE.BoxBufferGeometry( 1, noteoff-noteon, 1 );
-
+                var raycaster = new THREE.Raycaster();
+                var mouse = new THREE.Vector2(), INTERSECTED;
+                var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
                 var clock = new THREE.Clock(true);
                 var time = clock.getElapsedTime();
-
                 var speed = 10;
+                var i,j,k,l,m = 0;
+
+                var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+                camera.position.z = 10;
+
+                var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
+				        light.position.set( 5, 5, 5 );
+			        	scene.add( light );
+
+                var renderer = new THREE.WebGLRenderer();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor( 0xfaf0e6 );
+
+                document.body.appendChild( renderer.domElement );
+                document.addEventListener('keyup', KeyUpfunction,false);
+                document.addEventListener('keydown', KeyDown, false);
+                window.addEventListener('mousemove', onMouseMove, false );
 
                 var start = false;
                 var start1 = false;
@@ -37,207 +48,185 @@
                 var ton3 = [];
                 var ton4 = [];
 
-
-                var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-				        light.position.set( 5, 5, 5 );
-			        	scene.add( light );
-                 
-                var raycaster = new THREE.Raycaster();
-                var mouse = new THREE.Vector2(), INTERSECTED;
-
-                var renderer = new THREE.WebGLRenderer();
-
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.setClearColor( 0xfaf0e6 );
-
-                document.body.appendChild( renderer.domElement );
-                document.addEventListener('keyup', KeyUpfunction,false);
-                document.addEventListener('keydown', KeyDown, false);
-                window.addEventListener('mousemove', onMouseMove, false );
-
-                camera.position.z = 10;
-
+                /**
+                * @param {object} obj
+                */
                 function move(obj){
-                  obj.position.y += -5 * deltaTime; 
+                    obj.position.y += -5 * deltaTime; 
                 };
+                /**
+                * @param {event} e
+                */
+                function KeyDown(e){     
+                    if(e.keyCode == 70)
+                    { 
+                          var noteon = clock.getElapsedTime();
 
-                var i,j,k,l,m = 0;
+                          var material = new THREE.MeshLambertMaterial( { color: 0x9400D3 } );
+                          var object = new THREE.Mesh( geometry, material );
 
-                function KeyDown(event){
-                      
-                if(event.keyCode == 70)
-                { 
-                  var noteon = clock.getElapsedTime();
+                          object.position.y = speed;
+                          object.position.x = -4;
+                          object.rotation.x += 0.3;
+                          object.rotation.y += 0.3;
+                          ton[i] = object; 
+                          scene.add(ton[i] );
+                          i += 1;
+                          currhex = material.emissive.getHex();
+                    }
+                    if(e.keyCode == 71)
+                    {   
+                          var material = new THREE.MeshLambertMaterial( { color: 0x006400 } );
+                          var object = new THREE.Mesh( geometry, material );
 
-                  var material = new THREE.MeshLambertMaterial( { color: 0x9400D3 } );
-                  var object = new THREE.Mesh( geometry, material );
-                  object.position.y = speed;
-                  object.position.x = -4;
-                  object.rotation.x += 0.3;
-                  object.rotation.y += 0.3;
-                  ton[i] = object; 
-                  scene.add(ton[i] );
-                  i += 1;
-                  currhex = material.emissive.getHex();
-                 // material.emissive.setHex(0xffffff);
-                }
-                if(event.keyCode == 71)
-                {   
-                  var material = new THREE.MeshLambertMaterial( { color: 0x006400 } );
-                  var object = new THREE.Mesh( geometry, material );
-                  object.position.y = speed;
-                  object.position.x = -2;
-                  object.rotation.x += 0.3;
-                  object.rotation.y += 0.3;
-                  ton1[j] = object; 
-                  scene.add(ton1[j] );
-                  j += 1;
-                  currhex = material.emissive.getHex();
-                 // material.emissive.setHex(0xffffff);
-                }
-                if(event.keyCode == 72)
-                { 
-                  var material = new THREE.MeshLambertMaterial( { color: 0x8B0000 } );
-                  var object = new THREE.Mesh( geometry, material );
-                  object.position.y = speed;
-                  object.position.x = 0;
-                  object.rotation.x += 0.3;
-                  object.rotation.y += 0.3;
-                  ton2[k] = object; 
-                  scene.add(ton2[k] );
-                  k += 1;
-                  currhex = material.emissive.getHex();
-                //  material.emissive.setHex(0xffffff);
-                }
-                if(event.keyCode == 74) 
-                { 
-                  var material = new THREE.MeshLambertMaterial( { color: 0xffff00 } );
-                  var object = new THREE.Mesh( geometry, material );
-                 
-                  object.position.y = speed;
-                  object.position.x = 2;
-                  object.rotation.x += 0.3;
-                  object.rotation.y += 0.3;
-                  ton3[l] = object; 
-                  scene.add(ton3[l] );
-                  l += 1;
-                  currhex = material.emissive.getHex();
-                //  material.emissive.setHex(0xffffff);
-                }
-                if(event.keyCode == 75)
-                { 
-                  var material = new THREE.MeshLambertMaterial( { color: 0x00008B } );
-                  var object = new THREE.Mesh( geometry, material );
-                  object.position.y = speed;
-                  object.position.x = 4;
-                  object.rotation.x += 0.3;
-                  object.rotation.y += 0.3;
-                  ton4[m] = object; 
-                  scene.add(ton4[m] );
-                  m += 1;
-                  currhex = material.emissive.getHex();
-                  //material.emissive.setHex(0xffffff);
-                }
+                          object.position.y = speed;
+                          object.position.x = -2;
+                          object.rotation.x += 0.3;
+                          object.rotation.y += 0.3;
+                          ton1[j] = object; 
+                          scene.add(ton1[j] );
+                          j += 1;
+                          currhex = material.emissive.getHex();
+                    }
+                    if(e.keyCode == 72)
+                    { 
+                          var material = new THREE.MeshLambertMaterial( { color: 0x8B0000 } );
+                          var object = new THREE.Mesh( geometry, material );
+                          
+                          object.position.y = speed;
+                          object.position.x = 0;
+                          object.rotation.x += 0.3;
+                          object.rotation.y += 0.3;
+                          ton2[k] = object; 
+                          scene.add(ton2[k] );
+                          k += 1;
+                          currhex = material.emissive.getHex();
+                    }
+                    if(e.keyCode == 74) 
+                    { 
+                          var material = new THREE.MeshLambertMaterial( { color: 0xffff00 } );
+                          var object = new THREE.Mesh( geometry, material );
+                        
+                          object.position.y = speed;
+                          object.position.x = 2;
+                          object.rotation.x += 0.3;
+                          object.rotation.y += 0.3;
+                          ton3[l] = object; 
+                          scene.add(ton3[l] );
+                          l += 1;
+                          currhex = material.emissive.getHex();
+                    }
+                    if(e.keyCode == 75)
+                    { 
+                          var material = new THREE.MeshLambertMaterial( { color: 0x00008B } );
+                          var object = new THREE.Mesh( geometry, material );
+                          
+                          object.position.y = speed;
+                          object.position.x = 4;
+                          object.rotation.x += 0.3;
+                          object.rotation.y += 0.3;
+                          ton4[m] = object; 
+                          scene.add(ton4[m] );
+                          m += 1;
+                          currhex = material.emissive.getHex();
+                    }
                         
                 };
-    
-                function KeyUpfunction(event){        
-                if(event.keyCode == 70)
-                { start1 = true;   
-                  material1.emissive.setHex(currhex);
-                  var noteoff = clock.getElapsedTime();
-
-                }
-                if(event.keyCode == 71)
-                {  start2 = true;  
-                  material2.emissive.setHex(currhex);
-                }
-                if(event.keyCode == 72)
-                { start = true;
-                  material.emissive.setHex(currhex);
-                }
-                if(event.keyCode == 74) 
-                { start3 = true;
-                  material3.emissive.setHex(currhex);
-                }
-                if(event.keyCode == 75)
-                { start4 = true;
-                  material4.emissive.setHex(currhex);
-                }          
-                };
-
-                function onMouseMove(event) {
-
-                  //Normalize
-                mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	              mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-                };
-
-                function animate(){
-                  deltaTime = clock.getDelta();
-
-                  for (i = 0; i < ton.length; i++) { 
-                    if(start){
-                    move(ton[i]);  
+                /**
+                * @param {event} e
+                */
+                function KeyUpfunction(e){        
+                    if(e.keyCode == 70)
+                    { 
+                          var noteoff = clock.getElapsedTime();
+                          start1 = true;   
+                          material1.emissive.setHex(currhex);
                     }
-                 }
-                for (j = 0; j < ton1.length; j++) { 
-                  if(start1){
-                    move(ton1[j]);  
-                  }
-                }
-                for (k = 0; k < ton2.length; k++) { 
-                  if(start2){
-                    move(ton2[k]);  
-                  }
-                }
-                for (l = 0; l < ton3.length; l++) { 
-                  if(start3){
-                  move(ton3[l]);  
-                  }
-                }
-                for (m = 0; m < ton4.length; m++) { 
-                  if(start4){
-                  move(ton4[m]);  
-                  }
-                }
-                  requestAnimationFrame(animate);
-                  render();
+                    if(e.keyCode == 71)
+                    {  
+                          start2 = true;  
+                          material2.emissive.setHex(currhex);
+                    }
+                    if(e.keyCode == 72)
+                    { 
+                          start = true;
+                          material.emissive.setHex(currhex);
+                    }
+                    if(e.keyCode == 74) 
+                    {
+                          start3 = true;
+                          material3.emissive.setHex(currhex);
+                    }
+                    if(e.keyCode == 75)
+                    { 
+                          start4 = true;
+                          material4.emissive.setHex(currhex);
+                    }          
                 };
-
-                
-
-                function render() {
-                  raycaster.setFromCamera( mouse, camera );
-                    var intersects = raycaster.intersectObjects(scene.children);
-
-                      if ( intersects.length > 0 ) {
-                      
-                        if (INTERSECTED != intersects[0].object) {
-                                                        
-                          if (INTERSECTED) 
-                                                              
-                            INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                            
-                              INTERSECTED = intersects[0].object;
-                                                                
-                                INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                                  INTERSECTED.material.emissive.setHex(0xffffff);      
+                /**
+                * @param {event} e
+                */
+                function onMouseMove(e) {
+                    //Normalize
+                    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+                    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+                };
+               
+                function animate(){
+                      deltaTime = clock.getDelta();
+                      //Forloop: When start=true the object falls
+                      for (i = 0; i < ton.length; i++) { 
+                          if(start){
+                              move(ton[i]);  
                           }
-
-                        } else {
-                                  if (INTERSECTED) 
-                                    INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                    INTERSECTED = null;
-                                }
-
-                  renderer.render( scene, camera );         
+                      }
+                      for (j = 0; j < ton1.length; j++) { 
+                          if(start1){
+                              move(ton1[j]);  
+                          }
+                      }
+                      for (k = 0; k < ton2.length; k++) { 
+                          if(start2){
+                              move(ton2[k]);  
+                          }
+                      }
+                      for (l = 0; l < ton3.length; l++) { 
+                          if(start3){
+                              move(ton3[l]);  
+                          }
+                      }
+                      for (m = 0; m < ton4.length; m++) { 
+                          if(start4){
+                              move(ton4[m]);  
+                          }
+                      }
+                      requestAnimationFrame(animate);
+                      render();
                 };
-                  
+          
+                function render() {
+                    raycaster.setFromCamera( mouse, camera );
+                    var intersects = raycaster.intersectObjects(scene.children);
+                        //When an object is hit with the mouse pointer it's added to INTERSECTED
+                        //The object then changes color to white temporarily 
+                        if ( intersects.length > 0 ) {
+                      
+                            if (INTERSECTED != intersects[0].object) {
+                                                        
+                                if (INTERSECTED)                           
+                                    INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                                    INTERSECTED = intersects[0].object;                                
+                                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                                    INTERSECTED.material.emissive.setHex(0xffffff);      
+                                }
+                         } else {
+                                    if (INTERSECTED) 
+                                        INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+                                        INTERSECTED = null;
+                                    }
+                      renderer.render( scene, camera );         
+                  };    
              animate();
       </script>
-
     </body>
-
 </html>
