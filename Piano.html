@@ -131,9 +131,9 @@
                 function KeyUpfunction(event){        
                     if(event.keyCode == 70)
                     { 
+                          var noteoff = clock.getElapsedTime();
                           start1 = true;   
                           material1.emissive.setHex(currhex);
-                          var noteoff = clock.getElapsedTime();
                     }
                     if(event.keyCode == 71)
                     {  
