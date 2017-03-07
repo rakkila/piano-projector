@@ -48,12 +48,17 @@
                 var ton3 = [];
                 var ton4 = [];
 
+                /**
+                * @param {object} obj
+                */
                 function move(obj){
                     obj.position.y += -5 * deltaTime; 
                 };
-
-                function KeyDown(event){     
-                    if(event.keyCode == 70)
+                /**
+                * @param {event} e
+                */
+                function KeyDown(e){     
+                    if(e.keyCode == 70)
                     { 
                           var noteon = clock.getElapsedTime();
 
@@ -69,7 +74,7 @@
                           i += 1;
                           currhex = material.emissive.getHex();
                     }
-                    if(event.keyCode == 71)
+                    if(e.keyCode == 71)
                     {   
                           var material = new THREE.MeshLambertMaterial( { color: 0x006400 } );
                           var object = new THREE.Mesh( geometry, material );
@@ -83,7 +88,7 @@
                           j += 1;
                           currhex = material.emissive.getHex();
                     }
-                    if(event.keyCode == 72)
+                    if(e.keyCode == 72)
                     { 
                           var material = new THREE.MeshLambertMaterial( { color: 0x8B0000 } );
                           var object = new THREE.Mesh( geometry, material );
@@ -97,7 +102,7 @@
                           k += 1;
                           currhex = material.emissive.getHex();
                     }
-                    if(event.keyCode == 74) 
+                    if(e.keyCode == 74) 
                     { 
                           var material = new THREE.MeshLambertMaterial( { color: 0xffff00 } );
                           var object = new THREE.Mesh( geometry, material );
@@ -111,7 +116,7 @@
                           l += 1;
                           currhex = material.emissive.getHex();
                     }
-                    if(event.keyCode == 75)
+                    if(e.keyCode == 75)
                     { 
                           var material = new THREE.MeshLambertMaterial( { color: 0x00008B } );
                           var object = new THREE.Mesh( geometry, material );
@@ -127,45 +132,49 @@
                     }
                         
                 };
-    
-                function KeyUpfunction(event){        
-                    if(event.keyCode == 70)
+                /**
+                * @param {event} e
+                */
+                function KeyUpfunction(e){        
+                    if(e.keyCode == 70)
                     { 
                           var noteoff = clock.getElapsedTime();
                           start1 = true;   
                           material1.emissive.setHex(currhex);
                     }
-                    if(event.keyCode == 71)
+                    if(e.keyCode == 71)
                     {  
                           start2 = true;  
                           material2.emissive.setHex(currhex);
                     }
-                    if(event.keyCode == 72)
+                    if(e.keyCode == 72)
                     { 
                           start = true;
                           material.emissive.setHex(currhex);
                     }
-                    if(event.keyCode == 74) 
+                    if(e.keyCode == 74) 
                     {
                           start3 = true;
                           material3.emissive.setHex(currhex);
                     }
-                    if(event.keyCode == 75)
+                    if(e.keyCode == 75)
                     { 
                           start4 = true;
                           material4.emissive.setHex(currhex);
                     }          
                 };
-
-                function onMouseMove(event) {
+                /**
+                * @param {event} e
+                */
+                function onMouseMove(e) {
                     //Normalize
                     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
                     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
                 };
-
+               
                 function animate(){
                       deltaTime = clock.getDelta();
-
+                      //Forloop: When start=true the object falls
                       for (i = 0; i < ton.length; i++) { 
                           if(start){
                               move(ton[i]);  
@@ -194,11 +203,12 @@
                       requestAnimationFrame(animate);
                       render();
                 };
-
+          
                 function render() {
                     raycaster.setFromCamera( mouse, camera );
                     var intersects = raycaster.intersectObjects(scene.children);
-
+                        //When an object is hit with the mouse pointer it's added to INTERSECTED
+                        //The object then changes color to white temporarily 
                         if ( intersects.length > 0 ) {
                       
                             if (INTERSECTED != intersects[0].object) {
