@@ -8,7 +8,7 @@ class Keyboard{
 
     constructor(){}
 
-    startInputOutput(){
+    startInputOutput(song){
 
         //Loading soundfont
         MIDI.loadPlugin({
@@ -17,8 +17,9 @@ class Keyboard{
             onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
             onsuccess: function() {
 
+
                 var pArray = [];
-                pArray = parseSongData("jason_mraz");
+                pArray = parseSongData(song.getSongName());
 
                 WebMidi.enable(function(err){ 
                     if(err) 

@@ -1,8 +1,9 @@
 class Song{
     
-    constructor(url)
+    constructor(song)
     {
-        this.song = new Audio(url);
+        this.name = song;
+        this.song = new Audio('./songs-mp3/' + song + '.mp3');
     } 
 
     playSong(){
@@ -11,6 +12,10 @@ class Song{
 
     setVolume(vol){
         this.song.volume = vol;
+    }
+
+    getSongName(){
+        return this.name;
     }
 }
 

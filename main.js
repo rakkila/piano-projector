@@ -1,9 +1,10 @@
-window.onload = function(){
+function main(songName){
 
+    //var songName = 'jason_mraz';
     var keyboard = new Keyboard();
-    var song = new Song('./songs-mp3/jason_mraz.mp3');
+    var song = new Song(songName);
 
-    keyboard.startInputOutput();
+    keyboard.startInputOutput(song);
 
     song.setVolume(0.4);
     song.playSong();

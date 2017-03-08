@@ -1,24 +1,73 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
         <title>Piano-projector</title>
 
         <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- MIDI.js Package =================================================================== -->
+    <script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="lib/MIDI.js-master/inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="lib/MIDI.js-master/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<script src="lib/MIDI.js-master/inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
+    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/audioDetect.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/gm.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/loader.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/player.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.audiotag.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.webaudio.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.webmidi.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/synesthesia.js"> </script>
+    <script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>    
+    <script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
+    <script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
+    <script src="lib/MIDI.js-master/js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="lib/MIDI.js-master/js/util/dom_request_script.js" type="text/javascript"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
+    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+    <!-- ============================================================================== -->
+
+    <!-- WebMIDI.js -->
+    <script src = "lib/soundfontplayer.js"> </script>
+    <script src = "lib/webmidi/src/webmidi.js"> </script>
+
+    <!-- Three.js -->
+    <script src="lib\three.js-master\docs\build\three.js"></script>
+    <script src="lib\three.js-master\src\core\Clock.js"></script>
+
+
+    <!-- Internal file links -->
+    <script src="GUI/Menu.html"></script>
+
+    <script src = "EventReader.js"></script>
+    <script src = "Song.js"></script>
+    <script src = "Clock.js"></script>
+    <script src = "parseSongData.js"></script>
+    <script src = "getSongArray.js"></script>
+    <script src = "PointGiver.js"></script>
+    <script src = "Keyboard.js"></script>
+    <script src = "midi-player.js"></script>
+    <script src = "main.js"></script>
 
        
     </head>
 
     <body>
-     <script src="lib\three.js-master\docs\build\three.js"></script>
-     <script src="lib\three.js-master\src\core\Clock.js"></script>
+            <h2>Här ska spelet börja..</h2>
+
             <script>
+
+                main('jason_mraz');
            
                 var scene = new THREE.Scene();
                 var aspect = window.innerWidth / window.innerHeight;
                 var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
                
-                var geometry = new THREE.BoxBufferGeometry( 1, noteoff-noteon, 1 );
+                var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
 
                 var clock = new THREE.Clock(true);
                 var time = clock.getElapsedTime();
@@ -62,6 +111,7 @@
                 };
 
                 var i,j,k,l,m = 0;
+                
 
                 function KeyDown(event){
                       
@@ -144,7 +194,7 @@
                 function KeyUpfunction(event){        
                 if(event.keyCode == 70)
                 { start1 = true;   
-                  material1.emissive.setHex(currhex);
+                  material.emissive.setHex(currhex);
                   var noteoff = clock.getElapsedTime();
 
                 }

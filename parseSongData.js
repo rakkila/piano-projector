@@ -2,7 +2,7 @@
 
 function parseSongData(theSong) {     
 
-        var songData = getSong(theSong);
+        var songData = getSongArray(theSong);
 
         let songSize = (songData.length)/3;
 
