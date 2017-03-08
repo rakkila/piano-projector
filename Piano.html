@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
         <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>Piano-projector</title>
 
-          <!-- Shim -->
-     <script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
+    <!-- Midi.js package -->
+    <script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
  	<script src="lib/MIDI.js-master/inc/shim/Base64binary.js" type="text/javascript"></script>
  	<script src="lib/MIDI.js-master/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
  	<script src="lib/MIDI.js-master/inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
-     <!-- Midi.js package -->
-     <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/audioDetect.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/gm.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/loader.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/player.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/plugin.audiotag.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/plugin.webaudio.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/plugin.webmidi.js"> </script>
-     <script src = "lib/MIDI.js-master/js/midi/synesthesia.js"> </script>
-     <!-- Jasmid -->
-     <script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>    
-     <script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
-     <script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
-     <!-- Utils -->
-     <script src="lib/MIDI.js-master/js/util/dom_request_xhr.js" type="text/javascript"></script>
- 	<script src="lib/MIDI.js-master/js/util/dom_request_script.js" type="text/javascript"></script>
- 
-     <script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
-     <script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
-     <script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
- 
-     <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
-     <script src = "lib/soundfontplayer.js"> </script>
-     <script src = "lib/webmidi/src/webmidi.js"> </script>
-         <script src="lib\three.js-master\docs\build\three.js"></script>
-        <script src="lib\three.js-master\src\core\Clock.js"></script>
- 
-     <script src = "EventReader.js"></script>
-     <script src = "Song.js"></script>
-     <script src = "Clock.js"></script>
-     <script src = "parseSongData.js"></script>
-     <script src = "getSongArray.js"></script>
-     <script src = "PointGiver.js"></script>
-     <script src = "Keyboard.js"></script>
+    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/audioDetect.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/gm.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/loader.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/player.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.audiotag.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.webaudio.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/plugin.webmidi.js"> </script>
+    <script src = "lib/MIDI.js-master/js/midi/synesthesia.js"> </script>
+    <script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>    
+    <script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
+    <script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
+    <script src="lib/MIDI.js-master/js/util/dom_request_xhr.js" type="text/javascript"></script>
+    <script src="lib/MIDI.js-master/js/util/dom_request_script.js" type="text/javascript"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
+    <script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
+    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+
+    <!-- Other external libraries -->
+    <script src = "lib/soundfontplayer.js"> </script>
+    <script src = "lib/webmidi/src/webmidi.js"> </script>
+    <script src="lib\three.js-master\docs\build\three.js"></script>
+    <script src="lib\three.js-master\src\core\Clock.js"></script>
+
+    <!-- Internal js files -->
+    <script src = "EventReader.js"></script>
+    <script src = "Song.js"></script>
+    <script src = "Clock.js"></script>
+    <script src = "parseSongData.js"></script>
+    <script src = "getSongArray.js"></script>
+    <script src = "PointGiver.js"></script>
+    <script src = "Keyboard.js"></script>
     <script src = "midi-player.js"></script>
-     <script src = "main.js"></script>
+    <script src = "main.js"></script>
 
     </head>
     <body>
