@@ -1,5 +1,6 @@
 
-
+//Function looking for a match with 'noteOn'
+//Hands out points if conditions are met.
 function noteon(keyOn, timeOn, pArray)
 {
     let points = 0;
@@ -20,28 +21,30 @@ function noteon(keyOn, timeOn, pArray)
     }
 }
 
-function noteoff(keyOff, timeOff)
+//Function looking for a match with 'noteOff'
+//Deducts points if the first condition is violated. 
+function noteoff(keyOff, timeOff, pArray)
 {
     let points = 0;
 
-    for(let i = 0; i < ar.length; i += 1)
+    for(let i = 0; i < pArray.length; i += 1)
     {
-        if (keyOff == ar[i].note)
+        if (keyOff == pArray[i].note)
         {
             
-            if((ar[i].stoptime < timeOff + 20 || ar[i].stoptime > timeOff - 20) && timeOff < ar[i].stoptime && ar[i].points > 0)
+            if((pArray[i].stoptime < timeOff + 20 || pArray[i].stoptime > timeOff - 20) && timeOff < pArray[i].stoptime && pArray[i].points > 0)
 
             console.log('wassup');
 
-            ar[i].points = ar[i].points;
+            pArray[i].points = pArray[i].points;
 
         }
-            else if(ar[i].stoptime < timeOff + 21)
+            else if(pArray[i].stoptime < timeOff + 21)
 
-                ar[i].points = ar[i].points - 25; 
+                pArray[i].points = pArray[i].points - 25; 
 
             else 
-                ar[i].points = ar[i].points - (timeOff - ar[i].stoptime)/2;
+                pArray[i].points = pArray[i].points - (timeOff - pArray[i].stoptime)/2;
         
 
     }
