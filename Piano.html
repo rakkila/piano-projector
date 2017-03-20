@@ -1,266 +1,122 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
-        <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>Piano-projector</title>
+<head>
+<link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
+<meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>Piano-projector</title>
 
-    <!-- Midi.js package -->
-    <script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
- 	<script src="lib/MIDI.js-master/inc/shim/Base64binary.js" type="text/javascript"></script>
- 	<script src="lib/MIDI.js-master/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
- 	<script src="lib/MIDI.js-master/inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
-    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/audioDetect.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/gm.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/loader.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/player.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/plugin.audiotag.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/plugin.webaudio.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/plugin.webmidi.js"> </script>
-    <script src = "lib/MIDI.js-master/js/midi/synesthesia.js"> </script>
-    <script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>    
-    <script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
-    <script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
-    <script src="lib/MIDI.js-master/js/util/dom_request_xhr.js" type="text/javascript"></script>
-    <script src="lib/MIDI.js-master/js/util/dom_request_script.js" type="text/javascript"></script>
-    <script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
-    <script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
-    <script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
-    <script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+<!-- Midi.js package -->
+<script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/inc/shim/Base64binary.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
+<script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/audioDetect.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/gm.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/loader.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/player.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/plugin.audiotag.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/plugin.webaudio.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/plugin.webmidi.js"> </script>
+<script src = "lib/MIDI.js-master/js/midi/synesthesia.js"> </script>
+<script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>    
+<script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/js/util/dom_request_xhr.js" type="text/javascript"></script>
+<script src="lib/MIDI.js-master/js/util/dom_request_script.js" type="text/javascript"></script>
+<script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
+<script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
+<script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
+<script src = "lib/MIDI.js-master/build/MIDI.min.js"> </script>
 
-    <!-- Other external libraries -->
-    <script src = "lib/soundfontplayer.js"> </script>
-    <script src = "lib/webmidi/src/webmidi.js"> </script>
-    <script src="lib\three.js-master\docs\build\three.js"></script>
-    <script src="lib\three.js-master\src\core\Clock.js"></script>
+<!-- Other external libraries -->
+<script src = "lib/soundfontplayer.js"> </script>
+<script src = "lib/webmidi/src/webmidi.js"> </script>
+<script src="lib\three.js-master\docs\build\three.js"></script>
+<script src="lib\three.js-master\src\core\Clock.js"></script>
 
-    <!-- Internal js files -->
-    <script src = "EventReader.js"></script>
-    <script src = "Song.js"></script>
-    <script src = "Clock.js"></script>
-    <script src = "parseSongData.js"></script>
-    <script src = "getSongArray.js"></script>
-    <script src = "PointGiver.js"></script>
-    <script src = "Keyboard.js"></script>
-    <script src = "midi-player.js"></script>
-    <script src = "main.js"></script>
+<!-- Internal js files -->
+<script src = "EventReader.js"></script>
+<script src = "Song.js"></script>
+<script src = "Clock.js"></script>
+<script src = "parseSongData.js"></script>
+<script src = "getSongArray.js"></script>
+<script src = "PointGiver.js"></script>
+<script src = "Keyboard.js"></script>
+<script src = "midi-player.js"></script>
 
-    </head>
-    <body>
-        <h1>Piano.html</h1>
-        <script>
+</head>
+<body>
+<h1>Piano.html</h1>
+<script>
 
-                //Getting songID from url
-                main(location.search.substring(1).split("?")[0]);
+function main(songName){
 
-                var scene = new THREE.Scene();
-                var aspect = window.innerWidth / window.innerHeight;
-                var raycaster = new THREE.Raycaster();
-                var mouse = new THREE.Vector2(), INTERSECTED;
-                var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-                var clock = new THREE.Clock(true);
-                var time = clock.getElapsedTime();
-                var speed = 10;
-                var i,j,k,l,m = 0;
-                var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
-                camera.position.z = 10;
-                var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-				        light.position.set( 5, 5, 5 );
-			        	scene.add( light );
-                var renderer = new THREE.WebGLRenderer();
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.setClearColor( 0xfaf0e6 );
-                document.body.appendChild( renderer.domElement );
-                document.addEventListener('keyup', KeyUpfunction,false);
-                document.addEventListener('keydown', KeyDown, false);
-                window.addEventListener('mousemove', onMouseMove, false );
-                var start = false;
-                var start1 = false;
-                var start2 = false;
-                var start3 = false;
-                var start4 = false;
-                var ton = [];
-                var ton1 = [];
-                var ton2 = [];
-                var ton3 = [];
-                var ton4 = [];
-                /**
-                * @param {object} obj
-                */
-                function move(obj){
-                    obj.position.y += -5 * deltaTime; 
-                };
-                /**
-                * @param {event} e
-                */
-                function KeyDown(e){     
-                    if(e.keyCode == 70)
-                    { 
-                          var noteon = clock.getElapsedTime();
-                          var material = new THREE.MeshLambertMaterial( { color: 0x9400D3 } );
-                          var object = new THREE.Mesh( geometry, material );
-                          object.position.y = speed;
-                          object.position.x = -4;
-                          object.rotation.x += 0.3;
-                          object.rotation.y += 0.3;
-                          ton[i] = object; 
-                          scene.add(ton[i] );
-                          i += 1;
-                          currhex = material.emissive.getHex();
-                    }
-                    if(e.keyCode == 71)
-                    {   
-                          var material = new THREE.MeshLambertMaterial( { color: 0x006400 } );
-                          var object = new THREE.Mesh( geometry, material );
-                          object.position.y = speed;
-                          object.position.x = -2;
-                          object.rotation.x += 0.3;
-                          object.rotation.y += 0.3;
-                          ton1[j] = object; 
-                          scene.add(ton1[j] );
-                          j += 1;
-                          currhex = material.emissive.getHex();
-                    }
-                    if(e.keyCode == 72)
-                    { 
-                          var material = new THREE.MeshLambertMaterial( { color: 0x8B0000 } );
-                          var object = new THREE.Mesh( geometry, material );
-                          
-                          object.position.y = speed;
-                          object.position.x = 0;
-                          object.rotation.x += 0.3;
-                          object.rotation.y += 0.3;
-                          ton2[k] = object; 
-                          scene.add(ton2[k] );
-                          k += 1;
-                          currhex = material.emissive.getHex();
-                    }
-                    if(e.keyCode == 74) 
-                    { 
-                          var material = new THREE.MeshLambertMaterial( { color: 0xffff00 } );
-                          var object = new THREE.Mesh( geometry, material );
-                        
-                          object.position.y = speed;
-                          object.position.x = 2;
-                          object.rotation.x += 0.3;
-                          object.rotation.y += 0.3;
-                          ton3[l] = object; 
-                          scene.add(ton3[l] );
-                          l += 1;
-                          currhex = material.emissive.getHex();
-                    }
-                    if(e.keyCode == 75)
-                    { 
-                          var material = new THREE.MeshLambertMaterial( { color: 0x00008B } );
-                          var object = new THREE.Mesh( geometry, material );
-                          
-                          object.position.y = speed;
-                          object.position.x = 4;
-                          object.rotation.x += 0.3;
-                          object.rotation.y += 0.3;
-                          ton4[m] = object; 
-                          scene.add(ton4[m] );
-                          m += 1;
-                          currhex = material.emissive.getHex();
-                    }
-                        
-                };
-                /**
-                * @param {event} e
-                */
-                function KeyUpfunction(e){        
-                    if(e.keyCode == 70)
-                    { 
-                          var noteoff = clock.getElapsedTime();
-                          start1 = true;   
-                          material1.emissive.setHex(currhex);
-                    }
-                    if(e.keyCode == 71)
-                    {  
-                          start2 = true;  
-                          material2.emissive.setHex(currhex);
-                    }
-                    if(e.keyCode == 72)
-                    { 
-                          start = true;
-                          material.emissive.setHex(currhex);
-                    }
-                    if(e.keyCode == 74) 
-                    {
-                          start3 = true;
-                          material3.emissive.setHex(currhex);
-                    }
-                    if(e.keyCode == 75)
-                    { 
-                          start4 = true;
-                          material4.emissive.setHex(currhex);
-                    }          
-                };
-                /**
-                * @param {event} e
-                */
-                function onMouseMove(e) {
-                    //Normalize
-                    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-                    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-                };
-               
-                function animate(){
-                      deltaTime = clock.getDelta();
-                      //Forloop: When start=true the object falls
-                      for (i = 0; i < ton.length; i++) { 
-                          if(start){
-                              move(ton[i]);  
-                          }
-                      }
-                      for (j = 0; j < ton1.length; j++) { 
-                          if(start1){
-                              move(ton1[j]);  
-                          }
-                      }
-                      for (k = 0; k < ton2.length; k++) { 
-                          if(start2){
-                              move(ton2[k]);  
-                          }
-                      }
-                      for (l = 0; l < ton3.length; l++) { 
-                          if(start3){
-                              move(ton3[l]);  
-                          }
-                      }
-                      for (m = 0; m < ton4.length; m++) { 
-                          if(start4){
-                              move(ton4[m]);  
-                          }
-                      }
-                      requestAnimationFrame(animate);
-                      render();
-                };
-          
-                function render() {
-                    raycaster.setFromCamera( mouse, camera );
-                    var intersects = raycaster.intersectObjects(scene.children);
-                        //When an object is hit with the mouse pointer it's added to INTERSECTED
-                        //The object then changes color to white temporarily 
-                        if ( intersects.length > 0 ) {
-                      
-                            if (INTERSECTED != intersects[0].object) {
-                                                        
-                                if (INTERSECTED)                           
-                                    INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                    INTERSECTED = intersects[0].object;                                
-                                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                                    INTERSECTED.material.emissive.setHex(0xffffff);      
-                                }
-                         } else {
-                                    if (INTERSECTED) 
-                                        INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                                        INTERSECTED = null;
-                                    }
-                      renderer.render( scene, camera );         
-                  };    
-             animate();
-      </script>
-    </body>
+    //var songName = 'jason_mraz';
+    var keyboard = new Keyboard();
+    var song = new Song(songName);
+
+    let songArray = [];
+    songArray = parseSongData(song.getSongName());
+
+    keyboard.startInputOutput(song);
+
+    song.setVolume(0.4);
+    song.playSong();
+    startClock();
+
+    initGL();
+    animate();
+
+}
+//Getting songID from url
+main(location.search.substring(1).split("?")[0]);
+
+function initGL() {
+
+    var scene = new THREE.Scene();
+    var aspect = window.innerWidth / window.innerHeight;
+
+    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+
+    var speed = 10;
+
+    var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+    camera.position.z = 10;
+    var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
+    light.position.set( 5, 5, 5 );
+    scene.add( light );
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor( 0xfaf0e6 );
+    document.body.appendChild( renderer.domElement );
+
+    var start = false;
+    var ton = [];
+
+}
+
+
+function move(obj){
+    obj.position.y += -5 * deltaTime; 
+};
+
+function animate(){
+    deltaTime = clock.getDelta();
+    //Forloop: When start=true the object falls
+    for (i = 0; i < ton.length; i++) { 
+        if(start){
+            move(ton[i]);  
+        }
+    requestAnimationFrame(animate);
+    renderer.render( scene, camera );  
+}
+
+}
+
+
+       
+
+</script>
+</body>
 </html>

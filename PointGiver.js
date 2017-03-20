@@ -10,10 +10,14 @@ function noteon(keyOn, timeOn, pArray)
         if (keyOn == pArray[i].note)
         {
             
-            if((pArray[i].starttime < timeOn + 10 || pArray[i].starttime > timeOn - 10) && timeOn < pArray[i].stoptime)
-                console.log('YES!');
+            if((Math.abs(pArray[i].starttime - timeOn) < 10 ) && timeOn < pArray[i].stoptime) {
 
-            //pArray[i].points = pArray[i].points + 50;
+                console.log('HIT!!!' + pArray[i].starttime + '  ' + timeOn);
+                pArray[i].points = pArray[i].points + 50;
+            }
+                
+            
+            
 
         }
         else
@@ -25,25 +29,30 @@ function noteon(keyOn, timeOn, pArray)
 //Deducts points if the first condition is violated. 
 function noteoff(keyOff, timeOff, pArray)
 {
-    let points = 0;
 
     for(let i = 0; i < pArray.length; i += 1)
     {
         if (keyOff == pArray[i].note)
         {
             
-            if((pArray[i].stoptime < timeOff + 20 || pArray[i].stoptime > timeOff - 20) && timeOff < pArray[i].stoptime && pArray[i].points > 0)
+           // if((pArray[i].stoptime < timeOff + 20 || pArray[i].stoptime > timeOff - 20) && timeOff < pArray[i].stoptime && pArray[i].points > 0)
+           // if(Math.abs(pArray[i].stoptime - timeOff) < 10) {
 
-            console.log('wassup');
+          //      console.log('wassup');
 
-            pArray[i].points = pArray[i].points;
+               // pArray[i].points = pArray[i].points;
+        //    }
+
+            if(Math.abs(pArray[i].stoptime - timeOff) > 10)
+                pArray[i].points -= Math.abs(pArray[i].stoptime - timeOff) * 0.5;    
 
         }
-            else if(pArray[i].stoptime < timeOff + 21)
+
+           if(pArray[i].stoptime < timeOff + 21)
 
                 pArray[i].points = pArray[i].points - 25; 
 
-            else 
+            else if
                 pArray[i].points = pArray[i].points - (timeOff - pArray[i].stoptime)/2;
         
 
