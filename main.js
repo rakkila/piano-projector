@@ -7,7 +7,7 @@ function main(songName){
     keyboard.startInputOutput(song);
 
     song.setVolume(0.4);
-    song.playSong();
+    //song.playSong();
     startClock();
 
 

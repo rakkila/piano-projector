@@ -2,11 +2,19 @@
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+
+        <script>
+            //Sending songID from clicked button
+            function sendID(id){
+                window.location.href = "../Piano.html?" + id;
+            }
+        </script>
+
     </head>
     <body>
         <h1>Hard</h1>
             <ul id="meny">
-                <li><a href="../Piano.html" target="_self">Hard song</a></li>
+                <li><a id ="#" onclick="sendID(this.id);">song name...</a></li>
             </ul>
             <ul id="back">
                 <li><a href="javascript:history.back()" target="_self">Go back</a></li>

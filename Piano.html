@@ -48,9 +48,11 @@
 
     </head>
     <body>
+        <h1>Piano.html</h1>
         <script>
 
-                main('jason_mraz');
+                //Getting songID from url
+                main(location.search.substring(1).split("?")[0]);
 
                 var scene = new THREE.Scene();
                 var aspect = window.innerWidth / window.innerHeight;
