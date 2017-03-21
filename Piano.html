@@ -35,6 +35,7 @@
 <script src="lib\three.js-master\docs\build\three.js"></script>
 
 <!-- Internal js files -->
+<script src = "NoteBlock.js"></script>
 <script src = "EventReader.js"></script>
 <script src = "Song.js"></script>
 <script src = "Clock.js"></script>
@@ -46,30 +47,29 @@
 
 </head>
 <body>
-<h1>Piano.html</h1>
 <script>
 
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
-var songArray = [];
+var noteBlockArray = [];
 
 function main(){
 
     //Start keyboard input
     keyboard.startInputOutput(song);
 
+    //Start visualization
+    animate();
+
     //Play picked song
     song.setVolume(0.4);
     song.playSong();
     startClock();
 
-    animate();
-
 }
 
-
-
+//Creating scene
 var scene = new THREE.Scene();
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -79,38 +79,56 @@ document.body.appendChild( renderer.domElement );
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.z = 10;
 
-var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-light.position.set( 5, 5, 5 );
-scene.add( light );
+//Loading geometries to scene
+loadGeometries();
 
-var geometry = new THREE.BoxBufferGeometry( 5,5,5);
-var material = new THREE.MeshPhongMaterial({color: 0x0000ff});
-var testMesh = new THREE.Mesh(geometry, material);
-scene.add(testMesh);
-
-
-
-//Getting songID from url and starting program
+//Starting program
 main();
-
 
 
 function animate(){
 
-    //if( getClockTime() == (getSongData(songArray)[0].starttime) ) 
-       // testMesh.position.y -= 1;
+    //Adding note blocks to scene (depending on song)
+    for(let i = 0; i < noteBlockArray.length; i++ ){
 
+        if(getClockTime() == noteBlockArray[i].startTime){
+            scene.add(noteBlockArray[i].mesh);
+
+            switch(noteBlockArray[i].note){
+                case 'B3':  noteBlockArray[i].mesh.position.x = 5; break;
+                case 'Bb3': noteBlockArray[i].mesh.position.x = 4; break;
+                case 'Ab3': noteBlockArray[i].mesh.position.x = 2.5; break;
+                case 'E3':  noteBlockArray[i].mesh.position.x = 0.5; break;
+                default: break; 
+            }
+
+            //noteBlockArray[i].mesh.position.x = Math.floor(Math.random() * (10 - (-10))) - 10;
+            noteBlockArray[i].mesh.position.y = 8;
+            i++;
+        }
+        noteBlockArray[i].mesh.position.y -= 0.05;
+    }
 
     requestAnimationFrame(animate);
     renderer.render( scene, camera );  
 }
 
-function getSongData(ar){
-    //Song array containing picked song data
-    songArray = parseSongData(song.getSongName());
-    return songArray;
-}
+function loadGeometries(){
 
+    var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
+    light.position.set( 5, 5, 5 );
+    scene.add( light );
+
+    var g = new THREE.BoxGeometry(20,0.5,0.2);
+    var m = new THREE.MeshPhongMaterial({color:0x000000});
+    var line = new THREE.Mesh(g,m);
+    line.position.set(0,-2,0);
+    scene.add(line);
+
+    //Loading note blocks from picked song
+    noteBlockArray = loadNoteBlocks();
+
+}
     
 </script>
 </body>
