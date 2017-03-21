@@ -49,17 +49,17 @@
 <h1>Piano.html</h1>
 <script>
 
-function main(songName){
+//Global variables
+var keyboard = new Keyboard();
+var song = new Song(location.search.substring(1).split("?")[0]);
+var songArray = [];
 
-    //var songName = 'jason_mraz';
-    var keyboard = new Keyboard();
-    var song = new Song(songName);
+function main(){
 
-    let songArray = [];
-    songArray = parseSongData(song.getSongName());
-
+    //Start keyboard input
     keyboard.startInputOutput(song);
 
+    //Play picked song
     song.setVolume(0.4);
     song.playSong();
     startClock();
@@ -67,6 +67,7 @@ function main(songName){
     animate();
 
 }
+
 
 
 var scene = new THREE.Scene();
@@ -89,24 +90,28 @@ scene.add(testMesh);
 
 
 
+//Getting songID from url and starting program
+main();
 
-
-//Getting songID from url
-main(location.search.substring(1).split("?")[0]);
 
 
 function animate(){
 
+    //if( getClockTime() == (getSongData(songArray)[0].starttime) ) 
+       // testMesh.position.y -= 1;
 
-   testMesh.rotation.z += 0.005;
 
     requestAnimationFrame(animate);
     renderer.render( scene, camera );  
 }
 
+function getSongData(ar){
+    //Song array containing picked song data
+    songArray = parseSongData(song.getSongName());
+    return songArray;
+}
 
-       
-
+    
 </script>
 </body>
 </html>

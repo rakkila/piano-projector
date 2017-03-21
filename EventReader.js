@@ -14,7 +14,7 @@ class EventReader
     }
 
         toString () {
-        return `${this.note} | ${this.starttime}g P :: ${this.stoptime}g C`
+        return `${this.note} ${this.starttime} ${this.stoptime}`
     }
 }
 
