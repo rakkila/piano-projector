@@ -9,14 +9,14 @@ function parseSongData(theSong) {
     let songSize = (songData.length)/3;
     var parsedArray = new Array(songSize);
 
-    let j = 0;   
+    let j = 0;  
 
-    for(let i = 0; i < songData.length; ++i){ 
+    for(let i = 0; i < songSize; ++i){ 
 
         parsedArray[i] = new EventReader(songData[j], songData[j+1], songData[j+2], 0);
-        j = j + 3;
+        j += 3;
 
-        //console.log(ar[i].note + ' ' + ar[i].starttime + ' ' + ar[i].stoptime);
+        //console.log(parsedArray[i].note + ' ' + parsedArray[i].starttime + ' ' + parsedArray[i].stoptime);
     }
 
     return parsedArray;
