@@ -63,7 +63,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
 
     }
 
-    console.log('SCORE = ' + aPoint);
+    //console.log('SCORE = ' + aPoint);
     return aPoint;
 
 }

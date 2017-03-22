@@ -92,22 +92,24 @@ function animate(){
     //Adding note blocks to scene (depending on song)
     for(let i = 0; i < noteBlockArray.length; i++ ){
 
-        if(getClockTime() == noteBlockArray[i].startTime){
+        if(getClockTime() == noteBlockArray[i].startTime - 60){
             scene.add(noteBlockArray[i].mesh);
 
             switch(noteBlockArray[i].note){
-                case 'B3':  noteBlockArray[i].mesh.position.x = 5; break;
-                case 'Bb3': noteBlockArray[i].mesh.position.x = 4; break;
-                case 'Ab3': noteBlockArray[i].mesh.position.x = 2.5; break;
-                case 'E3':  noteBlockArray[i].mesh.position.x = 0.5; break;
+                case 'B3':  noteBlockArray[i].mesh.position.x = -4; break;
+                case 'Db4':  noteBlockArray[i].mesh.position.x = -2; break;
+                case 'E4':  noteBlockArray[i].mesh.position.x = 0; break;
+                case 'Gb4': noteBlockArray[i].mesh.position.x = 2; break;
+                case 'Ab4': noteBlockArray[i].mesh.position.x = 4; break;
+                case 'B4':  noteBlockArray[i].mesh.position.x = 6; break;
                 default: break; 
             }
 
-            //noteBlockArray[i].mesh.position.x = Math.floor(Math.random() * (10 - (-10))) - 10;
             noteBlockArray[i].mesh.position.y = 8;
             i++;
         }
-        noteBlockArray[i].mesh.position.y -= 0.05;
+
+        noteBlockArray[i].mesh.position.y -= 0.04;
     }
 
     requestAnimationFrame(animate);
@@ -120,16 +122,17 @@ function loadGeometries(){
     light.position.set( 5, 5, 5 );
     scene.add( light );
 
-    var g = new THREE.BoxGeometry(20,0.5,0.2);
+    var g = new THREE.BoxGeometry(40,0.3,0.2);
     var m = new THREE.MeshPhongMaterial({color:0x000000});
     var line = new THREE.Mesh(g,m);
-    line.position.set(0,-2,0);
+    line.position.set(0,-6,0);
     scene.add(line);
 
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
 }
+
     
 </script>
 </body>
