@@ -17,7 +17,8 @@ class Keyboard{
             onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
             onsuccess: function() {
 
-
+                var totalpoints = 0;
+                var point = 0;
                 var pArray = [];
                 pArray = parseSongData(song.getSongName());
 
@@ -55,7 +56,13 @@ class Keyboard{
                                     key = note + octave;
 
                                 console.log("off" + '/' + key + '/' + time);
-                                //noteoff(key, time);
+
+
+                                
+                                totalpoints += noteoff(key, time, pArray, point);
+                                pArray = SongResizer(pArray);
+
+                                console.log('TOTAL POINTS: ' + totalpoints);
 
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect
