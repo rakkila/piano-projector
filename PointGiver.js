@@ -60,3 +60,4 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
             continue;
 
 }
+}
