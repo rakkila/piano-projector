@@ -10,13 +10,11 @@ function noteon(keyOn, timeOn, pArray)
         if (keyOn == pArray[i].note)
         {
             
-            if((Math.abs(pArray[i].starttime - timeOn) < 10 ) && timeOn < pArray[i].stoptime && pArray[i].points == 0) 
-            {
-                console.log('HIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
-                pArray[i].points = pArray[i].points + 50;
+            if((pArray[i].starttime < timeOn + 10 || pArray[i].starttime > timeOn - 10) && timeOn < pArray[i].stoptime)
+                console.log('YES!');
+                lightUp(i);
 
-                break;
-            }           
+            //pArray[i].points = pArray[i].points + 50;
 
         }
         else
@@ -25,9 +23,7 @@ function noteon(keyOn, timeOn, pArray)
 }
 
 //Function looking for a match with 'noteOff'
-//Deducts points if the first condition is violated.
-// Deletes (splices) key-events that have been processed.
-
+//Deducts points if the first condition is violated. 
 function noteoff(keyOff, timeOff, pArray, aPoint)
 {
 
@@ -43,6 +39,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
 
                 console.log('stoptime - timeOff: ' + Math.abs(pArray[i].stoptime - timeOff));
                 console.log('You lost: ' + Math.abs(pArray[i].stoptime - timeOff) * 0.5 + ' points. Index: '+ i + ' Array length: ' + pArray.length);
+                lightWrong(i);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;
@@ -52,6 +49,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
             {
 
                 console.log('Full score !!!?!?!?!?!?!?!??!?!?!?!?!?!?!??!?!?!');
+                lightOff(index);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;
@@ -61,42 +59,5 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
         else 
             continue;
 
-    }
-
-    //console.log('SCORE = ' + aPoint);
-    return aPoint;
-
 }
-
-/*
-function noteoff(keyOff, timeOff, pArray)
-{
-
-    for(let i = 0; i < pArray.length; i += 1)
-    {
-        if (keyOff == pArray[i].note)
-        {
-            
-           if((pArray[i].stoptime < timeOff + 20 || pArray[i].stoptime > timeOff - 20) && timeOff < pArray[i].stoptime && pArray[i].points > 0) {
-
-
-                console.log('wassup');
-
-               // pArray[i].points = pArray[i].points;
-           }
-
-        }
-
-           else if(pArray[i].stoptime < timeOff + 21)
-
-                pArray[i].points = pArray[i].points - 25; 
-
-            else
-                 pArray[i].points = pArray[i].points - (timeOff - pArray[i].stoptime)/2; 
-                 
-
-    }
-
 }
-
-*/
