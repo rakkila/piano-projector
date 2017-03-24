@@ -80,6 +80,11 @@ document.body.appendChild( renderer.domElement );
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.z = 10;
 
+var g = new THREE.BoxGeometry(40,0.3,0.2);
+var m = new THREE.MeshPhongMaterial({color:0x000000});
+var line = new THREE.Mesh(g,m);
+scene.add(line);
+
 //Loading geometries to scene
 loadGeometries();
 
@@ -92,25 +97,21 @@ function animate(){
     //Adding note blocks to scene (depending on song)
     for(let i = 0; i < noteBlockArray.length; i++ ){
 
-        if(getClockTime() == noteBlockArray[i].startTime - 60){
+        if(getClockTime() == noteBlockArray[i].startTime - 70){
             scene.add(noteBlockArray[i].mesh);
 
-            switch(noteBlockArray[i].note){
-                case 'B3':  noteBlockArray[i].mesh.position.x = -4; break;
-                case 'Db4':  noteBlockArray[i].mesh.position.x = -2; break;
-                case 'E4':  noteBlockArray[i].mesh.position.x = 0; break;
-                case 'Gb4': noteBlockArray[i].mesh.position.x = 2; break;
-                case 'Ab4': noteBlockArray[i].mesh.position.x = 4; break;
-                case 'B4':  noteBlockArray[i].mesh.position.x = 6; break;
-                default: break; 
-            }
+            noteBlockArray[i].mesh.position.x = getPositionX(noteBlockArray[i].note);
 
-            noteBlockArray[i].mesh.position.y = 8;
+            noteBlockArray[i].mesh.position.y = camera.position.y + 9;
             i++;
         }
 
-        noteBlockArray[i].mesh.position.y -= 0.04;
+        //noteBlockArray[i].mesh.position.y -= 0.04;
+
     }
+
+    camera.position.y += 0.035;
+    line.position.y = camera.position.y - 6;
 
     requestAnimationFrame(animate);
     renderer.render( scene, camera );  
@@ -122,15 +123,47 @@ function loadGeometries(){
     light.position.set( 5, 5, 5 );
     scene.add( light );
 
-    var g = new THREE.BoxGeometry(40,0.3,0.2);
-    var m = new THREE.MeshPhongMaterial({color:0x000000});
-    var line = new THREE.Mesh(g,m);
-    line.position.set(0,-6,0);
-    scene.add(line);
-
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
+}
+
+/**
+* Returning note block x position
+*/
+function getPositionX(n){
+
+    let res = 0;
+
+        switch(n){
+        case 'C3':  res = -12; break;
+        case 'Db3':  res = -11; break;
+        case 'D3':  res = -10; break;
+        case 'Eb3':  res = -9; break;
+        case 'E3':  res = -8; break;
+        case 'F3':  res = -6; break;
+        case 'Gb3':  res = -5; break;
+        case 'G3':  res = -4; break;
+        case 'Ab3':  res = -3; break;
+        case 'A3':  res = -2; break;
+        case 'Bb3':  res = -1; break;
+        case 'B3':  res = 0; break;
+        case 'C4':  res = 2;  break;
+        case 'Db4':  res = 3; break;
+        case 'D4':  res = 4; break;
+        case 'Eb4':  res = 5; break;
+        case 'E4':  res = 6; break;
+        case 'F4':  res = 8; break;
+        case 'Gb4':  res = 9; break;
+        case 'G4':  res = 10; break;
+        case 'Ab4':  res = 11; break;
+        case 'A4':  res = 12; break;
+        case 'Bb4':  res = 13; break;
+        case 'B4':  res = 14; break;
+        default: res = 0;  break;
+    }
+
+    return res;
 }
 
     
