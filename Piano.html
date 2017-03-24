@@ -57,7 +57,7 @@ var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
 var noteBlockArray = [];
 var blockIndex = 0;
-//var tempo = getSongTempo();
+var tempo = getSongTempo(song.getSongName());
 
 function main(){
 
@@ -99,7 +99,7 @@ main();
 function animate(){
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && getClockTime() == noteBlockArray[blockIndex].startTime - 70){
+    if(blockIndex < noteBlockArray.length && getClockTime() == noteBlockArray[blockIndex].startTime){
 
         scene.add(noteBlockArray[blockIndex].mesh);
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
@@ -108,7 +108,7 @@ function animate(){
     }
 
     //Translating blocks 
-    camera.position.y += 0.035;
+    camera.position.y += tempo;
     line.position.y = camera.position.y - 6;
 
     requestAnimationFrame(animate);
@@ -164,12 +164,13 @@ function getPositionX(n){
     return res;
 }
 
-function getSongTempo(){
+//Setting tempo depending on song picked
+function getSongTempo(s){
 
-    switch(location.search.substring(1).split("?")[0]){
+    switch(s){
 
         case 'roses': tempo = 0.035; break;
-        case 'jason_mraz': tempo = 2; break;
+        case 'jason_mraz': tempo = 0.12; break;
         default: tempo = 0.001; break;
     }
 
