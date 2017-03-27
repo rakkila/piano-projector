@@ -41,11 +41,12 @@
 <script src = "Clock.js"></script>
 <script src = "parseSongData.js"></script>
 <script src = "getSongArray.js"></script>
+<script src = "keyEffects.js"></script>
 <script src = "PointGiver.js"></script>
 <script src = "SongResizer.js"></script>
 <script src = "Keyboard.js"></script>
 <script src = "midi-player.js"></script>
-<script src = "keyEffects.js"></script>
+
 
 </head>
 <body>
@@ -54,6 +55,7 @@
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
+var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 
 function main(){

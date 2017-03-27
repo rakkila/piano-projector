@@ -1,22 +1,27 @@
-function lightUp(index)
+function lightUp(key, startTime)
 { 
-     NoteBlockArray[index].mesh = THREE.MeshPhongMaterial({color: 0xffffff});
+
+    for(let i = 0; i < noteBlockArray.length; ++i)
+    {   
+
+        if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
+        {
+            noteBlockArray[i].mesh.material.color.setHex(0x00ff00);
+        }
+    }
+    
      //sound?
-
 }
 
-function lightOff(index)
+function lightOff(key, stopTime)
 { 
-     NoteBlockArray[index].mesh = THREE.MeshPhongMaterial({color: 0x000000});
+    for(let i = 0; i < noteBlockArray.length; ++i)
+    {
+        if(noteBlockArray[i].note == key && noteBlockArray[i].stopTime == stopTime)
+        {
+            noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
+        }
 
-}
-
-function lightWrong(index)
-{ 
-     NoteBlockArray[index].mesh = THREE.MeshPhongMaterial({color: 0xff0000});
-     //sound??
-     if(NoteBlockArray[index].stoptime - time < 0.1){
-         lightOff(index);
-     }
-
+    }
+      
 }
