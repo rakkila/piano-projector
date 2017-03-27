@@ -52,11 +52,14 @@
 <body>
 <script>
 
+
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
+var blockIndex = 0;
+var tempo = getSongTempo(song.getSongName());
 
 function main(){
 
@@ -98,22 +101,16 @@ main();
 function animate(){
 
     //Adding note blocks to scene (depending on song)
-    for(let i = 0; i < noteBlockArray.length; i++ ){
+    if(blockIndex < noteBlockArray.length && getClockTime() == noteBlockArray[blockIndex].startTime){
 
-        if(getClockTime() == noteBlockArray[i].startTime - 70){
-            scene.add(noteBlockArray[i].mesh);
-
-            noteBlockArray[i].mesh.position.x = getPositionX(noteBlockArray[i].note);
-
-            noteBlockArray[i].mesh.position.y = camera.position.y + 9;
-            i++;
-        }
-
-        //noteBlockArray[i].mesh.position.y -= 0.04;
-
+        scene.add(noteBlockArray[blockIndex].mesh);
+        noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+        noteBlockArray[blockIndex].mesh.position.y = camera.position.y + 9;
+        blockIndex++;
     }
 
-    camera.position.y += 0.035;
+    //Translating blocks 
+    camera.position.y += tempo;
     line.position.y = camera.position.y - 6;
 
     requestAnimationFrame(animate);
@@ -169,7 +166,20 @@ function getPositionX(n){
     return res;
 }
 
-    
+//Setting tempo depending on song picked
+function getSongTempo(s){
+
+    switch(s){
+
+        case 'roses': tempo = 0.035; break;
+        case 'jason_mraz': tempo = 0.12; break;
+        default: tempo = 0.001; break;
+    }
+
+    return tempo;
+}
+
+
 </script>
 </body>
 </html>
