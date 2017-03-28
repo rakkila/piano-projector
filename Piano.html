@@ -59,11 +59,7 @@ var song = new Song(location.search.substring(1).split("?")[0]);
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var blockIndex = 0;
-<<<<<<< HEAD
-var tempo = getSongTempo();
-=======
-var tempo = getSongTempo(song.getSongName());
->>>>>>> ec573fe66b6c6b1c4422639cba5241f5062f69f2
+var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 
 function main(){
 
@@ -98,13 +94,11 @@ scene.add(line);
 
 //Loading geometries to scene
 loadGeometries();
-var plus = 0;
 //Starting program
 main();
 
 
 function animate(){
-
 
 
 if(blockIndex < noteBlockArray.length) {
@@ -113,10 +107,6 @@ if(blockIndex < noteBlockArray.length) {
 }
 
     //Adding note blocks to scene (depending on song)
-<<<<<<< HEAD
-=======
-    if(blockIndex < noteBlockArray.length && getClockTime() == noteBlockArray[blockIndex].startTime){
->>>>>>> ec573fe66b6c6b1c4422639cba5241f5062f69f2
 
 if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (2*10*blockpos/(tempo*60)))){
 
@@ -192,12 +182,9 @@ function getSongTempo(s){
     switch(s){
 
         case 'roses': tempo = 0.035; break;
-<<<<<<< HEAD
         case 'jason_mraz': tempo = 1; break;
         case 'korv': tempo = 0.09; break;
-=======
-        case 'jason_mraz': tempo = 0.12; break;
->>>>>>> ec573fe66b6c6b1c4422639cba5241f5062f69f2
+
         default: tempo = 0.001; break;
     }
 
