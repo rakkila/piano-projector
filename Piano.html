@@ -57,7 +57,7 @@ var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
 var noteBlockArray = [];
 var blockIndex = 0;
-//var tempo = getSongTempo();
+var tempo = getSongTempo();
 
 function main(){
 
@@ -87,28 +87,40 @@ camera.position.z = 10;
 var g = new THREE.BoxGeometry(40,0.3,0.2);
 var m = new THREE.MeshPhongMaterial({color:0x000000});
 var line = new THREE.Mesh(g,m);
+var blockpos = 0;
 scene.add(line);
 
 //Loading geometries to scene
 loadGeometries();
-
+var plus = 0;
 //Starting program
 main();
 
 
 function animate(){
 
-    //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && getClockTime() == noteBlockArray[blockIndex].startTime - 70){
 
-        scene.add(noteBlockArray[blockIndex].mesh);
-        noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-        noteBlockArray[blockIndex].mesh.position.y = camera.position.y + 9;
-        blockIndex++;
-    }
+
+if(blockIndex < noteBlockArray.length) {
+
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*camera.position.z + noteBlockArray[blockIndex].noteLength/2;
+}
+
+    //Adding note blocks to scene (depending on song)
+
+if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (2*10*blockpos/(tempo*60)))){
+
+    scene.add(noteBlockArray[blockIndex].mesh);
+    noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+
+    noteBlockArray[blockIndex].mesh.position.y = camera.position.y + blockpos;
+
+    blockIndex++;
+        
+}
 
     //Translating blocks 
-    camera.position.y += 0.035;
+    camera.position.y += tempo;
     line.position.y = camera.position.y - 6;
 
     requestAnimationFrame(animate);
@@ -169,7 +181,8 @@ function getSongTempo(){
     switch(location.search.substring(1).split("?")[0]){
 
         case 'roses': tempo = 0.035; break;
-        case 'jason_mraz': tempo = 2; break;
+        case 'jason_mraz': tempo = 1; break;
+        case 'korv': tempo = 0.09; break;
         default: tempo = 0.001; break;
     }
 
