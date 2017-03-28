@@ -15,13 +15,14 @@ function noteon(keyOn, timeOn, pArray)
                 console.log('YES!');
                 lightUp(keyOn, pArray[i].starttime);
             }
-
             //pArray[i].points = pArray[i].points + 50;
-
         }
         else
-           continue;
-            //errorSound.play();
+           { 
+               lightWrong(keyOn, pArray[i].starttime);
+               fullScoreCounter = 0;
+               starPower = false;
+           }
     }
 }
 
@@ -42,6 +43,10 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
             {    
                 pArray[i].points -= Math.abs(pArray[i].stoptime - timeOff) * 0.5; 
 
+                lightWrong(keyOn, starttime);
+                fullScoreCounter = 0;
+                starPower = false;
+
                 console.log('stoptime - timeOff: ' + Math.abs(pArray[i].stoptime - timeOff));
                 console.log('You lost: ' + Math.abs(pArray[i].stoptime - timeOff) * 0.5 + ' points. Index: '+ i + ' Array length: ' + pArray.length);
                 aPoint = pArray[i].points;
@@ -53,6 +58,12 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
             {
 
                 console.log('Full score !!!?!?!?!?!?!?!??!?!?!?!?!?!?!??!?!?!');
+                if(starPower == false) fullScoreCounter += 1;
+                if(fullScoreCounter == 3) 
+                {   
+                    fullScore();
+                    starPower = true;
+                }
                 lightOff(keyOff, pArray[i].stoptime);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
