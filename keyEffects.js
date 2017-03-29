@@ -38,8 +38,8 @@ function lightWrong(key, startTime)
     }  
 }
 
-function fullScore()
-{
-    fullScoreCounter = 0;
-    noteBlockArray.mesh.material.color.setHex(0xffffff);
-}
+//function fullScore()
+//{
+  //  fullScoreCounter = 0;
+    //noteBlockArray.mesh.material.color.setHex(0xffffff);
+//}
