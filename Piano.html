@@ -117,38 +117,47 @@ function animate(){
 
 if(blockIndex < noteBlockArray.length) {
 
-    blockpos = Math.tan(75*0.5*(Math.PI/180))*camera.position.z + noteBlockArray[blockIndex].noteLength/2;
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
 }
 
     //Adding note blocks to scene (depending on song)
+    console.log('starttime: ' + noteBlockArray[blockIndex].startTime);
+    console.log('clock: ' + getClockTime());
 
-if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (2*10*blockpos/(tempo*60)))){
+    console.log('blockpos: ' + blockpos/2);
+
+if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (10*blockpos/(tempo*60)))){
 
     scene.add(noteBlockArray[blockIndex].mesh);
     noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-    noteBlockArray[blockIndex].mesh.position.y = camera.position.y + blockpos;
+    noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos/2;
+
 
     blockIndex++;
+
+    console.log('Blockindex: ' + blockIndex);
         
 }
 
     //Translating blocks 
-    camera.position.y += tempo;
-    line.position.y = camera.position.y - 6;
+    cameraLeft.position.y += tempo;
+    cameraRight.position.y += tempo;
+    line.position.y = cameraLeft.position.y - 6;
+    //line.position.y = cameraRight.position.y - 6;
 
     requestAnimationFrame(animate);
     
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
-    renderer.enableScissorTest ( true );
+    renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
     //cameraLeft.position.x = -separation;
     renderer.render( scene, cameraLeft );
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
-    renderer.enableScissorTest ( true );
+    renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
     //cameraRight.position.x = separation;
@@ -192,11 +201,11 @@ function getPositionX(n){
         case 'D4':  res = 4; break;
         case 'Eb4':  res = 5; break;
         case 'E4':  res = 6; break;
-        case 'F4':  res = 8; break;
+        case 'F4':  res = 2; break;
         case 'Gb4':  res = 9; break;
-        case 'G4':  res = 10; break;
+        case 'G4':  res = 3; break;
         case 'Ab4':  res = 11; break;
-        case 'A4':  res = 12; break;
+        case 'A4':  res = 4; break;
         case 'Bb4':  res = 13; break;
         case 'B4':  res = 14; break;
         default: res = 0;  break;
@@ -211,8 +220,8 @@ function getSongTempo(s){
     switch(s){
 
         case 'roses': tempo = 0.035; break;
-        case 'jason_mraz': tempo = 1; break;
-        case 'korv': tempo = 0.09; break;
+        case 'jason_mraz': tempo = 0.5; break;
+        case 'korv': tempo = 0.2; break;
 
         default: tempo = 0.001; break;
     }
