@@ -13,16 +13,23 @@ function noteon(keyOn, timeOn, pArray)
             if( Math.abs(pArray[i].starttime - timeOn) < 10 && timeOn < pArray[i].stoptime)
             {
                 console.log('YES!');
+                pArray[i].points = pArray[i].points + 50;
+                console.log('Points: '+ pArray[i].points);
                 lightUp(keyOn, pArray[i].starttime);
+                
             }
-            //pArray[i].points = pArray[i].points + 50;
+            else if(Math.abs(pArray[i].starttime - timeOn) > 10 && timeOn < pArray[i].stoptime )
+            { 
+               //lightWrong(keyOn, pArray[0].stoptime);
+               console.log(' pArray[0] :' + pArray[0].starttime);
+               //lightOff(keyOn, pArray[i].stoptime);
+
+                //fullScoreCounter = 0;
+                //starPower = false;
+            }
+            
         }
-        else
-           { 
-               lightWrong(keyOn, pArray[i].starttime);
-               //fullScoreCounter = 0;
-               //starPower = false;
-           }
+        
     }
 }
 
@@ -39,22 +46,22 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
             console.log('FOUND KEYOFF!!! stoptime = ' + pArray[i].stoptime);
             lightOff(keyOff, pArray[i].stoptime);
             
-            if((Math.abs(pArray[i].stoptime - timeOff) > 15) && pArray[i].points != 0)
+            if((Math.abs(pArray[i].stoptime - timeOff) > 10) && pArray[i].points != 0)
             {    
                 pArray[i].points -= Math.abs(pArray[i].stoptime - timeOff) * 0.5; 
 
-                lightWrong(keyOn, starttime);
+                lightWrong(keyOff, pArray[i].stoptime);
+                //lightOff(keyOff, pArray[i].stoptime);
                // fullScoreCounter = 0;
                 //starPower = false;
-
+                
                 console.log('stoptime - timeOff: ' + Math.abs(pArray[i].stoptime - timeOff));
                 console.log('You lost: ' + Math.abs(pArray[i].stoptime - timeOff) * 0.5 + ' points. Index: '+ i + ' Array length: ' + pArray.length);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;
             }
-
-            else if((Math.abs(pArray[i].stoptime - timeOff) < 15) && pArray[i].points != 0)
+            else if((Math.abs(pArray[i].stoptime - timeOff) < 10) && pArray[i].points != 0)
             {
 
                 console.log('Full score !!!?!?!?!?!?!?!??!?!?!?!?!?!?!??!?!?!');
