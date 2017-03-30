@@ -62,6 +62,7 @@ var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 //var fullScoreCounter = 0;
 //var starPower = false;
+var separation = 0.1;
 
 
 function main(){
@@ -74,7 +75,7 @@ function main(){
 
     //Play picked song
     song.setVolume(0.4);
-    song.playSong();
+    //song.playSong();
     startClock();
 
 }
@@ -86,12 +87,26 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setClearColor( 0xfaf0e6 );
 document.body.appendChild( renderer.domElement );
 
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.z = 10;
+//var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+//camera.position.z = 10;
 
-var g = new THREE.BoxGeometry(40,0.3,0.2);
+// Cameras
+cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+cameraLeft.position.set( 0, 0, 10 );
+scene.add(cameraLeft);
+
+
+cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+cameraRight.position.set( 0, 0, 10);
+scene.add(cameraRight);
+
+var width = Math.round(window.innerWidth / 2),
+    height = window.innerHeight;
+
+var g = new THREE.BoxGeometry(2,0.3,0.2);
 var m = new THREE.MeshPhongMaterial({color:0x000000});
 var line = new THREE.Mesh(g,m);
+line.position.z = 6;
 var blockpos = 0;
 scene.add(line);
 
@@ -106,7 +121,7 @@ function animate(){
 
 if(blockIndex < noteBlockArray.length) {
 
-    blockpos = Math.tan(75*0.5*(Math.PI/180))*camera.position.z + noteBlockArray[blockIndex].noteLength/2;
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
 }
 
     //Adding note blocks to scene (depending on song)
@@ -116,18 +131,35 @@ if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockA
     scene.add(noteBlockArray[blockIndex].mesh);
     noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-    noteBlockArray[blockIndex].mesh.position.y = camera.position.y + blockpos;
+    noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos;
 
     blockIndex++;
         
 }
 
+    //line.rotation.z += 0.05;
     //Translating blocks 
-    camera.position.y += tempo;
-    line.position.y = camera.position.y - 6;
+    //cameraLeft.position.y += tempo;
+    //cameraRight.position.y += tempo;
+    line.position.y = cameraLeft.position.y;
 
     requestAnimationFrame(animate);
-    renderer.render( scene, camera );  
+
+    renderer.setViewport( 0, 0, width, height);
+    renderer.setScissor( 0, 0, width, height);
+    renderer.enableScissorTest ( true );
+    cameraLeft.aspect = width * 2 / height;
+    cameraLeft.updateProjectionMatrix();
+    //cameraLeft.position.x = -separation;
+    renderer.render( scene, cameraLeft );
+
+    renderer.setViewport( width, 0, width, height);
+    renderer.setScissor( width, 0, width, height);
+    renderer.enableScissorTest ( true );
+    cameraRight.aspect = width * 2 / height;
+    cameraRight.updateProjectionMatrix();
+    //cameraRight.position.x = separation;
+    renderer.render( scene, cameraRight );
 }
 
 function loadGeometries(){
@@ -193,7 +225,6 @@ function getSongTempo(s){
 
     return tempo;
 }
-
 
 </script>
 </body>
