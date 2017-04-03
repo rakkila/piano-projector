@@ -89,20 +89,7 @@ var scene = new THREE.Scene();
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setClearColor( 0xfaf0e6 );
-document.body.appendChild( renderer.domElement );
-
-//Setting up for post-processing////////
-
-var renderPass = new THREE.RenderPass(scene, camera);
-var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-effectCopy.renderToScreen=true;
-
-var composer = new THREE.EffectComposer(renderer);
-composer.addPass(renderPass);
-composer.addPass(bloomPass);
-
-var renderScene = new THREE.TexturePass(composer.renderTarget2);
-////////////////////////////////////////
+document.body.appendChild( renderer.domElement )
 
 //2D camera
 //var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -123,6 +110,21 @@ var m = new THREE.MeshPhongMaterial({color:0x000000});
 var line = new THREE.Mesh(g,m);
 var blockpos = 0;
 scene.add(line);
+
+//Setting up for post-processing////////
+
+var rightRenderPass = new THREE.RenderPass(scene, cameraRight);
+var leftRenderPass = new THREE.RenderPass(scene, cameraLeft);
+var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+effectCopy.renderToScreen=true;
+
+var composer = new THREE.EffectComposer(renderer);
+composer.addPass(rightRenderPass);
+composer.addPass(leftRenderPass);
+composer.addPass(bloomPass);
+
+var renderScene = new THREE.TexturePass(composer.renderTarget2);
+///////////////////////////////////////////////////
 
 //Loading geometries to scene
 loadGeometries();
@@ -175,7 +177,8 @@ if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockA
     requestAnimationFrame(animate);
 
     //Animate the BloomPass-effect////
-    composer.animate(scene, camera);
+    composer.animate(scene, cameraRight);
+    composer.animate(scene, cameraLeft);
     
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
