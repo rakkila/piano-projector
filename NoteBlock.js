@@ -35,9 +35,9 @@ function loadNoteBlocks(){
         let note = songArray[i].note;
 
         if(note.includes("b"))
-            noteWidth = 0.5;
+            noteWidth = 0.19;
         else
-            noteWidth = 1;
+            noteWidth = 0.30;
 
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime);
     }
