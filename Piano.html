@@ -91,7 +91,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setClearColor( 0xfaf0e6 );
 document.body.appendChild( renderer.domElement );
 
-/*Setting up for post-processing////////
+//Setting up for post-processing////////
 
 var renderPass = new THREE.RenderPass(scene, camera);
 var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
@@ -102,7 +102,7 @@ composer.addPass(renderPass);
 composer.addPass(bloomPass);
 
 var renderScene = new THREE.TexturePass(composer.renderTarget2);
-*///////////////////////////////////////
+////////////////////////////////////////
 
 //2D camera
 //var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -129,14 +129,14 @@ loadGeometries();
 //Starting program
 main();
 
-/*Theoretical effects-renderer//////////////
+//Theoretical effects-renderer//////////////
     
     var bloomPass = new THREE.BloomPass(3, 25, 5, 256);
     var bloomComposer = new THREE.EffectComposer(renderer);
     bloomComposer.addPass(renderScene);
     bloomComposer.addPass(bloomPass);
     bloomComposer.addPass(effectCopy);
-*///////////////////////////////////////////
+////////////////////////////////////////////
 
 function animate(){
 
@@ -174,9 +174,8 @@ if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockA
 
     requestAnimationFrame(animate);
 
-    /*Animate the BloomPass-effect/////
+    //Animate the BloomPass-effect////
     composer.animate(scene, camera);
-    *//////////////////////////////////
     
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
