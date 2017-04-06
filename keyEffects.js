@@ -26,17 +26,17 @@ function lightOff(key, stopTime)
       
 }
 
-function lightWrong(key, startTime)
+/*function lightWrong(key, startTime)
 {
     for(let i = 0; i < noteBlockArray.length; ++i)
     {   
         if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
         {
-            noteBlockArray[i].mesh.material.color.setHex(0xffffff);
+            line.color()
             break;
         }
     }  
-}
+}*/
 
 //function fullScore()
 //{
