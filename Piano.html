@@ -84,10 +84,7 @@ function main(){
 //Creating scene
 var scene = new THREE.Scene();
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 //2D camera
 /*
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -95,21 +92,14 @@ camera.position.z = 10;
 */
 
 //3D camera
-<<<<<<< HEAD
-cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-=======
 var cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
 var cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
 var width = Math.round(window.innerWidth / 2), height = window.innerHeight;
-<<<<<<< HEAD
-=======
 
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 
 //Creating a renderer
 var renderer = new THREE.WebGLRenderer();
@@ -129,13 +119,8 @@ loadGeometries();
 document.body.appendChild(renderer.domElement);
 
 //PASSES
-<<<<<<< HEAD
-        var renderPass = new THREE.RenderPass(scene, cameraLeft);
-        var renderPass = new THREE.RenderPass(scene, cameraRight);
-=======
         var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         effectCopy.renderToScreen = true;
         var bloomPass = new THREE.BloomPass(0.5, 25, 5.0, 256);
@@ -194,10 +179,7 @@ function animate(){
     //Translating blocks 
     cameraLeft.position.y += tempo*0.1;
     cameraRight.position.y += tempo*0.1;
-<<<<<<< HEAD
-=======
 
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     requestAnimationFrame(animate);
      
     renderer.setViewport( 0, 0, width, height);
@@ -205,26 +187,18 @@ function animate(){
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
-<<<<<<< HEAD
-    //cameraLeft.position.x = -separation;
-=======
     
     //cameraLeft.position.x = -separation;
   
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     renderer.render( scene, cameraLeft );
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
-<<<<<<< HEAD
-    //cameraRight.position.x = separation;
-=======
     
     //cameraRight.position.x = separation;
 
->>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     renderer.render( scene, cameraRight );
 
     composer.render();
