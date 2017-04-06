@@ -32,12 +32,15 @@
 <!-- Other external libraries -->
 <script src = "lib/soundfontplayer.js"> </script>
 <script src = "lib/webmidi/src/webmidi.js"> </script>
-<script src="lib\three.js-master\docs\build\three.js"></script>
-<script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
-<script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
-<script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
-<script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
-<script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
+<script src="lib/three.js-master/docs/build/three.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/MaskPass.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/RenderPass.js"></script>
+<script src="lib/three.js-master/examples/js/shaders/CopyShader.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/BloomPass.js"></script>
+<script src="lib/three.js-master/examples/js/shaders/ConvolutionShader.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/TexturePass.js"></script>
 
 <!-- Internal js files -->
 <script src = "NoteBlock.js"></script>
@@ -86,10 +89,6 @@ function main(){
 
 //Creating scene
 var scene = new THREE.Scene();
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xfaf0e6 );
-document.body.appendChild( renderer.domElement );
 
 //2D camera
 /*
@@ -104,12 +103,60 @@ scene.add(cameraLeft);
 cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
-var width = Math.round(window.innerWidth / 2),
-    height = window.innerHeight;
+var width = Math.round(window.innerWidth / 2), height = window.innerHeight;
 
+//Creating a renderer
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setClearColor( 0xfaf0e6 );
+//document.body.appendChild( renderer.domElement );
+
+renderer.shadowMapEnabled = true;
+
+//New object sphere
+var sphere = createMesh(new THREE.SphereGeometry(10, 40, 40));
+scene.add(sphere);
+sphere.position.z = -50;
 
 //Loading geometries to scene
 loadGeometries();
+document.body.appendChild(renderer.domElement);
+
+//PASSES
+        var renderPass = new THREE.RenderPass(scene, cameraLeft);
+        var renderPass = new THREE.RenderPass(scene, cameraRight);
+        var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+        effectCopy.renderToScreen = true;
+        var bloomPass = new THREE.BloomPass(0.5, 25, 5.0, 256);
+
+//First composer
+        var composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderPass);
+        composer.addPass(effectCopy);
+        var renderScene = new THREE.TexturePass(composer.renderTarget2);
+
+//Second composer
+    var composer2 = new THREE.EffectComposer(renderer);
+        composer2.addPass(renderScene);
+        composer2.addPass(bloomPass);
+        composer2.addPass(effectCopy);
+
+//Render
+        animate();
+ //MESH
+         function createMesh(geom) {
+            var specTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
+            var normTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
+
+            var sphereMaterial = new THREE.MeshPhongMaterial();
+            sphereMaterial.specularMap = specTex;
+            sphereMaterial.specular = new THREE.Color(0x4444aa);   
+
+            sphereMaterial.normalMap = normTex;
+            
+            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [sphereMaterial]);
+            return mesh;
+    }
 
 //Starting program
 main();
@@ -125,17 +172,17 @@ function animate(){
 
         scene.add(noteBlockArray[blockIndex].mesh);
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-
+       
         noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos/2;
+       
 
         blockIndex++;
             
     }
 
     //Translating blocks 
-    cameraLeft.position.y += tempo;
-    cameraRight.position.y += tempo;
-
+    cameraLeft.position.y += tempo*0.1;
+    cameraRight.position.y += tempo*0.1;
     requestAnimationFrame(animate);
     
     renderer.setViewport( 0, 0, width, height);
@@ -152,6 +199,9 @@ function animate(){
     cameraRight.updateProjectionMatrix();
     //cameraRight.position.x = separation;
     renderer.render( scene, cameraRight );
+
+    composer.render();
+    composer2.render();
      
 }
 
