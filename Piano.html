@@ -60,7 +60,6 @@
 <body>
 <script>
 
-
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
@@ -71,25 +70,24 @@ var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 //var fullScoreCounter = 0;
 //var starPower = false;
 
-
 function main(){
-
     //Start keyboard input
     keyboard.startInputOutput(song);
-
     //Start visualization
     animate();
-
     //Play picked song
     song.setVolume(0.4);
     song.playSong();
     startClock();
-
 }
 
 //Creating scene
 var scene = new THREE.Scene();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 //2D camera
 /*
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -97,13 +95,21 @@ camera.position.z = 10;
 */
 
 //3D camera
+<<<<<<< HEAD
 cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+=======
+var cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
-cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+var cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
 var width = Math.round(window.innerWidth / 2), height = window.innerHeight;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
 
 //Creating a renderer
 var renderer = new THREE.WebGLRenderer();
@@ -123,15 +129,21 @@ loadGeometries();
 document.body.appendChild(renderer.domElement);
 
 //PASSES
+<<<<<<< HEAD
         var renderPass = new THREE.RenderPass(scene, cameraLeft);
         var renderPass = new THREE.RenderPass(scene, cameraRight);
+=======
+        var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+        var renderPass2 = new THREE.RenderPass(scene, cameraRight);
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         effectCopy.renderToScreen = true;
         var bloomPass = new THREE.BloomPass(0.5, 25, 5.0, 256);
 
 //First composer
         var composer = new THREE.EffectComposer(renderer);
-        composer.addPass(renderPass);
+        composer.addPass(renderPass1);
+        composer.addPass(renderPass2);
         composer.addPass(effectCopy);
         var renderScene = new THREE.TexturePass(composer.renderTarget2);
 
@@ -145,8 +157,8 @@ document.body.appendChild(renderer.domElement);
         animate();
  //MESH
          function createMesh(geom) {
-            var specTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
-            var normTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
+            var specTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
+            var normTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
 
             var sphereMaterial = new THREE.MeshPhongMaterial();
             sphereMaterial.specularMap = specTex;
@@ -166,12 +178,11 @@ function animate(){
     if(blockIndex < noteBlockArray.length) {
         blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
     }
-
     //Adding note blocks to scene (depending on song)
     if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (10*blockpos/(tempo*60)))){
-
         scene.add(noteBlockArray[blockIndex].mesh);
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+
        
         noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos/2;
        
@@ -183,21 +194,37 @@ function animate(){
     //Translating blocks 
     cameraLeft.position.y += tempo*0.1;
     cameraRight.position.y += tempo*0.1;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     requestAnimationFrame(animate);
-    
+     
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
+<<<<<<< HEAD
     //cameraLeft.position.x = -separation;
+=======
+    
+    //cameraLeft.position.x = -separation;
+  
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     renderer.render( scene, cameraLeft );
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
+<<<<<<< HEAD
     //cameraRight.position.x = separation;
+=======
+    
+    //cameraRight.position.x = separation;
+
+>>>>>>> 95587f1d2819a59eacbd7788fc28830a42de8d87
     renderer.render( scene, cameraRight );
 
     composer.render();
@@ -206,21 +233,17 @@ function animate(){
 }
 
 function loadGeometries(){
-
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
     light.position.set( 5, 5, 5 );
     scene.add( light );
-
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
-
 }
 
 /**
 * Returning note block x position
 */
 function getPositionX(n){
-
     switch(n){
     case 'C3':  return -0.8; break;
     case 'Db3':  return -0.64; break;
@@ -252,20 +275,14 @@ function getPositionX(n){
 
 //Setting tempo depending on song picked
 function getSongTempo(s){
-
     switch(s){
-
         case 'roses': tempo = 0.035; break;
         case 'jason_mraz': tempo = 0.5; break;
         case 'korv': tempo = 0.2; break;
-
         default: tempo = 0.001; break;
     }
-
     return tempo;
 }
-
-
 </script>
 </body>
 </html>
