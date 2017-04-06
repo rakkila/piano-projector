@@ -123,15 +123,16 @@ loadGeometries();
 document.body.appendChild(renderer.domElement);
 
 //PASSES
-        var renderPass = new THREE.RenderPass(scene, cameraLeft);
-        var renderPass = new THREE.RenderPass(scene, cameraRight);
+        var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+        var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         effectCopy.renderToScreen = true;
         var bloomPass = new THREE.BloomPass(0.5, 25, 5.0, 256);
 
 //First composer
         var composer = new THREE.EffectComposer(renderer);
-        composer.addPass(renderPass);
+        composer.addPass(renderPass1);
+        composer.addPass(renderPass2);
         composer.addPass(effectCopy);
         var renderScene = new THREE.TexturePass(composer.renderTarget2);
 
@@ -145,8 +146,8 @@ document.body.appendChild(renderer.domElement);
         animate();
  //MESH
          function createMesh(geom) {
-            var specTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
-            var normTex = THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
+            var specTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
+            var normTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
 
             var sphereMaterial = new THREE.MeshPhongMaterial();
             sphereMaterial.specularMap = specTex;
