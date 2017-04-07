@@ -12,30 +12,14 @@
     <script src="lib/MIDI.js-master/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
     <script src="lib/MIDI.js-master/inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
     <!--<script src = "lib/MIDI.js-master/build/MIDI.min.js" type="text/javascript"></script>-->
-    <script src="lib/MIDI.js-master/js/midi/audioDetect.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/gm.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/loader.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/player.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/plugin.audiotag.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/plugin.webaudio.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/plugin.webmidi.js">
-
-    </script>
-    <script src="lib/MIDI.js-master/js/midi/synesthesia.js">
-
-    </script>
+    <script src="lib/MIDI.js-master/js/midi/audioDetect.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/gm.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/loader.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/player.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/plugin.audiotag.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/plugin.webaudio.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/plugin.webmidi.js"></script>
+    <script src="lib/MIDI.js-master/js/midi/synesthesia.js"></script>
     <script src="lib/MIDI.js-master/inc/jasmid/midifile.js" type="text/javascript"></script>
     <script src="lib/MIDI.js-master/inc/jasmid/replayer.js" type="text/javascript"></script>
     <script src="lib/MIDI.js-master/inc/jasmid/stream.js" type="text/javascript"></script>
@@ -111,7 +95,7 @@
         document.body.appendChild(renderer.domElement);
 
         //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(40.2, 0.5, 2);
+        var geometry = new THREE.BoxGeometry(30, 0.2, 1);
         var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.9 });
         var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
         var line = new THREE.Mesh(geometry, material);
@@ -120,18 +104,21 @@
         //2D camera
         /*
         var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-        camera.position.z = 10;
-        */
+        camera.position.z = 10;*/
+        
 
-        //3D camera
+        //3D camera, left perspective camera
         cameraLeft = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
         cameraLeft.position.set(0, 0, 10);
         scene.add(cameraLeft);
+        //Right perspective camera
         cameraRight = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
         cameraRight.position.set(0, 0, 10);
         scene.add(cameraRight);
         var width = Math.round(window.innerWidth / 2),
             height = window.innerHeight;
+
+            
 
 
         //Loading geometries to scene
@@ -147,7 +134,8 @@
             }
 
             //Adding note blocks to scene (depending on song)
-            if (blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (10 * blockpos / (tempo * 60)))) {
+            if (blockIndex < noteBlockArray.length && getClockTime() ==
+                Math.round(noteBlockArray[blockIndex].startTime - (10 * blockpos / (tempo * 60)))) {
 
                 scene.add(noteBlockArray[blockIndex].mesh);
                 noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
@@ -155,15 +143,17 @@
                 noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos / 2;
 
                 blockIndex++;
-
             }
 
             //Translating blocks 
             cameraLeft.position.y += tempo;
             cameraRight.position.y += tempo;
+            // camera.position.y += tempo;
+
+            line.position.y = (cameraLeft.position.y - 4);
 
             requestAnimationFrame(animate);
-
+            //Render left camera
             renderer.setViewport(0, 0, width, height);
             renderer.setScissor(0, 0, width, height);
             renderer.setScissorTest(true);
@@ -171,6 +161,8 @@
             cameraLeft.updateProjectionMatrix();
             //cameraLeft.position.x = -separation;
             renderer.render(scene, cameraLeft);
+
+            //Render right camera
             renderer.setViewport(width, 0, width, height);
             renderer.setScissor(width, 0, width, height);
             renderer.setScissorTest(true);
@@ -179,17 +171,16 @@
             //cameraRight.position.x = separation;
             renderer.render(scene, cameraRight);
 
+            // renderer.render(scene, camera);
         }
 
         function loadGeometries() {
-
             var light = new THREE.DirectionalLight(0xb4e7f2, 5);
             light.position.set(5, 5, 5);
             scene.add(light);
 
             //Loading note blocks from picked song
             noteBlockArray = loadNoteBlocks();
-
         }
 
         /**
