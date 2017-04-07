@@ -27,6 +27,7 @@
 <script src ="lib/MIDI.js-master/examples/inc/colorspace.js"></script>
 <script src ="lib/MIDI.js-master/examples/inc/event.js"></script>
 <script src ="lib/MIDI.js-master/examples/inc/timer.js"></script>
+
 <!--<script src = "lib/MIDI.js-master/build/MIDI.min.js" type="text/javascript"></script>-->
 
 <!-- Other external libraries -->
@@ -38,6 +39,7 @@
 <script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
 <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
 <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
+<script src="lib\three.js-master\examples\js\libs\stats.min.js"></script>
 
 <!-- Internal js files -->
 <script src = "NoteBlock.js"></script>
@@ -65,12 +67,14 @@ var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
+var startTime;
 //var fullScoreCounter = 0;
 //var starPower = false;
 
 
 function main(){
 
+    
     //Start keyboard input
     keyboard.startInputOutput(song);
 
@@ -80,7 +84,7 @@ function main(){
     //Play picked song
     song.setVolume(0.4);
     song.playSong();
-    startClock();
+    startTime = getStartTime();
 
 }
 
@@ -98,46 +102,70 @@ camera.position.z = 10;
 */
 
 //3D camera
-cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+
+cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
-cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
-var width = Math.round(window.innerWidth / 2),
+let width = Math.round(window.innerWidth / 2),
     height = window.innerHeight;
 
+//Show FPS
+var stats = new Stats();
 
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
+
+var theTime = new Date();
 //Loading geometries to scene
 loadGeometries();
+
+var line = new THREE.BoxGeometry(20, 0.2, 0.1);
+var linematerial = new THREE.MeshPhongMaterial({color: 0x00ff00});
+var theLine = new THREE.Mesh(line, linematerial);
+scene.add(theLine);
 
 //Starting program
 main();
 
+
 function animate(){
 
+    stats.update();
+
+    theLine.position.y = cameraLeft.position.y;
+
+
     if(blockIndex < noteBlockArray.length) {
-        blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
+       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
+
     }
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && getClockTime() == Math.round(noteBlockArray[blockIndex].startTime - (10*blockpos/(tempo*60)))){
+    if(blockIndex < noteBlockArray.length && (Math.abs((getCurrentTime() - startTime-700) - Math.round(noteBlockArray[blockIndex].startTime - (2*1000*blockpos/(tempo*60))))<10)){
 
         scene.add(noteBlockArray[blockIndex].mesh);
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos/2;
+        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos;
 
         blockIndex++;
             
     }
 
+   if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
+        scene.remove(noteBlockArray[blockIndex].mesh);
+
+
     //Translating blocks 
     cameraLeft.position.y += tempo;
     cameraRight.position.y += tempo;
+  //  camera.position.y += tempo;
 
     requestAnimationFrame(animate);
-    
+
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
@@ -150,12 +178,14 @@ function animate(){
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
-    //cameraRight.position.x = separation;
+    //cameraRight.position.x = separation; 
     renderer.render( scene, cameraRight );
-     
+   
+
 }
 
 function loadGeometries(){
+
 
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
     light.position.set( 5, 5, 5 );
@@ -163,6 +193,17 @@ function loadGeometries(){
 
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
+/*
+        for(let i = 0; i < noteBlockArray.length; i++)
+        {
+                noteBlockArray[i].mesh.position.y = cameraLeft.position.y + (noteBlockArray[i].startTime/1000) * tempo ;
+
+                scene.add(noteBlockArray[i].mesh);
+
+                noteBlockArray[i].mesh.position.x = getPositionX(noteBlockArray[i].note);  
+
+        }
+        */
 
 }
 
@@ -207,7 +248,7 @@ function getSongTempo(s){
 
         case 'roses': tempo = 0.035; break;
         case 'jason_mraz': tempo = 0.5; break;
-        case 'korv': tempo = 0.2; break;
+        case 'korv': tempo = 0.12; break;
 
         default: tempo = 0.001; break;
     }
