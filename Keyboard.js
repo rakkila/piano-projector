@@ -59,8 +59,8 @@ class Keyboard{
                                     key = note + octave;
 
                                 console.log("off" + ',' + key + ',' + time);
-                                //a.push(time);
-                                //console.log(a);
+                               // a.push(time);
+                               // console.log(a);
                                 
                                 totalpoints += noteoff(key, time, pArray, point);
                                 pArray = SongResizer(pArray);

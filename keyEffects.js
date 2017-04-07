@@ -6,6 +6,7 @@ function lightUp(key, startTime)
         if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
         {
             noteBlockArray[i].mesh.material.color.setHex(0x00ff00);
+            noteBlockArray[i].mesh.position.z = 2;
             break;
         }
     }  
@@ -19,6 +20,7 @@ function lightOff(key, stopTime)
         if(noteBlockArray[i].note == key && noteBlockArray[i].stopTime == stopTime)
         {
             noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
+            noteBlockArray[i].mesh.position.z = 0;
             break;
         }
 
@@ -26,20 +28,8 @@ function lightOff(key, stopTime)
       
 }
 
-/*function lightWrong(key, startTime)
+/*function fullScore()
 {
-    for(let i = 0; i < noteBlockArray.length; ++i)
-    {   
-        if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
-        {
-            line.color()
-            break;
-        }
-    }  
+   fullScoreCounter = 0;
+    noteBlockArray.mesh.material.color.setHex(0xffffff);
 }*/
-
-//function fullScore()
-//{
-  //  fullScoreCounter = 0;
-    //noteBlockArray.mesh.material.color.setHex(0xffffff);
-//}

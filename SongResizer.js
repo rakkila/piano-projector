@@ -9,7 +9,7 @@ function SongResizer(SongArr) {
 
              var attime = getClockTime() + 10;
 
-            console.log('Deleted ' + SongArr[i].note + ' at index: ' + i + ' at time: ' + attime + ' ' + SongArr[i].stoptime);
+            //console.log('Deleted ' + SongArr[i].note + ' at index: ' + i + ' at time: ' + attime + ' ' + SongArr[i].stoptime);
 
                 SongArr.splice(i, 1);
 
