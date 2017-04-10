@@ -15,7 +15,7 @@ function noteon(keyOn, timeOn, pArray) {
 
             }
             else if (Math.abs(pArray[i].starttime - timeOn) > 10 && timeOn < pArray[i].stoptime) {
-                line.material = material2;
+                line.material.color.setHex(0xff0000);
                 console.log(' pArray[0] :' + pArray[0].starttime);
 
                 //fullScoreCounter = 0;
@@ -24,7 +24,7 @@ function noteon(keyOn, timeOn, pArray) {
 
         }
         else {
-            line.material = material2;
+            line.material.color.setHex(0xff0000);
         }
     }
 }
@@ -68,7 +68,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
 
         }
         else {
-            line.material = material;
+            line.material.color.setHex(0x050505);
             continue;
         }
     }
