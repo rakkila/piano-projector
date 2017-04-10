@@ -67,10 +67,17 @@ var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 //var fullScoreCounter = 0;
 //var starPower = false;
-var lane =  new THREE.Mesh(new THREE.BoxGeometry(0.01,100,0.001), 
-new THREE.MeshPhongMaterial({color: 0x000000}))
+var lanes = [];
+var pos = -2.6;
 
+for(var i = 0; i<5; i++)
+{
+    lanes[i] =  new THREE.Mesh(new THREE.BoxGeometry(0.01,100,0.001), 
+            new THREE.MeshPhongMaterial({color: 0x000000}))
+    lanes[i].position.x = pos;
+    pos += 0.9;
 
+}
 
 function main(){
 
@@ -139,7 +146,13 @@ function animate(){
     cameraLeft.position.y += tempo;
     cameraRight.position.y += tempo;
 
-    lane.position.y = cameraLeft.position.y;
+    
+
+    for(var i = 0; i<5; i++)
+    {
+        lanes[i].position.y = cameraLeft.position.y;
+    }
+
 
     requestAnimationFrame(animate);
     
@@ -169,19 +182,14 @@ function loadGeometries(){
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
-    var lanes = [];
-    for(let i = 0; i < noteBlockArray.length; i += 1){
-
-        lane.position.x = getPositionX(noteBlockArray[i].note);
-        lanes[i] = lane;
-        
-    }
-
-     for(let i = 0; i < lanes.length; i += 1){
-         console.log("index: " + i + " pos: " + lanes[i].position.x);
+    for(var i = 0; i<5; i++)
+    {
+        console.log("lane: " + lanes[i].position.x);
         scene.add(lanes[i]);
     }
+
 }
+
 /**
 * Returning note block x position
 */
