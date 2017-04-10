@@ -73,15 +73,17 @@ var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 function main(){
     //Start keyboard input
     keyboard.startInputOutput(song);
+
     //Start visualization
     animate();
+
     //Play picked song
     song.setVolume(0.4);
     song.playSong();
     startClock();
 }
 
-//Creating scene
+//Creating a scene
 var scene = new THREE.Scene();
 
 
@@ -91,13 +93,15 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.z = 10;
 */
 
-//3D camera
+//3D one camera for each viewport
 var cameraLeft = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
+
 var cameraRight = new THREE.PerspectiveCamera( 45, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
+
 var width = Math.round(window.innerWidth / 2), height = window.innerHeight;
 
 
@@ -123,7 +127,7 @@ document.body.appendChild(renderer.domElement);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         effectCopy.renderToScreen = true;
-        var bloomPass = new THREE.BloomPass(0.5, 25, 5.0, 256);
+        var bloomPass = new THREE.BloomPass(4, 10, 4.0, 256);
 
 //First composer
         var composer = new THREE.EffectComposer(renderer);
@@ -132,7 +136,7 @@ document.body.appendChild(renderer.domElement);
         composer.addPass(effectCopy);
         var renderScene = new THREE.TexturePass(composer.renderTarget2);
 
-//Second composer
+//Second composer (BloomPass)
     var composer2 = new THREE.EffectComposer(renderer);
         composer2.addPass(renderScene);
         composer2.addPass(bloomPass);
@@ -140,7 +144,8 @@ document.body.appendChild(renderer.domElement);
 
 //Render
         animate();
- //MESH
+
+ //MESHES
          function createMesh(geom) {
             var specTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
             var normTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
@@ -168,7 +173,6 @@ function animate(){
         scene.add(noteBlockArray[blockIndex].mesh);
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-       
         noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos/2;
        
 
@@ -188,6 +192,7 @@ function animate(){
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
     
+    renderer.render( scene, cameraLeft );
     //cameraLeft.position.x = -separation;
   
     renderer.render( scene, cameraLeft );
@@ -198,7 +203,6 @@ function animate(){
     cameraRight.updateProjectionMatrix();
     
     //cameraRight.position.x = separation;
-
     renderer.render( scene, cameraRight );
 
     composer.render();
