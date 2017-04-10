@@ -169,15 +169,19 @@ function loadGeometries(){
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
-    for(let i = 0; i < noteBlockArray.length; ++i){
+    var lanes = [];
+    for(let i = 0; i < noteBlockArray.length; i += 1){
 
-        if(noteBlockArray.noteWidth < 0.20)
         lane.position.x = getPositionX(noteBlockArray[i].note);
-        scene.add(lane);
+        lanes[i] = lane;
+        
     }
 
+     for(let i = 0; i < lanes.length; i += 1){
+         console.log("index: " + i + " pos: " + lanes[i].position.x);
+        scene.add(lanes[i]);
+    }
 }
-
 /**
 * Returning note block x position
 */
