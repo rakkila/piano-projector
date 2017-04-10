@@ -104,6 +104,8 @@ camera.position.z = 10;
 //3D camera
 
 cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+//var helper1 = new THREE.CameraHelper(cameraLeft);
+//scene.add(helper1);
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
 cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
@@ -122,48 +124,63 @@ var theTime = new Date();
 //Loading geometries to scene
 loadGeometries();
 
-var line = new THREE.BoxGeometry(20, 0.2, 0.1);
+var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
+
+var line = new THREE.BoxGeometry(10, 0.1, 0.1);
 var linematerial = new THREE.MeshPhongMaterial({color: 0x00ff00});
 var theLine = new THREE.Mesh(line, linematerial);
+var theLine2 = new THREE.Mesh(line, linematerial);
+
 scene.add(theLine);
+scene.add(theLine2);
+  //  theLine.position.x = 14.5;
+  //      theLine2.position.x = -14.5;
 
 //Starting program
 main();
-
+var velCounter = 1;
 
 function animate(){
 
     stats.update();
 
-    theLine.position.y = cameraLeft.position.y;
-
 
     if(blockIndex < noteBlockArray.length) {
-       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + noteBlockArray[blockIndex].noteLength/2;
+       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
+
+        var elapsedTime = getCurrentTime() - startTime;
+        var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
+        var velocity = tempo * 1000;
+        
+  //  console.log(elapsedTime*tempo / velCounter);
 
     }
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && (Math.abs((getCurrentTime() - startTime-700) - Math.round(noteBlockArray[blockIndex].startTime - (2*1000*blockpos/(tempo*60))))<10)){
+    if(blockIndex < noteBlockArray.length && (Math.abs( elapsedTime - Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))<11)){
 
         scene.add(noteBlockArray[blockIndex].mesh);
+
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos;
+        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
 
         blockIndex++;
             
     }
 
+//implementera loop, peka på äldsta noten
    if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
         scene.remove(noteBlockArray[blockIndex].mesh);
 
-
     //Translating blocks 
-    cameraLeft.position.y += tempo;
-    cameraRight.position.y += tempo;
-  //  camera.position.y += tempo;
+    cameraLeft.position.y = elapsedTime * tempo;
+    cameraRight.position.y = elapsedTime * tempo;
+    velCounter++;
 
+        theLine.position.y = cameraLeft.position.y;
+    theLine2.position.y = cameraLeft.position.y;
+  
     requestAnimationFrame(animate);
 
     renderer.setViewport( 0, 0, width, height);
@@ -181,7 +198,6 @@ function animate(){
     //cameraRight.position.x = separation; 
     renderer.render( scene, cameraRight );
    
-
 }
 
 function loadGeometries(){
@@ -246,9 +262,9 @@ function getSongTempo(s){
 
     switch(s){
 
-        case 'roses': tempo = 0.035; break;
+        case 'roses': tempo = 0.01; break;
         case 'jason_mraz': tempo = 0.5; break;
-        case 'korv': tempo = 0.12; break;
+        case 'korv': tempo = 0.005; break;
 
         default: tempo = 0.001; break;
     }
