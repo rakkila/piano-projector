@@ -6,22 +6,22 @@ function noteon(keyOn, timeOn, pArray) {
 
     for (let i = 0; i < pArray.length; i++) {
         if (keyOn == pArray[i].note) {
-
-            if (Math.abs(pArray[i].starttime - timeOn) < 10 && timeOn < pArray[i].stoptime) {
+            if (Math.abs(pArray[i].starttime - timeOn) <= 10 && (timeOn < pArray[i].stoptime)) {
                 console.log('YES!');
                 pArray[i].points = pArray[i].points + 50;
                 console.log('Points: ' + pArray[i].points);
                 lightUp(keyOn, pArray[i].starttime);
+                break;
 
             }
-            else if (Math.abs(pArray[i].starttime - timeOn) > 10 && timeOn < pArray[i].stoptime) {
+            else if (Math.abs(pArray[i].starttime - timeOn) > 10 && (timeOn < pArray[i].stoptime)) {
                 line.material.color.setHex(0xff0000);
                 console.log(' pArray[0] :' + pArray[0].starttime);
+                break;
 
                 //fullScoreCounter = 0;
                 //starPower = false;
             }
-
         }
         else {
             line.material.color.setHex(0xff0000);
@@ -37,6 +37,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
 
             //console.log('FOUND KEYOFF!!! stoptime = ' + pArray[i].stoptime);
             lightOff(keyOff, pArray[i].stoptime);
+            line.material.color.setHex(0x050505);
 
             if ((Math.abs(pArray[i].stoptime - timeOff) > 10) && pArray[i].points != 0) {
                 pArray[i].points -= Math.abs(pArray[i].stoptime - timeOff) * 0.5;

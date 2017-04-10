@@ -21,6 +21,7 @@ function lightOff(key, stopTime)
         {
             noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
             noteBlockArray[i].mesh.position.z = 0;
+            // line.material.color.setHex(0x050505);
             break;
         }
 

@@ -95,7 +95,7 @@
         document.body.appendChild(renderer.domElement);
 
         //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(30, 0.2, 1);
+        var geometry = new THREE.BoxGeometry(20, 0.2, 1);
         var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
         var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
         var line = new THREE.Mesh(geometry, material);
