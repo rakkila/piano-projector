@@ -42,6 +42,7 @@
 <script src="lib\three.js-master\examples\js\libs\stats.min.js"></script>
 
 <!-- Internal js files -->
+<script src = "GetPositionX.js"></script>
 <script src = "NoteBlock.js"></script>
 <script src = "EventReader.js"></script>
 <script src = "Song.js"></script>
@@ -92,7 +93,7 @@ function main(){
 var scene = new THREE.Scene();
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xfaf0e6 );
+renderer.setClearColor( 0x000000 );
 document.body.appendChild( renderer.domElement );
 
 //2D camera
@@ -126,15 +127,17 @@ loadGeometries();
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
-var line = new THREE.BoxGeometry(10, 0.1, 0.1);
-var linematerial = new THREE.MeshPhongMaterial({color: 0x00ff00});
-var theLine = new THREE.Mesh(line, linematerial);
-var theLine2 = new THREE.Mesh(line, linematerial);
+    var linegeometry = new THREE.Geometry();
+    var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
+    linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
+    var theLine = new THREE.Line(linegeometry, linematerial);
+    var theLine2 = new THREE.Line(linegeometry, linematerial);
 
-scene.add(theLine);
-scene.add(theLine2);
-  //  theLine.position.x = 14.5;
-  //      theLine2.position.x = -14.5;
+    scene.add(theLine);
+    scene.add(theLine2);
+    theLine.position.x = 11.05;
+    theLine2.position.x = -10.22;
 
 //Starting program
 main();
@@ -144,20 +147,20 @@ function animate(){
 
     stats.update();
 
-
     if(blockIndex < noteBlockArray.length) {
-       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
+       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
 
-        var elapsedTime = getCurrentTime() - startTime;
+        
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
         var velocity = tempo * 1000;
+        var elapsedTime = getCurrentTime() - startTime;
         
   //  console.log(elapsedTime*tempo / velCounter);
 
     }
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && (Math.abs( elapsedTime - Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))<11)){
+    if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
 
         scene.add(noteBlockArray[blockIndex].mesh);
 
@@ -223,39 +226,6 @@ function loadGeometries(){
 
 }
 
-/**
-* Returning note block x position
-*/
-function getPositionX(n){
-
-    switch(n){
-    case 'C3':  return -0.8; break;
-    case 'Db3':  return -0.64; break;
-    case 'D3':  return -0.42; break;
-    case 'Eb3':  return -0.21; break;
-    case 'E3':  return -0.04; break;
-    case 'F3':  return 0.27; break;
-    case 'Gb3':  return 0.42; break;
-    case 'G3':   return 0.65; break;
-    case 'Ab3':  return 0.83; break;
-    case 'A3':  return 1.03; break;
-    case 'Bb3':  return 1.23; break;
-    case 'B3':  return 1.39; break;
-    case 'C4':  return 1.7;  break;
-    case 'Db4':  return 1.85; break;
-    case 'D4':  return 2.07; break;
-    case 'Eb4':  return 2.27; break;
-    case 'E4':  return 2.45; break;
-    case 'F4':  return 2.77; break;
-    case 'Gb4':  return 2.89; break;
-    case 'G4':  return 3.12; break;
-    case 'Ab4':  return 3.27; break;
-    case 'A4':  return 3.49; break;
-    case 'Bb4':  return 3.68; break;
-    case 'B4':  return 3.85; break;
-    default: return 0;  break;
-    }
-}
 
 //Setting tempo depending on song picked
 function getSongTempo(s){

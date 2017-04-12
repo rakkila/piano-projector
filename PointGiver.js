@@ -9,22 +9,29 @@ function noteon(keyOn, timeOn, pArray)
     {
         if (keyOn == pArray[i].note)
         {
+             
     
-            if( Math.abs(pArray[i].starttime - timeOn) < 1500 && timeOn < pArray[i].stoptime)
+            if( Math.abs(pArray[i].starttime - timeOn) < 200 && timeOn < pArray[i].stoptime)
             {
-                console.log('YES!');
+               console.log(Math.abs(pArray[i].starttime - timeOn));
                 lightUp(keyOn, pArray[i].starttime);
+
+                pArray[i].points = pArray[i].points + 50;
+                break;
             }
-            pArray[i].points = pArray[i].points + 50;
-        }
+            
+       }
+       /* 
         else
            { 
                /*lightWrong(keyOn, pArray[i].starttime);
                //fullScoreCounter = 0;
-               //starPower = false;*/
-           }
+               //starPower = false;
+        }
+        */
     }
 }
+
 
 //Function looking for a match with 'noteOff'
 //Deducts points if the first condition is// violated. 
@@ -36,28 +43,28 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
         if (keyOff == pArray[i].note)
         {
 
-            console.log('FOUND KEYOFF!!! stoptime = ' + pArray[i].stoptime);
-           // lightOff(keyOff, pArray[i].stoptime);
-            
-            if((Math.abs(pArray[i].stoptime - timeOff) > 1500) && pArray[i].points != 0)
+         
+            if((Math.abs(pArray[i].stoptime - timeOff) > 200) && pArray[i].points != 0)
             {    
-                pArray[i].points -= Math.abs(pArray[i].stoptime - timeOff) * 0.5; 
+                pArray[i].points -= Math.round(Math.abs(pArray[i].stoptime - timeOff) * 0.05); 
+
+                lightOff(pArray[i].note, pArray[i].stoptime);
 
                 //lightWrong(keyOn, starttime);
                // fullScoreCounter = 0;
                 //starPower = false;
 
                 //console.log('stoptime - timeOff: ' + Math.abs(pArray[i].stoptime - timeOff));
-                console.log('You lost: ' + Math.abs(pArray[i].stoptime - timeOff) * 0.5 + ' points. Index: '+ i + ' Array length: ' + pArray.length);
+              //  console.log('You lost: ' + Math.round(Math.abs(pArray[i].stoptime - timeOff) * 0.05) + ' points.');
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;
             }
 
-            else if((Math.abs(pArray[i].stoptime - timeOff) < 1500) && pArray[i].points != 0)
+            else if((Math.abs(pArray[i].stoptime - timeOff) < 200) && pArray[i].points != 0)
             {
-
-                console.log('Full score !!!?!?!?!?!?!?!??!?!?!?!?!?!?!??!?!?!');
+                lightOff(pArray[i].note, pArray[i].stoptime);
+           //     console.log('Full score !');
                /* if(starPower == false) fullScoreCounter += 1;
                 if(fullScoreCounter == 3) 
                 {   
@@ -74,5 +81,6 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
         else 
             continue;
 
-}
+    }
+    return aPoint;
 }

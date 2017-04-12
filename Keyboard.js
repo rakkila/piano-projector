@@ -42,7 +42,7 @@ class Keyboard{
                                 note = sharpToFlat(e.note.name),   
                                 key = note + octave;
 
-                          //  console.log("on" + ',' + key + ',' + time);
+                            //console.log(key);
                             //a.push(key);
                             //a.push(time);
                         //    console.log(getCurrentTime()-startTime);
@@ -68,7 +68,7 @@ class Keyboard{
                                 totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
 
-                                //console.log('TOTAL POINTS: ' + totalpoints);
+                           //     console.log('TOTAL POINTS: ' + totalpoints);
 
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect

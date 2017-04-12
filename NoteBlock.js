@@ -28,7 +28,11 @@ function loadNoteBlocks(){
     songArray = parseSongData(song.getSongName());
     let size = songArray.length;
     var noteBlockArray = new Array(size);
-    let noteWidth;
+    //let noteWidth;
+    
+        let left = -10.20,
+            right = 11.05;
+        pianoLength = right-left;
 
     for(let i = 0; i < size; ++i){
          
@@ -37,7 +41,7 @@ function loadNoteBlocks(){
         if(note.includes("b"))
             noteWidth = 0.19;
         else
-            noteWidth = 0.30;
+            noteWidth = pianoLength/36 - 0.1;
 
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime);
     }
