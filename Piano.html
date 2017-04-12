@@ -53,6 +53,7 @@
 <script src = "midi-player.js"></script>
 
 
+
 </head>
 <body>
 <script>
@@ -145,7 +146,7 @@ function animate(){
 
   
 
-    for(var i = 0; i<8; i++)
+    for(var i = 0; i<5; i++)
     {
         lanes[i].position.y = cameraLeft.position.y;
     }
@@ -179,9 +180,9 @@ function loadGeometries(){
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
-    lanes = newLanes();
-   //LANES
-    for(var i = 0; i<8; i++)
+    //lanes = newLanes();
+    //LANES    
+    for(var i = 0; i<5; i++)
     {
         lanes[i] =  new THREE.Mesh(new THREE.BoxGeometry(0.1,100,0.001), 
         new THREE.MeshPhongMaterial({color: 0x000000}));
@@ -189,9 +190,9 @@ function loadGeometries(){
         lanes[i].position.x = pos ;
         scene.add(lanes[i]);
         pos += 0.9;
-         console.log("lane: " + lanes[i].position.x);
+        console.log("lane: " + lanes[i].position.x);
     }
-
+    
 }
 
 /**
