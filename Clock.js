@@ -2,22 +2,15 @@
  * Starting a clock (stopwatch)
  */
 
-var time = 0;
+var d = new Date();
+var b = new Date();
 
-function updateClock(){
-    if(time < 2000)
-        time++;
-
-    //console.log(time);
-    startClock();
+function getStartTime(){
+    return (new Date()).getTime();
 }
 
-function startClock(){
-    setTimeout(updateClock, 100);
-}
-
-function getClockTime(){
-    return time;
+function getCurrentTime(){
+    return (new Date()).getTime();
 }
 
 

@@ -42,10 +42,11 @@ class Keyboard{
                                 note = sharpToFlat(e.note.name),   
                                 key = note + octave;
 
-                            console.log("on" + ',' + key + ',' + time);
+                            //console.log(key);
                             //a.push(key);
                             //a.push(time);
-                            noteon(key, time, pArray);
+                        //    console.log(getCurrentTime()-startTime);
+                            noteon(key, getCurrentTime()-startTime, pArray);
 
                             //Play pressed note (0 delay)
                             MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
@@ -58,14 +59,16 @@ class Keyboard{
                                     note = sharpToFlat(e.note.name),
                                     key = note + octave;
 
-                                console.log("off" + ',' + key + ',' + time);
+                              //  console.log("off" + ',' + key + ',' + time);
                                // a.push(time);
                                // console.log(a);
                                 
-                                totalpoints += noteoff(key, time, pArray, point);
+                             //   console.log(getCurrentTime()-startTime);
+
+                                totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
 
-                                //console.log('TOTAL POINTS: ' + totalpoints);
+                           //     console.log('TOTAL POINTS: ' + totalpoints);
 
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect

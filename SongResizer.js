@@ -5,14 +5,13 @@ function SongResizer(SongArr) {
 
         for(let i = 0; i < SongArr.length; i++) {
 
-            if(SongArr[i].stoptime < getClockTime() + 16) {
+            if(getCurrentTime()-startTime > SongArr[i].stoptime) {
 
-             var attime = getClockTime() + 10;
+           //  var attime = getCurrentTime()-startTime + 1000;
 
-            //console.log('Deleted ' + SongArr[i].note + ' at index: ' + i + ' at time: ' + attime + ' ' + SongArr[i].stoptime);
+         //   console.log('Deleted ' + SongArr[i].note + ' at index: ' + i + ' at time: ' + attime + ' ' + SongArr[i].stoptime);
 
                 SongArr.splice(i, 1);
-
                 
             }
 
