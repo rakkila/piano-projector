@@ -41,6 +41,7 @@
 <script src="lib/three.js-master/examples/js/postprocessing/BloomPass.js"></script>
 <script src="lib/three.js-master/examples/js/shaders/ConvolutionShader.js"></script>
 <script src="lib/three.js-master/examples/js/postprocessing/TexturePass.js"></script>
+<script src="lib/three.js-master/examples/js/postprocessing/BloomBlendPass.js"></script>
 
 <!-- Internal js files -->
 <script src = "NoteBlock.js"></script>
@@ -108,7 +109,7 @@ var width = Math.round(window.innerWidth / 2), height = window.innerHeight;
 //Creating a renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xfaf0e6 );
+renderer.setClearColor( 0x000000 );
 //document.body.appendChild( renderer.domElement );
 
 renderer.shadowMapEnabled = true;
@@ -126,8 +127,9 @@ document.body.appendChild(renderer.domElement);
         var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-        effectCopy.renderToScreen = true;
-        var bloomPass = new THREE.BloomPass(4, 10, 4.0, 256);
+        //effectCopy.renderToScreen = true;
+        var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(1024, 1024));
+        bloomPass.renderToScreen = true;
 
 //First composer
         var composer = new THREE.EffectComposer(renderer);
@@ -183,30 +185,29 @@ function animate(){
     //Translating blocks 
     cameraLeft.position.y += tempo*0.1;
     cameraRight.position.y += tempo*0.1;
-
-    requestAnimationFrame(animate);
      
+    requestAnimationFrame(animate);
+    
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
-    
-    renderer.render( scene, cameraLeft );
+    composer.render();
+    composer2.render();
+    //renderer.render( scene, cameraLeft );
     //cameraLeft.position.x = -separation;
   
-    renderer.render( scene, cameraLeft );
+    //renderer.render( scene, cameraLeft );
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
-    
-    //cameraRight.position.x = separation;
-    renderer.render( scene, cameraRight );
-
-    composer.render();
     composer2.render();
+    //cameraRight.position.x = separation;
+    //renderer.render( scene, cameraRight );
+    
      
 }
 
