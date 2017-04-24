@@ -118,8 +118,29 @@
         var width = Math.round(window.innerWidth / 2),
             height = window.innerHeight;
 
-            
+/*        //3D camera, left perspective camera, eye camera
+        cameraLeft = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
+        cameraLeft.position.set(0, -3, 3);
+        cameraLeft.lookAt(scene);
+        scene.add(cameraLeft);
+        //Right perspective camera
+        cameraRight = new THREE.PerspectiveCamera(45, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
+        cameraRight.position.set(0, -3, 3);
+        cameraRight.lookAt(scene);
+        scene.add(cameraRight);
+        var width = Math.round(window.innerWidth / 2),
+            height = window.innerHeight;*/
 
+        //Eye-camera, left
+        var eyeCamLeft = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 4000);
+        eyeCamLeft.position.set(0, -3,3);
+        eyeCamLeft.lookAt(scene.position);
+        scene.add(eyeCamLeft);
+        //Eye-camera, right
+        var eyeCamRight = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 4000);
+        eyeCamRight.position.set(0, -3,3);
+        eyeCamRight.lookAt(scene.position);
+        scene.add(eyeCamRight);
 
         //Loading geometries to scene
         loadGeometries();
@@ -148,7 +169,8 @@
             //Translating blocks 
             cameraLeft.position.y += tempo;
             cameraRight.position.y += tempo;
-            // camera.position.y += tempo;
+            eyeCamLeft.position.y += tempo;
+            eyeCamRight.position.y += tempo;
 
             line.position.y = (cameraLeft.position.y - 4);
 
@@ -160,7 +182,7 @@
             cameraLeft.aspect = width * 2 / height;
             cameraLeft.updateProjectionMatrix();
             //cameraLeft.position.x = -separation;
-            renderer.render(scene, cameraLeft);
+            // renderer.render(scene, cameraLeft);
 
             //Render right camera
             renderer.setViewport(width, 0, width, height);
@@ -169,8 +191,10 @@
             cameraRight.aspect = width * 2 / height;
             cameraRight.updateProjectionMatrix();
             //cameraRight.position.x = separation;
-            renderer.render(scene, cameraRight);
+            // renderer.render(scene, cameraRight);
 
+             renderer.render(scene, eyeCamLeft);
+             renderer.render(scene, eyeCamRight);
             // renderer.render(scene, camera);
         }
 
