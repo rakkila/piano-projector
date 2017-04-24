@@ -115,9 +115,9 @@ renderer.setClearColor( 0x000000 );
 renderer.shadowMapEnabled = true;
 
 //New object sphere
-var sphere = createMesh(new THREE.SphereGeometry(10, 40, 40));
-scene.add(sphere);
-sphere.position.z = -50;
+//var sphere = createMesh(new THREE.SphereGeometry(10, 40, 40));
+//scene.add(sphere);
+//sphere.position.z = -50;
 
 //Loading geometries to scene
 loadGeometries();
@@ -128,7 +128,7 @@ document.body.appendChild(renderer.domElement);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         //effectCopy.renderToScreen = true;
-        var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(1024, 1024));
+        var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(64, 64));
         bloomPass.renderToScreen = true;
 
 //First composer
