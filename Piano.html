@@ -127,6 +127,18 @@ cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
 
+/*cameraLeft = new THREE.PerspectiveCamera( 30.07, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+//var helper1 = new THREE.CameraHelper(cameraLeft);
+//scene.add(helper1);
+cameraLeft.position.set(-0.08, -3.89, 5.16);
+cameraRight.lookAt(scene.position);
+scene.add(cameraLeft);
+
+cameraRight = new THREE.PerspectiveCamera( 30.07, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+cameraRight.position.set(0.08, -3.89, 5.16);
+cameraRight.lookAt(scene.position);
+scene.add(cameraRight);*/
+
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
     var linegeometry = new THREE.Geometry();
@@ -238,6 +250,7 @@ function animate(){
             noteBlockArray[blockIndex].active = true;
             noteBlockArray[blockIndex+1].active = true;
 
+
             noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
@@ -245,8 +258,7 @@ function animate(){
             noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
 
             blockIndex+=2;
-        }  
-
+        }
         else
         {
             scene.add(noteBlockArray[blockIndex].mesh);
@@ -256,8 +268,6 @@ function animate(){
             noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
             blockIndex++;
         }
-   
-
     }
             
     
@@ -282,7 +292,6 @@ function animate(){
 */
     //Update score
     dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
-
 
 
     //Translating blocks 
