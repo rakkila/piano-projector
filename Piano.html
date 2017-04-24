@@ -229,8 +229,8 @@ function animate(){
     var velocity = tempo * 1000;
     var elapsedTime = getCurrentTime() - startTime;
 
-        if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
-        initEndingAnimation(getScore());
+    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length) {
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
@@ -256,20 +256,10 @@ function animate(){
 
             noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
             noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
+        }
 
-            blockIndex+=2;
-        }
-        else
-        {
-            scene.add(noteBlockArray[blockIndex].mesh);
-            noteBlockArray[blockIndex].active = true;
-            
-            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-            blockIndex++;
-        }
-    }
-            
+
+    }      
     
     //implementera loop, peka på äldsta noten
     //Removing block when not active
@@ -278,8 +268,7 @@ function animate(){
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
-    }   
-        
+    }
 
 /*
 //implementera loop, peka på äldsta noten
@@ -338,7 +327,6 @@ function loadGeometries(){
     noteBlockArray = loadNoteBlocks();
 
   //  delBlockArray = loadNoteBlocks();
-
 }
 
 
