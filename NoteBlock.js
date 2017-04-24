@@ -11,7 +11,7 @@ class NoteBlock{
         this.startTime = startTime;
         this.stopTime = stopTime;
         this.noteLength = (stopTime - startTime) * 0.5;
-        this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001), 
+        this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.1), 
                     new THREE.MeshPhongMaterial({color: 0x0000ff}))
 
     }

@@ -132,12 +132,12 @@
             height = window.innerHeight;*/
 
         //Eye-camera, left
-        var eyeCamLeft = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 4000);
+        var eyeCamLeft = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 2000);
         eyeCamLeft.position.set(0, -3,3);
         eyeCamLeft.lookAt(scene.position);
         scene.add(eyeCamLeft);
         //Eye-camera, right
-        var eyeCamRight = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 4000);
+        var eyeCamRight = new THREE.PerspectiveCamera(45, (window.innerWidth/2) / window.innerHeight, 1, 2000);
         eyeCamRight.position.set(0, -3,3);
         eyeCamRight.lookAt(scene.position);
         scene.add(eyeCamRight);
@@ -182,7 +182,8 @@
             cameraLeft.aspect = width * 2 / height;
             cameraLeft.updateProjectionMatrix();
             //cameraLeft.position.x = -separation;
-            // renderer.render(scene, cameraLeft);
+            renderer.render(scene, cameraLeft);
+            renderer.render(scene, eyeCamLeft);
 
             //Render right camera
             renderer.setViewport(width, 0, width, height);
@@ -191,9 +192,8 @@
             cameraRight.aspect = width * 2 / height;
             cameraRight.updateProjectionMatrix();
             //cameraRight.position.x = separation;
-            // renderer.render(scene, cameraRight);
-
-             renderer.render(scene, eyeCamLeft);
+            
+             renderer.render(scene, cameraRight);
              renderer.render(scene, eyeCamRight);
             // renderer.render(scene, camera);
         }
