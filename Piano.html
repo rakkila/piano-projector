@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
     <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Piano-projector</title>
@@ -30,18 +31,18 @@
     <!--<script src = "lib/MIDI.js-master/build/MIDI.min.js" type="text/javascript"></script>-->
 
     <!-- Other external libraries -->
-    <script src="lib/soundfontplayer.js">
-
-    </script>
-    <script src="lib/webmidi/src/webmidi.js">
-
-    </script>
+    <script src="lib/soundfontplayer.js"></script>
+    <script src="lib/webmidi/src/webmidi.js"></script>
     <script src="lib\three.js-master\docs\build\three.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
     <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
+    <script src="lib/three.js-master/examples/js/postprocessing/BloomPass.js"></script>
+    <script src="lib/three.js-master/examples/js/shaders/ConvolutionShader.js"></script>
+    <script src="lib/three.js-master/examples/js/postprocessing/TexturePass.js"></script>
+    <script src="lib/three.js-master/examples/js/postprocessing/BloomBlendPass.js"></script>
 
     <!-- Internal js files -->
     <script src="getPositionX.js"></script>
@@ -57,11 +58,11 @@
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
 
+
 </head>
 
 <body>
 <script>
-
 
 //Global variables
 var keyboard = new Keyboard();
@@ -74,10 +75,8 @@ var startTime;
 //var fullScoreCounter = 0;
 //var starPower = false;
 
-
 function main(){
 
-    
     //Start keyboard input
     keyboard.startInputOutput(song);
 
@@ -87,16 +86,15 @@ function main(){
     //Play picked song
     song.setVolume(0.4);
     song.playSong();
+
     startTime = getStartTime();
+
 
 }
 
-//Creating scene
+//Creating a scene
 var scene = new THREE.Scene();
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x000000 );
-document.body.appendChild( renderer.domElement );
+
 
         //Create black line at bottom of scene
         var geometry = new THREE.BoxGeometry(20, 0.2, 1);
@@ -111,6 +109,7 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.z = 10;
 */
 
+
 //3D camera
 
 cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
@@ -118,15 +117,10 @@ cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.i
 //scene.add(helper1);
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
+
 cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
-let width = Math.round(window.innerWidth / 2),
-    height = window.innerHeight;
-
-var theTime = new Date();
-//Loading geometries to scene
-loadGeometries();
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
@@ -141,6 +135,64 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
     scene.add(theLine2);
     theLine.position.x = 11.05;
     theLine2.position.x = -10.22;
+    
+let width = Math.round(window.innerWidth / 2),
+    height = window.innerHeight;
+
+//Creating a renderer
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setClearColor( 0x000000 );
+//document.body.appendChild( renderer.domElement );
+
+renderer.shadowMapEnabled = true;
+
+var theTime = new Date();
+
+//Loading geometries to scene
+loadGeometries();
+document.body.appendChild(renderer.domElement);
+
+//PASSES
+        var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+        var renderPass2 = new THREE.RenderPass(scene, cameraRight);
+        var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+        //effectCopy.renderToScreen = true;
+        var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(64, 64));
+        bloomPass.renderToScreen = true;
+
+//First composer
+        var composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderPass1);
+        composer.addPass(renderPass2);
+        composer.addPass(effectCopy);
+        var renderScene = new THREE.TexturePass(composer.renderTarget2);
+
+//Second composer (BloomPass)
+    var composer2 = new THREE.EffectComposer(renderer);
+        composer2.addPass(renderScene);
+        composer2.addPass(bloomPass);
+        composer2.addPass(effectCopy);
+
+//Render
+        animate();
+
+ //MESHES
+         function createMesh(geom) {
+            var specTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
+            var normTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
+
+            var sphereMaterial = new THREE.MeshPhongMaterial();
+            sphereMaterial.specularMap = specTex;
+            sphereMaterial.specular = new THREE.Color(0x4444aa);   
+
+            sphereMaterial.normalMap = normTex;
+            
+            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [sphereMaterial]);
+            return mesh;
+    }
+
+//////////////////////
 
 //Starting program
 main();
@@ -159,19 +211,23 @@ function animate(){
   //  console.log(elapsedTime*tempo / velCounter);
 
     }
-
     //Adding note blocks to scene (depending on song)
+
     if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
+
 
         scene.add(noteBlockArray[blockIndex].mesh);
 
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
+
         noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+
 
         blockIndex++;
             
     }
+
 
 //implementera loop, peka på äldsta noten
    if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
@@ -186,6 +242,7 @@ function animate(){
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
   
+
     requestAnimationFrame(animate);
 
     renderer.setViewport( 0, 0, width, height);
@@ -193,27 +250,31 @@ function animate(){
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
+    composer.render();
+    composer2.render();
+    //renderer.render( scene, cameraLeft );
     //cameraLeft.position.x = -separation;
-    renderer.render( scene, cameraLeft );
+  
+    //renderer.render( scene, cameraLeft );
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
+
     //cameraRight.position.x = separation; 
-    renderer.render( scene, cameraRight );
-   
+    //renderer.render( scene, cameraRight );
+   composer2.render();
 }
 
 function loadGeometries(){
 
-
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
     light.position.set( 5, 5, 5 );
     scene.add( light );
-
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
+
 /*
         for(let i = 0; i < noteBlockArray.length; i++)
         {
@@ -226,26 +287,27 @@ function loadGeometries(){
         }
         */
 
+
 }
 
 
 //Setting tempo depending on song picked
 function getSongTempo(s){
-
     switch(s){
+
 
         case 'roses': tempo = 0.01; break;
         case 'jason_mraz': tempo = 0.5; break;
         case 'korv': tempo = 0.005; break;
 
+
         default: tempo = 0.001; break;
     }
-
     return tempo;
 }
-
-
 </script>
 </body>
 
+
 </html>
+
