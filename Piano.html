@@ -141,6 +141,17 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
     theLine.position.x = 11.05;
     theLine2.position.x = -10.22;
 
+    //Creating scoreboard
+    var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
+    dynamicTexture.context.font	= "bolder 200px Verdana";
+    var scoreGeo = new THREE.BoxGeometry(12, 2, 0.2);
+    var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+    var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+    scoreBoard.position.set(-10,4,0);
+    //scoreBoard.rotation.y = Math.PI/10;
+    scene.add(scoreBoard);
+    dynamicTexture.texture.needsUpdate = true;
+
 //Starting program
 main();
 var velCounter = 1;
@@ -205,6 +216,11 @@ function animate(){
         blockIndex++;
             
     }
+
+
+    //Update score
+    dynamicTexture.clear('blue').drawText(getScore(), 150, 200, 'white');
+
 
 //implementera loop, peka på äldsta noten
    if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))

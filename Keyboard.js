@@ -3,7 +3,7 @@
  * Using MIDI.js for loading soundfont and play sound
  * Using WebMidi for event listeners
  */
-
+                var totalpoints = 0;
 class Keyboard{
 
     constructor(){}
@@ -17,7 +17,7 @@ class Keyboard{
             onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
             onsuccess: function() {
 
-                var totalpoints = 0;
+
                 var point = 0;
                 var pArray = [];
                 //var a = [];
@@ -100,5 +100,7 @@ function sharpToFlat(note){
 }
 
 
-
+function getScore(){
+    return totalpoints;
+}
  
