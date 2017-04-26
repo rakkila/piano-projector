@@ -6,7 +6,13 @@
 
 class Keyboard{
 
-    constructor(){}
+    constructor(){
+        this.totalpoints = 0;
+    }
+
+    getTotalPoints(){
+        return this.totalpoints;
+    }
 
     startInputOutput(song){
 
@@ -65,7 +71,6 @@ class Keyboard{
                                 
                              //   console.log(getCurrentTime()-startTime);
 
-                                totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
 
                                 //console.log('TOTAL POINTS: ' + totalpoints);
@@ -75,6 +80,9 @@ class Keyboard{
                                 MIDI.noteOff(0, MIDI.keyToNote[key], 0);
                             });
 
+                            //Want to reach totalpoints in animation loop
+                            this.totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
+
                         }
                         else
                             console.log('MIDI input not connected');
@@ -83,6 +91,7 @@ class Keyboard{
             }
         })
     }  
+
 }
    
 function sharpToFlat(note){

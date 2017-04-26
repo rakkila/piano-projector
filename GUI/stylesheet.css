@@ -1,15 +1,57 @@
+
 body {
-	  background-color: linen;
-      margin: 0px;
-      overflow: hidden;
+	margin: 0px;
+	overflow: hidden;
+	background-color: lightblue;
+	height: 100%;
 }
 h1 {
-	font-size: 40px;
+	font-size: 60px;
+	margin-left: 5%;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	color: #000;
-   text-align: center;
-
+	color:lightskyblue;
+	text-align: left;
+	transform: rotate(-2deg);
+	text-shadow: -7px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
+
+h3{
+	font-size: 20px;
+}
+
+.left{
+	width:50%;
+	height:100%;
+	margin: 0;
+	float: left;
+}
+
+.right{
+	width: 50%;
+	height:100%;
+	float: right;
+	margin: 0;
+}
+
+.background-image{
+	width: 50%;
+	height: 100%;
+	background: url('images/piano.jpg');
+	background-size: cover;
+	/*filter: blur(7px);*/
+	position: absolute;
+	z-index: -1;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-right: 60%;
+}
+
+#meny{
+	transform: rotate(-2deg);
+	padding-right: 35%;
+	margin-top: 35%;
+}
+
 /* Listan <UL> med knapparna */
 ul {
 	margin: 0;
@@ -20,25 +62,13 @@ ul {
 	list-style: none;
 	margin: 5px 0 10px 0;
 }
-#meny li a {
-	display: block;
-	width: 250px;
-	margin: 0 auto 0 auto;
-	padding: 5px 10px 5px 10px;
-	text-align: center;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
-	border-radius: 5px;
-	border: 1px solid rgba(105,181,50,1);
-	background: rgba(122,199,67,1);
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
-}
 #meny li a:hover {
 	cursor: pointer;
-	background: rgba(178,232,139,1);
-	color: rgba(0,0,0,1);
+	background: gray;
+	color: white;
+	border: 1px solid gray;
 }
+
 #meny a:link, #meny a:visited {
 	color: rgba(255,255,255,1);
 	text-decoration: none;
@@ -51,41 +81,52 @@ ul {
 }
 #meny li a {
 	display: block;
-	width: 250px;
+	width: 300px;
+	height: 30px auto;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
+	font-size: 30px;
+	color: lightskyblue;
 	border-radius: 5px;
-	border: 1px solid rgba(105,181,50,1);
-	background: rgba(122,199,67,1);
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transition: 0.5s;
+	animation: fadein 1s;
 }
+
 /* Listelement <LI> med tillbaka */
+
+#back{
+	padding-right: 35%;
+	transform: rotate(-2deg);
+}
+
 #back li {
 	list-style: none;
 	margin: 5px 0 10px 0;
 }
 #back a{
 	display: block;
-	width: 250px;
+	width: 300px;
+	height: 50px;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
+	font-size: 40px;
+	color: lightskyblue;
 	border-radius: 5px;
-	border: 1px solid rgba(255,0,0,1);
-	background: rgba(255,0,0,1);
+	background: black;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transition: 1.5s;
+	animation: fadein 1s;
 }
 #back li a:hover {
 	cursor: pointer;
-	background: rgba(232,178,139,1);
 	color: rgba(0,0,0,1);
+	background: red;
+	border: 1px solid rgba(255,0,0,1);
 }
 #back a:link, #meny a:visited {
 	color: rgba(255,255,255,1);
@@ -96,4 +137,10 @@ ul {
 }
 #back a#current {
 	background: rgba(250,137,48,1);
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

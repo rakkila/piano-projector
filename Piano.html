@@ -33,6 +33,7 @@
 <!-- Other external libraries -->
 <script src = "lib/soundfontplayer.js"> </script>
 <script src = "lib/webmidi/src/webmidi.js"> </script>
+<script src = "lib/threex.dynamictexture.js"> </script>
 <script src="lib\three.js-master\docs\build\three.js"></script>
 <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
 <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
@@ -68,6 +69,7 @@ var noteBlockArray = [];
 var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 var startTime;
+var meshGroup = new THREE.Object3D();
 //var fullScoreCounter = 0;
 //var starPower = false;
 
@@ -83,7 +85,7 @@ function main(){
 
     //Play picked song
     song.setVolume(0.4);
-    song.playSong();
+    //song.playSong();
     startTime = getStartTime();
 
 }
@@ -92,7 +94,7 @@ function main(){
 var scene = new THREE.Scene();
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xfaf0e6 );
+renderer.setClearColor( 0x000000 );
 document.body.appendChild( renderer.domElement );
 
 //2D camera
@@ -102,10 +104,7 @@ camera.position.z = 10;
 */
 
 //3D camera
-
 cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-//var helper1 = new THREE.CameraHelper(cameraLeft);
-//scene.add(helper1);
 cameraLeft.position.set( 0, 0, 10 );
 scene.add(cameraLeft);
 cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
@@ -114,72 +113,68 @@ scene.add(cameraRight);
 let width = Math.round(window.innerWidth / 2),
     height = window.innerHeight;
 
-//Show FPS
-var stats = new Stats();
-
-stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
-
 var theTime = new Date();
 //Loading geometries to scene
 loadGeometries();
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
-var line = new THREE.BoxGeometry(10, 0.1, 0.1);
-var linematerial = new THREE.MeshPhongMaterial({color: 0x00ff00});
-var theLine = new THREE.Mesh(line, linematerial);
-var theLine2 = new THREE.Mesh(line, linematerial);
-
-scene.add(theLine);
-scene.add(theLine2);
-  //  theLine.position.x = 14.5;
-  //      theLine2.position.x = -14.5;
+//Creating scoreboard
+var dynamicTexture  = new THREEx.DynamicTexture(700/2,700);
+dynamicTexture.context.font	= "bolder 200px Verdana";
+var scoreGeo = new THREE.BoxGeometry(8, 2, 0.2);
+var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+scoreBoard.position.set(-10,4,0);
+//scoreBoard.rotation.y = Math.PI/10;
+scene.add(scoreBoard);
+dynamicTexture.texture.needsUpdate = true;
 
 //Starting program
 main();
-var velCounter = 1;
+
 
 function animate(){
+    
+    let elapsedTime = getCurrentTime() - startTime;
 
-    stats.update();
-
+    //if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime /* || points < 0 */ )
+    //if(blockIndex == 1)
+      //  initEndingAnimation(/*points*/);
 
     if(blockIndex < noteBlockArray.length) {
        blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
 
-        var elapsedTime = getCurrentTime() - startTime;
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
         var velocity = tempo * 1000;
-        
-  //  console.log(elapsedTime*tempo / velCounter);
 
     }
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && (Math.abs( elapsedTime - Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))<11)){
+    if(blockIndex < noteBlockArray.length && (Math.abs( elapsedTime - Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))<15)){
 
-        scene.add(noteBlockArray[blockIndex].mesh);
+        meshGroup.add(noteBlockArray[blockIndex].mesh);
+        scene.add(meshGroup);
 
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+        noteBlockArray[blockIndex].mesh.position.y = -meshGroup.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
 
         blockIndex++;
             
     }
 
-//implementera loop, peka på äldsta noten
-   if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
-        scene.remove(noteBlockArray[blockIndex].mesh);
+    //implementera loop, peka på äldsta noten
+   //if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
+       // scene.remove(noteBlockArray[blockIndex].mesh);
 
     //Translating blocks 
-    cameraLeft.position.y = elapsedTime * tempo;
-    cameraRight.position.y = elapsedTime * tempo;
-    velCounter++;
+    meshGroup.position.y = - elapsedTime * tempo;
+    //cameraLeft.position.y = elapsedTime * tempo;
+    //cameraRight.position.y = elapsedTime * tempo;
 
-        theLine.position.y = cameraLeft.position.y;
-    theLine2.position.y = cameraLeft.position.y;
+    //Update score
+    dynamicTexture.clear('blue').drawText(keyboard.getTotalPoints(), 60, 300, 'white');
   
     requestAnimationFrame(animate);
 
@@ -270,6 +265,63 @@ function getSongTempo(s){
     }
 
     return tempo;
+}
+
+function initEndingAnimation(/*points*/){
+
+    cameraLeft.position.x += 4;
+    cameraRight.position.x += 4;
+    /*
+    //Creating scoreboard
+    let tex  = new THREEx.DynamicTexture(1300,720/2);
+    tex.context.font	= "bolder 200px Verdana";
+    let geo = new THREE.BoxGeometry(35, 7, 2);
+    var mat = new THREE.MeshPhongMaterial({ map : tex.texture, specular: 10});
+    var boardMesh = new THREE.Mesh(geo, mat);
+    boardMesh.position.x = 30;
+    scene.add(boardMesh);
+    tex.clear('blue').drawText('Game Over', 50, 200, 'white');
+    //tex.texture.needsUpdate = true;
+*/
+
+    
+        //Creating 3D-text
+        var loader = new THREE.FontLoader(),
+            geometryText,
+            materialText,
+            textMesh;
+            
+        loader.load('./lib/three.js-master/examples/fonts/optimer_bold.typeface.json', function (font){
+
+            geometryText = new THREE.TextGeometry( 'Game Over', {
+            font: font,
+            size: 3,
+            height: 1,
+            curveSegments: 5,
+            bevelThickness: 0.01,
+            bevelSize: 0.01,
+            bevelSegments: 2,
+            bevelEnabled: true,
+            });
+
+            materialText = new THREE.MeshPhongMaterial( { color: 0xffffff , specular: 20} );
+
+            textMesh = new THREE.Mesh( geometryText, materialText );
+            textMesh.position.set(20, 0, 0);
+            scene.add(textMesh);
+
+        });
+        
+
+    var loader = new THREE.JSONLoader();
+
+    if(cameraLeft.position.x > 30){
+        cameraLeft.position.x = 30;
+        cameraRight.position.x = 30;
+
+        scene.remove(scoreBoard);
+    }
+
 }
 
 
