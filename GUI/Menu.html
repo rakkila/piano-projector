@@ -10,9 +10,25 @@
             <li><a href="Easy.html" target="_self">Easy</a></li>
             <li><a href="Medium.html" target="_self">Medium</a></li>
             <li><a href="Hard.html" target="_self">Hard</a></li>
+
+            <li><a id ="jason_mraz" onclick="sendID(this.id);">Jason Mraz - I'm Yours</a></li>
+
         </ul>
         <ul id="back">
             <li><a href="javascript:history.back()" target="_self">Go back</a></li>
         </ul>
+        <script>
+
+        let NOfKeys = location.search.substring(6).split("?keys=");
+
+        if(NOfKeys == 49)
+        {
+            document.getElementById("meny").disabled = true;
+        }
+        
+
+        console.log(NOfKeys);
+
+        </script>
     </body>
 </html>    

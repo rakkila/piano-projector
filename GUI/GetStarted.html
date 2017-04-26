@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-       <script src="../lib\three.js-master\docs\build\three.js"></script>
+        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+
     </head>
-
-      <body>
-
-            <h1>Calibration</h1>
-
+    <body>
+        <div>
+        <h1>How many keys are on your keyboard?</h1>
+            <ul id="meny">
+                <li><a id ="49" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" onclick="sendID(this.id);">88</a></li>
+            </ul>
             <ul id="back">
-                <li><a id ="CalibrationDone" onclick="sendID(this.id);">Done</a></li>
                 <li><a href="javascript:history.back()" target="_self">Go back</a></li>
             </ul>
-
+</div>
         <script>
+               
+               //Sending songID from clicked button
                 function sendID(id){
-                window.location.href = "Menu.html?" + id;
-            }
+                window.location.href = "Calibrate.html?" + id;
+                }
 
                 var scene = new THREE.Scene();
                 var renderer = new THREE.WebGLRenderer();
@@ -88,7 +92,7 @@
                 cameraRight.updateProjectionMatrix();
                 //cameraRight.position.x = separation; 
                 renderer.render( scene, cameraRight );
-   
+         
         </script>
 
 

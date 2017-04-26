@@ -62,7 +62,6 @@
 <body>
 <script>
 
-
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[0]);
@@ -165,9 +164,43 @@ function animate(){
 
         scene.add(noteBlockArray[blockIndex].mesh);
 
-        noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+        {
+        
+            scene.add(noteBlockArray[blockIndex+1].mesh);
+            console.log('yes!');
+            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+            noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
-        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y;
+
+            blockIndex++;
+
+                        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+                        {
+                            scene.add(noteBlockArray[blockIndex+1].mesh);
+                            console.log('yes! 2');
+                            noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
+
+                            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y;
+                            
+                            blockIndex++;
+
+                        }
+
+        }
+
+        else {
+                noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+
+                console.log(elapsedTime);
+
+                noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+
+            
+
+        }
 
         blockIndex++;
             
@@ -235,7 +268,7 @@ function getSongTempo(s){
     switch(s){
 
         case 'roses': tempo = 0.01; break;
-        case 'jason_mraz': tempo = 0.5; break;
+        case 'jason_mraz': tempo = 0.005; break;
         case 'korv': tempo = 0.005; break;
 
         default: tempo = 0.001; break;

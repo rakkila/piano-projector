@@ -28,23 +28,29 @@ function loadNoteBlocks(){
     songArray = parseSongData(song.getSongName());
     let size = songArray.length;
     var noteBlockArray = new Array(size);
-    //let noteWidth;
-    
-        let left = -10.20,
-            right = 11.05;
-        pianoLength = right-left;
 
+    let left = -10.20,
+    right = 11.05;
+    pianoLength = right-left;
+
+    let whiteNoteWidth = pianoLength/36 - 0.1, 
+        blackNoteWidth = 0.68181818 * whiteNoteWidth, 
+        noteWidth;
+    
     for(let i = 0; i < size; ++i){
          
         let note = songArray[i].note;
 
         if(note.includes("b"))
-            noteWidth = 0.19;
+            noteWidth = blackNoteWidth;
         else
-            noteWidth = pianoLength/36 - 0.1;
+            noteWidth = whiteNoteWidth;
 
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime);
     }
+
+  //  console.log('key:' + noteBlockArray[0].note + ' startTime: ' + noteBlockArray[0].startTime + 'StopTime: ' + noteBlockArray[0].stopTime);
+  //  console.log('key:' + noteBlockArray[1].note + ' startTime: ' + noteBlockArray[1].startTime + 'StopTime: ' + noteBlockArray[1].stopTime);
 
     return noteBlockArray;
     

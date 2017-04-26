@@ -9,7 +9,12 @@ function getPositionX(n){
             right = 11.05;
         pianoLength = right-left,
         noteWidth = pianoLength/(36),
-        noteCenter = pianoLength/(36*2);
+        blackNoteWidth = 0.68181818 * noteWidth,
+
+        noteCenter = noteWidth/2,
+        BlackNoteCenter = blackNoteWidth/2,
+        blackDist1 = 0.59090909 * noteWidth,
+        blackDist2 = 1.18181818 * noteWidth;
 
     switch(n){
 
@@ -45,37 +50,48 @@ function getPositionX(n){
     case 'G4':  return left+51*noteCenter; break;
     case 'A4':  return left+53*noteCenter; break;
     case 'B4':  return left+55*noteCenter; break;
-/*
-    case 'C3':  return -0.8; break;
- 
-    case 'D3':  return -0.42; break;
-    
-    case 'E3':  return -0.04; break;
-    case 'F3':  return 0.27; break;
-    case 'Gb3':  return 0.42; break;
-    case 'G3':   return 0.65; break;
-    case 'Ab3':  return 0.83; break;
-    case 'A3':  return 1.03; break;
-    case 'Bb3':  return 1.23; break;
-    case 'B3':  return 1.39; break;
-    case 'C4':  return 1.7;  break;
-    case 'Db4':  return 1.85; break;
-    case 'D4':  return 2.07; break;
-    case 'Eb4':  return 2.27; break;
-    case 'E4':  return 2.45; break;
-    case 'F4':  return 2.77; break;
-    case 'Gb4':  return 2.89; break;
-    case 'G4':  return 3.12; break;
-    case 'Ab4':  return 3.27; break;
-    case 'A4':  return 3.49; break;
-    case 'Bb4':  return 3.68; break;
-    case 'B4':  return 3.85; break;
+
+    case 'C5':  return left+57*noteCenter; break;
+    case 'D5':  return left+59*noteCenter; break;
+    case 'E5':  return left+61*noteCenter; break;
+    case 'F5':  return left+63*noteCenter; break;
+    case 'G5':  return left+65*noteCenter; break;
+    case 'A5':  return left+67*noteCenter; break;
+    case 'B5':  return left+69*noteCenter; break;
+
 
     // Black notes
-    case 'Db3':  return -0.64; break;
-    case 'Eb3':  return -0.21; break;
 
-*/
+    case 'Db1':  return left + 1 * blackDist1 + BlackNoteCenter; break;
+    case 'Eb1':  return left + 2 * blackDist1 + 1 *blackNoteWidth + BlackNoteCenter; break;
+
+    case 'Gb1':  return left + 4 * blackDist1 + 2 * blackNoteWidth + BlackNoteCenter; break;
+    case 'Ab1':  return left + 5 * blackDist1 + 3 * blackNoteWidth + BlackNoteCenter; break;
+    case 'Bb1':  return left + 6 * blackDist1 + 4 * blackNoteWidth + BlackNoteCenter; break;
+
+    case 'Db2':  return left + 8 * blackDist1 + 5 * blackNoteWidth + BlackNoteCenter; break;
+    case 'Eb2':  return left + 9 * blackDist1 + 2 * blackNoteWidth + BlackNoteCenter; break;
+
+    case 'Gb2':  return -0.64; break;
+    case 'Ab2':  return -0.64; break;
+    case 'Bb2':  return -0.64; break;
+
+    case 'Db3':  return -0.64; break;
+    case 'Eb3':  return -0.64; break;
+
+    case 'Gb3':  return -0.64; break;
+    case 'Ab3':  return -0.64; break;
+    case 'Bb3':  return -0.64; break;
+
+    case 'Db4':  return -0.64; break;
+    case 'Eb4':  return -0.64; break;
+
+    case 'Gb4':  return -0.64; break;
+    case 'Ab4':  return -0.64; break;
+    case 'Bb4':  return -0.64; break;
+
+
+
 
     default: return 0;  break;
     }
