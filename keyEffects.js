@@ -6,6 +6,8 @@ function lightUp(key, startTime)
         if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
         {
             noteBlockArray[i].mesh.material.color.setHex(0x00ff00);
+                bloomIntensity = 10.0;
+                bloomSpread = 0.8;
          //   noteBlockArray[i].mesh.position.z = 2;
             break;
         }
