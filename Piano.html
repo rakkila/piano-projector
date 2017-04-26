@@ -120,9 +120,9 @@ loadGeometries();
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
 //Creating scoreboard
-var dynamicTexture  = new THREEx.DynamicTexture(700/2,700);
+var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
 dynamicTexture.context.font	= "bolder 200px Verdana";
-var scoreGeo = new THREE.BoxGeometry(8, 2, 0.2);
+var scoreGeo = new THREE.BoxGeometry(12, 2, 0.2);
 var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
 var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
 scoreBoard.position.set(-10,4,0);
@@ -174,7 +174,7 @@ function animate(){
     //cameraRight.position.y = elapsedTime * tempo;
 
     //Update score
-    dynamicTexture.clear('blue').drawText(keyboard.getTotalPoints(), 60, 300, 'white');
+    dynamicTexture.clear('blue').drawText(getScore(), 150, 200, 'white');
   
     requestAnimationFrame(animate);
 

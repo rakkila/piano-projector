@@ -3,16 +3,12 @@
  * Using MIDI.js for loading soundfont and play sound
  * Using WebMidi for event listeners
  */
+var totalpoints = 0;
 
 class Keyboard{
 
-    constructor(){
-        this.totalpoints = 0;
-    }
+    constructor(){}
 
-    getTotalPoints(){
-        return this.totalpoints;
-    }
 
     startInputOutput(song){
 
@@ -23,7 +19,7 @@ class Keyboard{
             onfailure: function() {console.log('Failed to load soundfont to MIDI keyboard')},
             onsuccess: function() {
 
-                var totalpoints = 0;
+
                 var point = 0;
                 var pArray = [];
                 //var a = [];
@@ -64,6 +60,7 @@ class Keyboard{
                                 let octave = e.note.octave + 2,
                                     note = sharpToFlat(e.note.name),
                                     key = note + octave;
+     
 
                               //  console.log("off" + ',' + key + ',' + time);
                                // a.push(time);
@@ -78,10 +75,15 @@ class Keyboard{
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect
                                 MIDI.noteOff(0, MIDI.keyToNote[key], 0);
+
+                                //Want to reach totalpoints in animation loop
+                                totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
+                           
+
                             });
 
-                            //Want to reach totalpoints in animation loop
-                            this.totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
+
+
 
                         }
                         else
@@ -106,6 +108,10 @@ function sharpToFlat(note){
     }
     return note;
 
+}
+
+function getScore(){
+    return totalpoints;
 }
 
 

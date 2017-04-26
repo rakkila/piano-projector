@@ -36,7 +36,6 @@ function noteoff(keyOff, timeOff, pArray, aPoint)
         if (keyOff == pArray[i].note)
         {
 
-            console.log('FOUND KEYOFF!!! stoptime = ' + pArray[i].stoptime);
            // lightOff(keyOff, pArray[i].stoptime);
             
             if((Math.abs(pArray[i].stoptime - timeOff) > 1500) && pArray[i].points != 0)
