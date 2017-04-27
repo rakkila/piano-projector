@@ -10,10 +10,10 @@ class NoteBlock{
         this.blockWidth = width;
         this.startTime = startTime;
         this.stopTime = stopTime;
-        this.noteLength = (stopTime - startTime)*0.005 ;
-        this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001), 
-                    new THREE.MeshPhongMaterial({color: 0x0000ff}))
+        this.noteLength = (stopTime - startTime)*0.005;
 
+                    this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001),       
+                    new THREE.MeshPhongMaterial({color: 0x0000ffff}));
     }
 
     toString () {
@@ -32,8 +32,21 @@ function loadNoteBlocks(){
     let left = -10.20,
     right = 11.05;
     pianoLength = right-left;
+    let noKeys = location.search.substring(1).split("?")[0],
+        NoWhiteKeys = 0;
 
-    let whiteNoteWidth = pianoLength/36 - 0.1, 
+    if(noKeys == 49)
+    {
+        noWhiteKeys = 49 - 20;
+    }
+    else if(noKeys == 61)
+    {
+        noWhiteKeys = 61 - 25;
+    }
+    else
+        noWhiteKeys = 88 - 36;
+
+    let whiteNoteWidth = pianoLength/noWhiteKeys - 0.1, 
         blackNoteWidth = 0.68181818 * whiteNoteWidth, 
         noteWidth;
     
@@ -42,9 +55,9 @@ function loadNoteBlocks(){
         let note = songArray[i].note;
 
         if(note.includes("b"))
-            noteWidth = blackNoteWidth;
+            noteWidth = 0.19;
         else
-            noteWidth = whiteNoteWidth;
+            noteWidth =  pianoLength/36 - 0.1;
 
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime);
     }

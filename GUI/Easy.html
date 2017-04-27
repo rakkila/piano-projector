@@ -6,8 +6,13 @@
         <script>
             //Sending songID from clicked button
             function sendID(id){
-                window.location.href = "../Piano.html?" + id;
+                window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
+
+            function getID(){
+            return location.search.substring(1).split("?")[0];
+        }
+        
         </script>
 
     </head>

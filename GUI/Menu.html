@@ -4,20 +4,25 @@
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
     </head>
     <body>
-    <script>//Menu level of difficulty</script>
+
     <h1>Level of difficulty</h1>
         <ul id="meny">
-            <li><a href="Easy.html" target="_self">Easy</a></li>
+            <li><a id = "Easy" onclick ="sendID(this.id)">Easy</a></li>
             <li><a href="Medium.html" target="_self">Medium</a></li>
             <li><a href="Hard.html" target="_self">Hard</a></li>
-
-            <li><a id ="jason_mraz" onclick="sendID(this.id);">Jason Mraz - I'm Yours</a></li>
 
         </ul>
         <ul id="back">
             <li><a href="javascript:history.back()" target="_self">Go back</a></li>
         </ul>
         <script>
+        
+            function sendID(id){
+                window.location.href = id + ".html?" + getID() ;
+            }
+                function getID(){
+                return location.search.substring(1).split("?")[0];
+            }
 
         let NOfKeys = location.search.substring(6).split("?keys=");
 

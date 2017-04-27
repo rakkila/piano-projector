@@ -10,13 +10,16 @@
             <h1>Calibration</h1>
 
             <ul id="back">
-                <li><a id ="CalibrationDone" onclick="sendID(this.id);">Done</a></li>
+                <li><a onclick="sendID();">Done</a></li>
                 <li><a href="javascript:history.back()" target="_self">Go back</a></li>
             </ul>
 
         <script>
-                function sendID(id){
-                window.location.href = "Menu.html?" + id;
+                function sendID(){
+                window.location.href = "Menu.html?" + getID();
+            }
+                function getID(){
+                return location.search.substring(1).split("?")[0];
             }
 
                 var scene = new THREE.Scene();

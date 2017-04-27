@@ -4,17 +4,39 @@
 
 function getPositionX(n){
 
+    let noKeys = location.search.substring(1).split("?")[0],
+    
+    noWhiteKeys = 0,
+    noBlackKeys = 0;
+
+    if(noKeys == 49)
+    {
+        noWhiteKeys = 29;
+        noBlackKeys = 20;
+    }
+    else if(noKeys == 61)
+    {
+        noWhiteKeys = 36;
+        noBlackKeys = 25;
+    }
+    else
+    {
+        noWhiteKeys = 88 - 36;
+        noBlackKeys = 36;
+    }   
 
         let left = -10.20,
-            right = 11.05;
-        pianoLength = right-left,
-        noteWidth = pianoLength/(36),
-        blackNoteWidth = 0.68181818 * noteWidth,
+            right = 11.05,
+            pianoLength = right-left,
 
-        noteCenter = noteWidth/2,
-        BlackNoteCenter = blackNoteWidth/2,
-        blackDist1 = 0.59090909 * noteWidth,
-        blackDist2 = 1.18181818 * noteWidth;
+            noteWidth = pianoLength/noWhiteKeys,
+            blackNoteWidth = 0.68181818 * noteWidth,
+            noteCenter = noteWidth/2,
+
+            blackNoteCenter = blackNoteWidth/2,
+            blackDist1 = 0.59090909 * noteWidth,
+            blackDist2 = 1.18181818 * noteWidth;
+
 
     switch(n){
 

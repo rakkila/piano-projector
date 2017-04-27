@@ -36,6 +36,7 @@
     <script src="lib/webmidi/src/webmidi.js">
 
     </script>
+    <script src="lib\threex.dynamictexture.js"></script>
     <script src="lib\three.js-master\docs\build\three.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
@@ -56,6 +57,7 @@
     <script src="SongResizer.js"></script>
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
+    
 
 </head>
 
@@ -64,11 +66,12 @@
 
 //Global variables
 var keyboard = new Keyboard();
-var song = new Song(location.search.substring(1).split("?")[0]);
+var song = new Song(location.search.substring(1).split("?")[1]);
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var blockIndex = 0;
-var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
+var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
+
 var startTime;
 //var fullScoreCounter = 0;
 //var starPower = false;
@@ -171,7 +174,7 @@ function animate(){
     }
 
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
+   /* if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
 
         scene.add(noteBlockArray[blockIndex].mesh);
 
@@ -179,7 +182,7 @@ function animate(){
         {
         
             scene.add(noteBlockArray[blockIndex+1].mesh);
-            console.log('yes!');
+
             noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
@@ -191,7 +194,7 @@ function animate(){
                         if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
                         {
                             scene.add(noteBlockArray[blockIndex+1].mesh);
-                            console.log('yes! 2');
+
                             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
                             noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y;
@@ -205,8 +208,6 @@ function animate(){
         else {
                 noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-                console.log(elapsedTime);
-
                 noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
 
             
@@ -216,7 +217,15 @@ function animate(){
         blockIndex++;
             
     }
+*/
 
+    if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
+        scene.add(noteBlockArray[blockIndex].mesh);
+        noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+        blockIndex++;
+            
+    }
 
     //Update score
     dynamicTexture.clear('blue').drawText(getScore(), 150, 200, 'white');
@@ -234,6 +243,7 @@ function animate(){
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
+    scoreBoard.position.y = cameraLeft.position.y;
   
     requestAnimationFrame(animate);
 

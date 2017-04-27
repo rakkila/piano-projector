@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
 
+
     </head>
     <body>
         <div>
@@ -23,76 +24,6 @@
                 window.location.href = "Calibrate.html?" + id;
                 }
 
-                var scene = new THREE.Scene();
-                var renderer = new THREE.WebGLRenderer();
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.setClearColor( 0xfaf0e6 );
-                document.body.appendChild( renderer.domElement );
-
-                cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-                //var helper1 = new THREE.CameraHelper(cameraLeft);
-                //scene.add(helper1);
-                cameraLeft.position.set( 0, 0, 10 );
-                scene.add(cameraLeft);
-                cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-                cameraRight.position.set( 0, 0, 10);
-                scene.add(cameraRight);
-                let width = Math.round(window.innerWidth / 2),
-                    height = window.innerHeight;
-                /*
-                var line = new THREE.BoxGeometry(0.015, 15, 0.015);
-                var linematerial = new THREE.MeshPhongMaterial({color: 0x00ff00});
-                var theLine = new THREE.Mesh(line, linematerial);
-                var theLine2 = new THREE.Mesh(line, linematerial);
-                */
-                
-                var linegeometry = new THREE.Geometry();
-                var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-                linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
-                linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
-                var theLine = new THREE.Line(linegeometry, linematerial);
-                var theLine2 = new THREE.Line(linegeometry, linematerial);
-
-                scene.add(theLine);
-                scene.add(theLine2);
-                theLine.position.x = 11.05;
-                theLine2.position.x = -10.22;
-
-                let left = -10.20,
-                    right = 11.05;
-                var pianoLength = right-left,
-                noteWidth = pianoLength/(36),
-                noteCenter = pianoLength/(36*2);
-                var g = new THREE.BoxGeometry((pianoLength)/36 - 0.07, 5, 0.01);
-                var j = [];
-                var counter = 1;
-
-                for(let i = 0; i < 36; ++i){
-                    
-                    j[i] = new THREE.Mesh(g,linematerial);
-                    j[i].position.x = left + counter*noteCenter; 
-                    j[i].position.y = -2;
-                    scene.add(j[i]);
-
-                    counter += 2;
-
-                }
-
-                renderer.setViewport( 0, 0, width, height);
-                renderer.setScissor( 0, 0, width, height);
-                renderer.setScissorTest ( true );
-                cameraLeft.aspect = width * 2 / height;
-                cameraLeft.updateProjectionMatrix();
-                //cameraLeft.position.x = -separation;
-                renderer.render( scene, cameraLeft );
-                renderer.setViewport( width, 0, width, height);
-                renderer.setScissor( width, 0, width, height);
-                renderer.setScissorTest ( true );
-                cameraRight.aspect = width * 2 / height;
-                cameraRight.updateProjectionMatrix();
-                //cameraRight.position.x = separation; 
-                renderer.render( scene, cameraRight );
-         
         </script>
 
 
