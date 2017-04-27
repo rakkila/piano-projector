@@ -3,11 +3,15 @@
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
         <meta charset="utf-8"/>
-        <script>
+       <script>
+
             //Sending songID from clicked button
             function sendID(id){
-                window.location.href = "../Piano.html?" + id;
+                window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
+            function getID(){
+            return location.search.substring(1).split("?")[0];
+        }
         </script>
 
     </head>
@@ -16,27 +20,32 @@
             <div class="background-image"></div>
 
             <h1>Easy</h1>
-            <ul id="meny">
-                <li><a id ="jason_mraz" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                <li><a id ="roses" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                <li><a id ="korv" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
-            </ul>
-            <ul id="back">
-                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
-            </ul>
+            <div class ="songList">
+                <ul id="meny">
+                    <li><a id ="jason_mraz" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                </ul>
+                <ul id="back">
+                    <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+                </ul>
+            </div>
         </div>
+
          <div class="right">
             <div class="background-image"></div>
 
             <h1>Easy</h1>
-            <ul id="meny">
-                <li><a id ="jason_mraz" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                <li><a id ="roses" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                <li><a id ="korv" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
-            </ul>
-            <ul id="back">
-                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
-            </ul>
+            <div class ="songList">
+                <ul id="meny">
+                    <li><a id ="jason_mraz" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                </ul>
+                <ul id="back">
+                    <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+                </ul>
+            </div>
         </div>
     </body>
 </html>   

@@ -2,7 +2,7 @@
 body {
 	margin: 0px;
 	overflow: hidden;
-	background-color: lightblue;
+	background-color: black;
 	height: 100%;
 }
 h1 {
@@ -15,9 +15,55 @@ h1 {
 	text-shadow: -7px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
+h2{
+	font-size: 30px;
+	margin-left: 5%;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	color:lightskyblue;
+	text-align: left;
+	transform: rotate(-2deg);
+	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
+}
+
 h3{
 	font-size: 20px;
 }
+
+/* Calibrate.html */
+.left p , .right p{
+	color: white;
+	font-size: 20px;
+	transform: rotate(-2deg);
+	margin-left: 7%;
+	width:400px;
+}
+
+.left #letsPlay li a, .right #letsPlay li a{
+	display: block;
+	width: 300px;
+	height: 50px;
+	margin-left: 10%;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 40px;
+	color: lightskyblue;
+	border-radius: 5px;
+	background: black;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transform: rotate(-2deg);
+	transition: 1s;
+	animation: fadein 1s;
+}
+
+.left #letsPlay li a:hover{
+	cursor: pointer;
+	background: gray;
+	color: white;
+	border: 1px solid gray;
+}
+
+/* end of Calibrate.html */
 
 .left{
 	width:50%;
@@ -90,6 +136,23 @@ ul {
 	font-size: 30px;
 	color: lightskyblue;
 	border-radius: 5px;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transition: 0.5s;
+	animation: fadein 1s;
+}
+.songList{
+	margin-top: -5%;
+	padding-left: 5%;
+}
+.songList #meny li a {
+	display: block;
+	width: 350px;
+	height: 10px auto;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	color: lightskyblue;
+	border-radius: 10px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	transition: 0.5s;
 	animation: fadein 1s;

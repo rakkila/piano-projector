@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+       <script src="../lib\three.js-master\docs\build\three.js"></script>
+    </head>
+
+      <body>
+            <div class ="left">
+                <h2>2. Adjust your keyboard setup</h2>
+
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a onclick="sendID();">Let's play!</a></li>
+                </ul>
+            </div>
+            <div class ="right">
+                <h2>2. Adjust your keyboard setup</h2>
+                
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a onclick="sendID();">Let's Play!</a></li>
+                </ul>
+            </div>
+
+        <script>
+                function sendID(){
+                window.location.href = "Menu.html?" + getID();
+            }
+                function getID(){
+                return location.search.substring(1).split("?")[0];
+            }
+                var scene = new THREE.Scene();
+                var renderer = new THREE.WebGLRenderer();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor( 0x000000 );
+                document.body.appendChild( renderer.domElement );
+                cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+                //var helper1 = new THREE.CameraHelper(cameraLeft);
+                //scene.add(helper1);
+                cameraLeft.position.set( 0, 0, 10 );
+                scene.add(cameraLeft);
+                cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+                cameraRight.position.set( 0, 0, 10);
+                scene.add(cameraRight);
+                let width = Math.round(window.innerWidth / 2),
+                    height = window.innerHeight;
+
+                var linegeometry = new THREE.Geometry();
+                var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+                linegeometry.vertices.push(new THREE.Vector3(0, -3, 0));
+                linegeometry.vertices.push(new THREE.Vector3(0, 3, 0));
+                var theLine = new THREE.Line(linegeometry, linematerial);
+                var theLine2 = new THREE.Line(linegeometry, linematerial);
+                scene.add(theLine);
+                scene.add(theLine2);
+                theLine.position.x = 11.05;
+                theLine2.position.x = -10.22;
+               
+                renderer.setViewport( 0, 0, width, height);
+                renderer.setScissor( 0, 0, width, height);
+                renderer.setScissorTest ( true );
+                cameraLeft.aspect = width * 2 / height;
+                cameraLeft.updateProjectionMatrix();
+                //cameraLeft.position.x = -separation;
+                renderer.render( scene, cameraLeft );
+                renderer.setViewport( width, 0, width, height);
+                renderer.setScissor( width, 0, width, height);
+                renderer.setScissorTest ( true );
+                cameraRight.aspect = width * 2 / height;
+                cameraRight.updateProjectionMatrix();
+                //cameraRight.position.x = separation; 
+                renderer.render( scene, cameraRight );
+   
+        </script>
+
+
+    </body>
+</html>  

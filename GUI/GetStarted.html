@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+
+
+    </head>
+    <body>
+        <div class ="left">
+            <h2>1. How many keys are on your keyboard?</h2>
+            <ul id="meny">
+                <li><a id ="49" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" onclick="sendID(this.id);">88</a></li>
+            </ul>
+            <ul id="back">
+                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+            </ul>
+        </div>
+
+        <div class ="left">
+            <h2>1. How many keys are on your keyboard?</h2>
+            <ul id="meny">
+                <li><a id ="49" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" onclick="sendID(this.id);">88</a></li>
+            </ul>
+            <ul id="back">
+                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+            </ul>
+        </div>
+        <script>
+               
+               //Sending songID from clicked button
+                function sendID(id){
+                window.location.href = "Calibrate.html?" + id;
+                }
+        </script>
+
+
+    </body>
+</html>   
