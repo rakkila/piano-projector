@@ -72,6 +72,7 @@ var noteBlockArray = [];
 var delBlockArray = [];
 var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
+var animationID;
 
 var startTime;
 //var fullScoreCounter = 0;
@@ -148,10 +149,12 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
     //Creating scoreboard
     var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
     dynamicTexture.context.font	= "bolder 200px Verdana";
-    var scoreGeo = new THREE.BoxGeometry(12, 2, 0.2);
+    var scoreGeo = new THREE.BoxGeometry(12, 2, 2);
     var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
     var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
-    scoreBoard.position.set(-10,4,0);
+    scoreBoard.position.set(-10,12,0);
+    scoreBoard.rotation.x = Math.PI/45;
+    scoreBoard.rotation.y = -Math.PI/45;
     //scoreBoard.rotation.y = Math.PI/10;
     scene.add(scoreBoard);
     dynamicTexture.texture.needsUpdate = true;
@@ -187,7 +190,7 @@ function animate(){
             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
             noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y;
+            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
 
             blockIndex++;
 
@@ -197,7 +200,7 @@ function animate(){
 
                             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
 
-                            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y;
+                            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex-1].noteLength)/2
                             
                             blockIndex++;
 
@@ -224,9 +227,8 @@ function animate(){
             
     }
 
-
     //Update score
-    dynamicTexture.clear('blue').drawText(getScore(), 150, 200, 'white');
+    dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
 
 
 //implementera loop, peka på äldsta noten
@@ -245,9 +247,17 @@ function animate(){
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
-    scoreBoard.position.y = cameraLeft.position.y;
+    scoreBoard.position.y = cameraLeft.position.y +5;
   
-    requestAnimationFrame(animate);
+    animationID = requestAnimationFrame(animate);
+
+    // Cancel animation when the last block has left the scene
+    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime)
+    {
+        cancelAnimationFrame( animationID );
+        console.log('elapsedTime = ' + elapsedTime + 'stopTime = ' + noteBlockArray[noteBlockArray.length-1].stopTime);
+    }
+        
 
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);

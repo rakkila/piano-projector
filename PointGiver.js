@@ -11,7 +11,8 @@ function noteon(keyOn, timeOn, pArray)
         if (keyOn == pArray[i].note)
         {
              
-    
+            console.log('HIT!');
+
             if( Math.abs(pArray[i].starttime - timeOn) < 200 && timeOn < pArray[i].stoptime)
             {
                 console.log(Math.abs(pArray[i].starttime - timeOn));
