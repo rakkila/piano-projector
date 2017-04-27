@@ -211,27 +211,27 @@ function animate(){
   //  console.log(elapsedTime*tempo / velCounter);
 
     }
+    
     //Adding note blocks to scene (depending on song)
-
     if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
 
-
         scene.add(noteBlockArray[blockIndex].mesh);
-
+        noteBlockArray[blockIndex].active = true;
         noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-
-
         noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-
-
-        blockIndex++;
-            
+        blockIndex++;       
     }
 
 
-//implementera loop, peka på äldsta noten
-   if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
-        scene.remove(noteBlockArray[blockIndex].mesh);
+    //implementera loop, peka på äldsta noten
+    for(var i = 0; i <= blockIndex; i++){
+        if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
+            scene.remove(noteBlockArray[i].mesh);
+            console.log("removed from scene: " + noteBlockArray[i].stopTime);
+            noteBlockArray[i].active = false;
+        }
+    }   
+        
 
     //Translating blocks 
     cameraLeft.position.y = elapsedTime * tempo;

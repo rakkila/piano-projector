@@ -6,6 +6,7 @@ class NoteBlock{
 
     constructor(note, width, startTime, stopTime){
 
+        this.active = new Boolean(false);
         this.note = note;
         this.blockWidth = width;
         this.startTime = startTime;
@@ -29,7 +30,7 @@ function loadNoteBlocks(){
     let size = songArray.length;
     var noteBlockArray = new Array(size);
     //let noteWidth;
-    
+
         let left = -10.20,
             right = 11.05;
         pianoLength = right-left;
