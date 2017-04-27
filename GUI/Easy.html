@@ -10,9 +10,60 @@
             function sendID(id){
                 window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
+
             function getID(){
-            return location.search.substring(1).split("?")[0];
-        }
+                return location.search.substring(1).split("?")[0];
+            }
+
+            //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+
+                //Fetching MIDI input
+                var input = WebMidi.inputs[0];
+
+                //Checking if MIDI input is connected
+                if(typeof input != 'undefined'){
+
+                    //Listening for a 'note on' message (on all channels) 
+                    input.addListener('noteon', "all", function(e){ 
+
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,   
+                            key = note + octave;
+
+                        //Button animation on key pressed
+                        if(key == 'C4')
+                            document.getElementById('jason_mraz').style.opacity = 1;
+                        else if(key == 'D4')
+                            document.getElementById('roses').style.opacity = 1;
+                        else if(key == 'E4')
+                            document.getElementById('korv').style.opacity = 1;
+                    });
+
+                    //Listening for a 'note off' message (on all channels) 
+                    input.addListener('noteoff', 'all', function(e){
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,
+                            key = note + octave;
+
+                        //Checking which key is pressed and going to next page with that information
+                        if(key == 'C4')
+                            sendID('jason_mraz');
+                        else if(key == 'D4')
+                            sendID('roses');
+                        else if(key == 'E4')
+                            sendID('korv');
+                            
+                    });
+                }
+                else
+                    console.log('MIDI input not connected');
+            })
+
         </script>
 
     </head>

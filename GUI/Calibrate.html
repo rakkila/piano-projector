@@ -3,29 +3,7 @@
     <head>
        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
        <script src="../lib\three.js-master\docs\build\three.js"></script>
-    </head>
-
-      <body>
-            <div class ="left">
-                <h2>2. Adjust your keyboard setup</h2>
-
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
-
-                <ul id="letsPlay">
-                    <li><a onclick="sendID();">Let's play!</a></li>
-                </ul>
-            </div>
-            <div class ="right">
-                <h2>2. Adjust your keyboard setup</h2>
-                
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
-
-                <ul id="letsPlay">
-                    <li><a onclick="sendID();">Let's Play!</a></li>
-                </ul>
-            </div>
-
-        <script>
+       <script>
             function sendID(){
                 window.location.href = "Menu.html?" + getID();
             }
@@ -96,7 +74,20 @@
                                 note = e.note.name,   
                                 key = note + octave;
 
-                            if(key == 'C4')
+                            //Button animation on key pressed
+                            if(key == 'D4')
+                                document.getElementById('play').style.opacity = 1;
+                                
+                        });
+
+                         //Listening for a 'note off' message (on all channels) 
+                        input.addListener('noteoff', 'all', function(e){
+                            let octave = e.note.octave + 2,
+                                note = e.note.name,
+                                key = note + octave;
+
+                            //Checking which key is pressed and going to next page with that information
+                            if(key == 'D4')
                                 sendID();
                                 
                         });
@@ -107,6 +98,26 @@
    
         </script>
 
+    </head>
 
+      <body>
+            <div class ="left">
+                <h2>2. Adjust your keyboard setup</h2>
+
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a id="play" onclick="sendID();">Let's play!</a></li>
+                </ul>
+            </div>
+            <div class ="right">
+                <h2>2. Adjust your keyboard setup</h2>
+                
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a id="play" onclick="sendID();">Let's Play!</a></li>
+                </ul>
+            </div>
     </body>
 </html>  
