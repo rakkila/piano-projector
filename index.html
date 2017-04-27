@@ -22,17 +22,10 @@
                 //Listening for a 'note on' message (on all channels) 
                 input.addListener('noteon', "all", function(e){ 
 
-                    let octave = e.note.octave + 2,
-                        note = e.note.name,   
-                        key = note + octave;
-
-
-                    if(key == 'C4')
-                        window.location.href = "GUI/GetStarted.html";
+                    //Go to next page when user presses a key
+                    window.location.href = "GUI/GetStarted.html";
 
                 });
-
-
             }
             else
                 console.log('MIDI input not connected');
@@ -43,20 +36,28 @@
 <body>
     <div class ="left">
         <div class="background-image"></div>
-            <h1>Piano-projector</h1>
+            <!--<h1>Piano-projector</h1>-->
 
-            <ul id="meny">
-                <li><a href="GUI/GetStarted.html">Get Started</a></li>
-            </ul>
+            <div class ="getStarted">
+                <h2>Let's get started!
+                <i>First step is to calibrate your keyboard</i>
+                </h2>
+            </div>
+            <p id="infoText">Press any key on your keyboard to continue</p>
+
+            <a href ="GUI/GetStarted.html">get started..</a>
     </div>
 
      <div class ="right">
         <div class="background-image"></div>
-            <h1>Piano-projector</h1>
+            <!--<h1>Piano-projector</h1>-->
 
-            <ul id="meny">
-                <li><a href="GUI/GetStarted.html">Get Started</a></li>
-            </ul>
+            <div class ="getStarted">
+                <h2>Let's get started!
+                <i>First step is to calibrate your keyboard</i>
+                </h2>
+            </div>
+            <p id="infoText">Press any key on your keyboard to continue</p>
     </div>
 
 </body>

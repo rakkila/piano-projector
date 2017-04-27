@@ -10,32 +10,75 @@ h1 {
 	margin-left: 5%;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	color:lightskyblue;
-	text-align: left;
-	transform: rotate(-2deg);
+	text-align: center;
+	/*transform: rotate(-2deg);*/
 	text-shadow: -7px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
 h2{
 	font-size: 30px;
 	margin-left: 5%;
+	padding-top: 5%;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	color:lightskyblue;
-	text-align: left;
-	transform: rotate(-2deg);
+	text-align: center;
+	/*transform: rotate(-2deg);*/
 	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
 h3{
 	font-size: 20px;
 }
+/* index.html */
+.getStarted{
+	width: 500px;
+	margin: 0 auto 0 auto;
+	padding-top: 20%;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	color: lightskyblue;
+	animation: fadein 4s;
+}
+
+.getStarted h2{
+	font-size: 54px;
+}
+.getStarted i {
+	font-size: 20px;
+	text-shadow: none;
+	margin-left: 4%;
+	font-weight: normal;
+}
+
+#infoText{
+	padding-top: 30%;
+}
+
+.red{
+	background: red;
+}
+.green{
+	background: green;
+}
+.blue{
+	background: blue;
+}
+/* end of index.html*/
 
 /* Calibrate.html */
 .left p , .right p{
 	color: white;
 	font-size: 20px;
-	transform: rotate(-2deg);
-	margin-left: 7%;
+	/*transform: rotate(-2deg);*/
+	text-align: center;
+	padding-left: 21%;
 	width:400px;
+}
+
+#letsPlay{
+	padding-top: 5%;
+	padding-left: 20%;
 }
 
 .left #letsPlay li a, .right #letsPlay li a{
@@ -47,11 +90,11 @@ h3{
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	font-size: 40px;
-	color: lightskyblue;
+	color: white;
 	border-radius: 5px;
-	background: black;
+	background: green;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
-	transform: rotate(-2deg);
+	/*transform: rotate(-2deg);*/
 	transition: 1s;
 	animation: fadein 1s;
 }
@@ -93,8 +136,7 @@ h3{
 }
 
 #meny{
-	transform: rotate(-2deg);
-	padding-right: 35%;
+	/*transform: rotate(-2deg);*/
 	margin-top: 35%;
 }
 
@@ -134,12 +176,18 @@ ul {
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	font-size: 30px;
-	color: lightskyblue;
+	color: white;
 	border-radius: 5px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	transition: 0.5s;
-	animation: fadein 1s;
+	animation: fadein 2s;
 }
+
+#meny .red{
+	background: red;
+}
+
+/* Menu.html */
 .songList{
 	margin-top: -5%;
 	padding-left: 5%;
@@ -151,20 +199,26 @@ ul {
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	font-size: 30px;
-	color: lightskyblue;
+	color: white;
 	border-radius: 10px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	transition: 0.5s;
-	animation: fadein 1s;
+	animation: fadein 2s;
 }
+
+.songList .red{
+	background: red;
+}
+.songList .green{
+	background: green;
+}
+.songList .blue{
+	background: blue;
+}
+
+/* end of Menu.html */
 
 /* Listelement <LI> med tillbaka */
-
-#back{
-	padding-right: 35%;
-	transform: rotate(-2deg);
-}
-
 #back li {
 	list-style: none;
 	margin: 5px 0 10px 0;
@@ -172,34 +226,23 @@ ul {
 #back a{
 	display: block;
 	width: 300px;
-	height: 50px;
+	height: 30px auto;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 40px;
-	color: lightskyblue;
+	font-size: 30px;
+	color: black;
+	background: yellow;
 	border-radius: 5px;
-	background: black;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
-	transition: 1.5s;
-	animation: fadein 1s;
+	transition: 0.5s;
+	animation: fadein 2s;
 }
 #back li a:hover {
 	cursor: pointer;
-	color: rgba(0,0,0,1);
 	background: red;
 	border: 1px solid rgba(255,0,0,1);
-}
-#back a:link, #meny a:visited {
-	color: rgba(255,255,255,1);
-	text-decoration: none;
-}
-#back a:active {
-	color: rgba(250,191,12,1);
-}
-#back a#current {
-	background: rgba(250,137,48,1);
 }
 
 /* Safari, Chrome and Opera > 12.1 */
