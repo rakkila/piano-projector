@@ -4,6 +4,40 @@
 
 <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
 
+<script>
+    //Enabling keyboard input
+     WebMidi.enable(function(err){ 
+        if(err) 
+            console.log("WebMidi could not be enabled");
+        else
+            console.log("WebMidi is enabled!");
+
+            //Fetching MIDI input
+            var input = WebMidi.inputs[0];
+
+            //Checking if MIDI input is connected
+            if(typeof input != 'undefined'){
+
+                //Listening for a 'note on' message (on all channels) 
+                input.addListener('noteon', "all", function(e){ 
+
+                    let octave = e.note.octave + 2,
+                        note = e.note.name,   
+                        key = note + octave;
+
+
+                    if(key == 'C4')
+                        window.location.href = "GUI/GetStarted.html";
+
+                });
+
+
+            }
+            else
+                console.log('MIDI input not connected');
+    })
+</script>
+
 </head>
 <body>
     <div class ="left">
