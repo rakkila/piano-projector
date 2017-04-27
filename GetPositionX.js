@@ -85,14 +85,14 @@ function getPositionX(n){
     // Black notes
 
     case 'Db1':  return left + 1 * blackDist1 + BlackNoteCenter; break;
-    case 'Eb1':  return left + 2 * blackDist1 + 1 *blackNoteWidth + BlackNoteCenter; break;
+    case 'Eb1':  return left + 2 * blackDist1 + 1 *blackNoteWidth + blackNoteCenter; break;
 
-    case 'Gb1':  return left + 4 * blackDist1 + 2 * blackNoteWidth + BlackNoteCenter; break;
-    case 'Ab1':  return left + 5 * blackDist1 + 3 * blackNoteWidth + BlackNoteCenter; break;
-    case 'Bb1':  return left + 6 * blackDist1 + 4 * blackNoteWidth + BlackNoteCenter; break;
+    case 'Gb1':  return left + 4 * blackDist1 + 2 * blackNoteWidth + blackNoteCenter; break;
+    case 'Ab1':  return left + 5 * blackDist1 + 3 * blackNoteWidth + blackNoteCenter; break;
+    case 'Bb1':  return left + 6 * blackDist1 + 4 * blackNoteWidth + blackNoteCenter; break;
 
-    case 'Db2':  return left + 8 * blackDist1 + 5 * blackNoteWidth + BlackNoteCenter; break;
-    case 'Eb2':  return left + 9 * blackDist1 + 2 * blackNoteWidth + BlackNoteCenter; break;
+    case 'Db2':  return left + 8 * blackDist1 + 5 * blackNoteWidth + blackNoteCenter; break;
+    case 'Eb2':  return left + 9 * blackDist1 + 2 * blackNoteWidth + blackNoteCenter; break;
 
     case 'Gb2':  return -0.64; break;
     case 'Ab2':  return -0.64; break;
