@@ -20,7 +20,7 @@
             if(typeof input != 'undefined'){
 
                 //Listening for a 'note on' message (on all channels) 
-                input.addListener('noteon', "all", function(e){ 
+                input.addListener('noteoff', "all", function(e){ 
 
                     //Go to next page when user presses a key
                     window.location.href = "GUI/GetStarted.html";

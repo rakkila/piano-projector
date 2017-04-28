@@ -3,7 +3,31 @@
     <head>
        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
        <script src="../lib\three.js-master\docs\build\three.js"></script>
-       <script>
+       <script src = "../lib/webmidi/src/webmidi.js"> </script>
+
+    </head>
+
+      <body>
+            <div class ="left">
+                <h2>2. Adjust your keyboard setup</h2>
+
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a id="play" onclick="sendID();">Let's play!</a></li>
+                </ul>
+            </div>
+            <div class ="right">
+                <h2>2. Adjust your keyboard setup</h2>
+                
+                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+
+                <ul id="letsPlay">
+                    <li><a id="play" onclick="sendID();">Let's Play!</a></li>
+                </ul>
+            </div>
+
+                 <script>
             function sendID(){
                 window.location.href = "Menu.html?" + getID();
             }
@@ -76,7 +100,7 @@
 
                             //Button animation on key pressed
                             if(key == 'D4')
-                                document.getElementById('play').style.opacity = 1;
+                                document.getElementById('play').style.background = "green";
                                 
                         });
 
@@ -97,27 +121,5 @@
             })
    
         </script>
-
-    </head>
-
-      <body>
-            <div class ="left">
-                <h2>2. Adjust your keyboard setup</h2>
-
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
-
-                <ul id="letsPlay">
-                    <li><a id="play" onclick="sendID();">Let's play!</a></li>
-                </ul>
-            </div>
-            <div class ="right">
-                <h2>2. Adjust your keyboard setup</h2>
-                
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
-
-                <ul id="letsPlay">
-                    <li><a id="play" onclick="sendID();">Let's Play!</a></li>
-                </ul>
-            </div>
     </body>
 </html>  

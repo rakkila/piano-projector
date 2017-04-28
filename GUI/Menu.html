@@ -3,6 +3,8 @@
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
         <meta charset="utf-8"/>
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        
         <script>
              function sendID(id){
                 window.location.href = id + ".html?" + getID() ;
@@ -31,12 +33,21 @@
                             key = note + octave;
 
                         //Button animation on key pressed
-                        if(key == 'C4')
-                            document.getElementById('Easy').style.opacity = 1;
-                        else if(key == 'D4')
-                            document.getElementById('Medium').style.opacity = 1;
-                        else if(key == 'E4')
-                            document.getElementById('Hard').style.opacity = 1;
+                        if(key == 'C4'){
+                            document.getElementById('Easy').style.background = "red";
+                        }
+
+                        else if(key == 'D4'){
+                            document.getElementById('Medium').style.background = "green";
+                        }
+
+                        else if(key == 'E4'){
+                            document.getElementById('Hard').style.background = "blue";                               
+                        }
+                        else if(key == 'G4'){
+                                document.getElementById('goBack').style.background = "yellow";                               
+                        }
+
                     });
 
                     //Listening for a 'note off' message (on all channels) 
@@ -47,11 +58,13 @@
 
                         //Checking which key is pressed and going to next page with that information
                         if(key == 'C4')
-                            sendID('49');
+                            sendID('Easy');
                         else if(key == 'D4')
-                            sendID('61');
+                            sendID('Medium');
                         else if(key == 'E4')
-                            sendID('88');
+                            sendID('Hard');
+                        else if(key == 'G4')
+                            window.location.href = "javascript:history.back()";
                             
                     });
                 }
@@ -74,7 +87,7 @@
             </ul>
 
             <ul id="back">
-                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+                <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
             </ul>
 
         </div>

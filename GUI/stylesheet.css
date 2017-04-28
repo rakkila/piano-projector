@@ -12,6 +12,7 @@ h1 {
 	color:lightskyblue;
 	text-align: center;
 	/*transform: rotate(-2deg);*/
+	animation: fadein 4s;
 	text-shadow: -7px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
@@ -23,11 +24,13 @@ h2{
 	color:lightskyblue;
 	text-align: center;
 	/*transform: rotate(-2deg);*/
+	animation: fadein 4s;
 	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
 h3{
 	font-size: 20px;
+	animation: fadein 4s;
 }
 /* index.html */
 .getStarted{
@@ -56,16 +59,16 @@ h3{
 }
 
 .red{
-	background: red;
-	opacity: 0.6;
+	border: 4px solid red;
+	text-decoration: none;
 }
 .green{
-	background: green;
-	opacity: 0.6;
+	border: 4px solid green;
+	text-decoration: none;
 }
 .blue{
-	background: blue;
-	opacity: 0.6;
+	border: 4px solid blue;
+	text-decoration: none;
 }
 /* end of index.html*/
 
@@ -77,6 +80,7 @@ h3{
 	text-align: center;
 	padding-left: 21%;
 	width:400px;
+	animation: fadein 4s;
 }
 
 #letsPlay{
@@ -95,20 +99,13 @@ h3{
 	font-size: 40px;
 	color: white;
 	border-radius: 5px;
-	background: green;
-	opacity: 0.6;
+	border: 4px solid green;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	/*transform: rotate(-2deg);*/
 	transition: 1s;
-	animation: fadein 1s;
+	animation: fadein 4s;
 }
 
-.left #letsPlay li a:hover{
-	cursor: pointer;
-	background: gray;
-	color: white;
-	border: 1px solid gray;
-}
 
 /* end of Calibrate.html */
 
@@ -154,23 +151,7 @@ ul {
 	list-style: none;
 	margin: 5px 0 10px 0;
 }
-#meny li a:hover {
-	cursor: pointer;
-	background: gray;
-	color: white;
-	border: 1px solid gray;
-}
 
-#meny a:link, #meny a:visited {
-	color: rgba(255,255,255,1);
-	text-decoration: none;
-}
-#meny a:active {
-	color: rgba(250,191,12,1);
-}
-#meny a#current {
-	background: rgba(85,137,48,1);
-}
 #meny li a {
 	display: block;
 	width: 300px;
@@ -184,12 +165,9 @@ ul {
 	border-radius: 5px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	transition: 0.5s;
-	animation: fadein 2s;
+	animation: fadein 4s;
 }
 
-#meny .red{
-	background: red;
-}
 
 /* Menu.html */
 .songList{
@@ -210,16 +188,13 @@ ul {
 }
 
 .songList .red{
-	background: red;
-	opacity: 0.5;
+	border: solid 4px red;
 }
 .songList .green{
-	background: green;
-	opacity: 0.5;
+	border: solid 4px green;
 }
 .songList .blue{
-	background: blue;
-	opacity: 0.5;
+	border: solid 4px blue;
 }
 
 /* end of Menu.html */
@@ -235,24 +210,20 @@ ul {
 	height: 30px auto;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
+	text-decoration: none;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
 	font-size: 30px;
-	color: black;
-	background: yellow;
+	color: white;
+	border: 4px solid yellow;
 	border-radius: 5px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	transition: 0.5s;
-	animation: fadein 2s;
-}
-#back li a:hover {
-	cursor: pointer;
-	background: red;
-	border: 1px solid rgba(255,0,0,1);
+	animation: fadein 4s;
 }
 
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
     from { opacity: 0; }
-    to   { opacity: 0.6; }
+    to   { opacity: 1; }
 }
