@@ -72,8 +72,6 @@ var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 var startTime;
 var bloomBool = false;
-var bloomIntensity = 0.0; //10.0 when on
-var bloomSpread = 0.0; //0.8 when on
 //var fullScoreCounter = 0;
 //var starPower = false;
 function main(){
@@ -137,7 +135,7 @@ document.body.appendChild(renderer.domElement);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         //effectCopy.renderToScreen = true;
-        var bloomPass = new THREE.BloomBlendPass( bloomIntensity , bloomSpread , new THREE.Vector2(64, 64));
+        var bloomPass = new THREE.BloomBlendPass( 10 , 3 , new THREE.Vector2(100, 20));
             bloomPass.renderToScreen = true;
         
 //First composer
@@ -153,18 +151,7 @@ document.body.appendChild(renderer.domElement);
         composer2.addPass(effectCopy);
 //Render
         animate();
- //MESHES
-         function createMesh(geom) {
-            var specTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_specular_2048.jpg")
-            var normTex = THREE.TextureLoader("lib/three.js-master/examples/textures/planets/earth_atmos_2048.jpg")    
-            var sphereMaterial = new THREE.MeshPhongMaterial();
-            sphereMaterial.specularMap = specTex;
-            sphereMaterial.specular = new THREE.Color(0x4444aa);   
-            sphereMaterial.normalMap = normTex;
-            
-            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [sphereMaterial]);
-            return mesh;
-    }
+
 //////////////////////
 //Starting program
 main();
@@ -197,7 +184,8 @@ function animate(){
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
-  
+
+
     requestAnimationFrame(animate);
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
@@ -217,11 +205,12 @@ function animate(){
     cameraRight.updateProjectionMatrix();
     //cameraRight.position.x = separation; 
     //renderer.render( scene, cameraRight );
-    composer2.render();
+        composer2.render();
+    
 }
 function loadGeometries(){
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-    light.position.set( 5, 5, 5 );
+    light.position.set( 5, -5 , 4 );
     scene.add( light );
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
