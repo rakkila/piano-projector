@@ -95,22 +95,28 @@
         document.body.appendChild(renderer.domElement);
 
 /*        //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(20, 0.2, 1);
-        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
+        var geometry = new THREE.BoxGeometry(4.5, 0.05, 0.2);
+        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8});
         var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        // var material3 = new THREE.MeshPhongMaterial({ color: 0xff0000, wireframe: true});
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);*/
 
-        //Create test box
+/*        var line2 = line.clone();
+        line2.material = material3;
+        line2.material.needsUpdate = true;
+        scene.add(line2);*/
+
+/*        //Create test box
         var geometry = new THREE.BoxGeometry(2, 2, 2);
         var material = new THREE.MeshPhongMaterial({color: 0xff0000, wireframe: true});
         var box = new THREE.Mesh(geometry, material);
         
-        // scene.add(box);
+         scene.add(box);*/
 
-        var axisHelper = new THREE.AxisHelper(3);
+/*        var axisHelper = new THREE.AxisHelper(3);
         
-        scene.add(axisHelper);
+        line.add(axisHelper);*/
 
         //2D camera
         /*
@@ -134,16 +140,16 @@
         //Implement 3D camera
         //Correct frustum eye 3D camera 
         //Left perspective camera
-        // cameraLeft = new THREE.PerspectiveCamera(30.07, 0.88, 1, 4000);
+        // cameraLeft = new THREE.PerspectiveCamera(30.07, 0.88875, 1, 4000);
         cameraLeft = new THREE.PerspectiveCamera(30.07, (window.innerWidth/2)/ window.innerHeight, 1, 4000);
-        cameraLeft.position.set(-0.043, -3.89, 5.15);
+        cameraLeft.position.set(-0.08, -3.89, 5.15);//separation -0.043
         cameraLeft.lookAt(scene.position);
         scene.add(cameraLeft);
         
         //Right perspective camera
-        // cameraRight = new THREE.PerspectiveCamera(30.07, 0.88, 1, 4000);
+        // cameraRight = new THREE.PerspectiveCamera(30.07, 0.88875, 1, 4000);
         cameraRight = new THREE.PerspectiveCamera(30.07, (window.innerWidth/2)/ window.innerHeight, 1, 4000);
-        cameraRight.position.set(0.043, -3.89, 5.15);
+        cameraRight.position.set(0.08, -3.89, 5.15);//separation 0.043
         cameraRight.lookAt(scene.position);
         scene.add(cameraRight);
         var width = Math.round(window.innerWidth/2),
@@ -157,9 +163,8 @@
         main();
 
         function animate() {
-
             if (blockIndex < noteBlockArray.length) {
-                blockpos = Math.tan(75 * 0.5 * (Math.PI / 180)) * cameraLeft.position.z + noteBlockArray[blockIndex].noteLength / 2;
+                blockpos = Math.tan(75 * 0.5 * (Math.PI / 180)) * scene.position.z + noteBlockArray[blockIndex].noteLength / 2;
             }
 
             //Adding note blocks to scene (depending on song)
@@ -169,30 +174,29 @@
                 scene.add(noteBlockArray[blockIndex].mesh);
                 noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
 
-                noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos / 2;
+                noteBlockArray[blockIndex].mesh.position.y = scene.position.y + blockpos / 2;
 
                 blockIndex++;
             }
 
             //Translating blocks (camera)
-            cameraLeft.position.y += tempo;
-            cameraRight.position.y += tempo;
+            // cameraLeft.position.y += tempo;
+            // cameraRight.position.y += tempo;
 
-            // line.position.y = (scene.position.y - 4);
-            box.position.set(0, 0, 0);
+            // line.position.y = (scene.position.y)-1.7;
+            // line2.position.y = (scene.position.y)-1.7;
+
+            // box.position.set(0, 0, 0);
 
             requestAnimationFrame(animate);
 
-            // scene.updateMatrixWorld();
-
+            //Render 3D camera
             //Render left camera
             renderer.setViewport(0, 0, width, height);
             renderer.setScissor(0, 0, width, height);
             renderer.setScissorTest(true);
             cameraLeft.aspect = width * 2 / height;
             cameraLeft.updateProjectionMatrix();
-            // cameraLeft.updateMatrixWorld();
-            //cameraLeft.position.x = -separation;
             renderer.render(scene, cameraLeft);
 
             //Render right camera
@@ -201,10 +205,9 @@
             renderer.setScissorTest(true);
             cameraRight.aspect = width * 2 / height;
             cameraRight.updateProjectionMatrix();
-            // cameraRight.updateMatrixWorld();
-            //cameraRight.position.x = separation;
-             renderer.render(scene, cameraRight);
+            renderer.render(scene, cameraRight);
 
+            //Render 2D camera
             // renderer.render(scene, camera);
         }
 
@@ -257,7 +260,7 @@
             switch (s) {
 
                 case 'roses': tempo = 0.035; break;
-                case 'jason_mraz': tempo = 0.5; break;
+                case 'jason_mraz': tempo = 0.2; break;
                 case 'korv': tempo = 0.2; break;
 
                 default: tempo = 0.001; break;
