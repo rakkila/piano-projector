@@ -102,23 +102,30 @@ var scene = new THREE.Scene();
 
 
 /*        //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(20, 0.2, 1);
-        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
+        var geometry = new THREE.BoxGeometry(4.5, 0.05, 0.2);
+        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8});
         var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        // var material3 = new THREE.MeshPhongMaterial({ color: 0xff0000, wireframe: true});
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);*/
 
-        //Create test box
+/*        var line2 = line.clone();
+        line2.material = material3;
+        line2.material.needsUpdate = true;
+        scene.add(line2);*/
+
+/*        //Create test box
         var geometry = new THREE.BoxGeometry(2, 2, 2);
         var material = new THREE.MeshPhongMaterial({color: 0xff0000, wireframe: true});
         var box = new THREE.Mesh(geometry, material);
         
-        // scene.add(box);
+         scene.add(box);*/
 
-        var axisHelper = new THREE.AxisHelper(3);
+/*        var axisHelper = new THREE.AxisHelper(3);
         
-        scene.add(axisHelper);
+        line.add(axisHelper);*/
 
+<<<<<<< HEAD
 //2D camera
 /*
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -138,17 +145,23 @@ cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.
 cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);
 
-/*cameraLeft = new THREE.PerspectiveCamera( 30.07, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-//var helper1 = new THREE.CameraHelper(cameraLeft);
-//scene.add(helper1);
-cameraLeft.position.set(-0.08, -3.89, 5.16);
-cameraRight.lookAt(scene.position);
-scene.add(cameraLeft);
-
-cameraRight = new THREE.PerspectiveCamera( 30.07, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraRight.position.set(0.08, -3.89, 5.16);
-cameraRight.lookAt(scene.position);
-scene.add(cameraRight);*/
+/*        //Implement 3D camera
+        //Correct frustum eye 3D camera 
+        //Left perspective camera
+        // cameraLeft = new THREE.PerspectiveCamera(30.07, 0.88875, 1, 4000);
+        cameraLeft = new THREE.PerspectiveCamera(30.07, (window.innerWidth/2)/ window.innerHeight, 1, 4000);
+        cameraLeft.position.set(-0.08, -3.89, 5.15);//separation -0.043
+        cameraLeft.lookAt(scene.position);
+        scene.add(cameraLeft);
+        
+        //Right perspective camera
+        // cameraRight = new THREE.PerspectiveCamera(30.07, 0.88875, 1, 4000);
+        cameraRight = new THREE.PerspectiveCamera(30.07, (window.innerWidth/2)/ window.innerHeight, 1, 4000);
+        cameraRight.position.set(0.08, -3.89, 5.15);//separation 0.043
+        cameraRight.lookAt(scene.position);
+        scene.add(cameraRight);
+        var width = Math.round(window.innerWidth/2),
+            height = window.innerHeight;*/
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
@@ -365,6 +378,20 @@ function initEndingAnimation(totalpoints){
 </script>
 </body>
 
+<<<<<<< HEAD
+=======
+        //Setting tempo depending on song picked
+        function getSongTempo(s) {
+
+            switch (s) {
+
+                case 'roses': tempo = 0.035; break;
+                case 'jason_mraz': tempo = 0.2; break;
+                case 'korv': tempo = 0.2; break;
+
+                default: tempo = 0.001; break;
+            }
+>>>>>>> Correct frustum, blockpos needs change
 
 </html>
 
