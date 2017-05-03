@@ -3,17 +3,57 @@
 <head>
 
 <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
+<script src = "lib/webmidi/src/webmidi.js"> </script>
+
+<script>
+    //Enabling keyboard input
+     WebMidi.enable(function(err){ 
+        if(err) 
+            console.log("WebMidi could not be enabled");
+        else
+            console.log("WebMidi is enabled!");
+            //Fetching MIDI input
+            var input = WebMidi.inputs[0];
+            //Checking if MIDI input is connected
+            if(typeof input != 'undefined'){
+                //Listening for a 'note on' message (on all channels) 
+                input.addListener('noteoff', "all", function(e){ 
+                    //Go to next page when user presses a key
+                    window.location.href = "GUI/GetStarted.html";
+                });
+            }
+            else
+                console.log('MIDI input not connected');
+    })
+</script>
 
 </head>
 <body>
+    <div class ="left">
+        <div class="background-image"></div>
+            <!--<h1>Piano-projector</h1>-->
 
-    <h1>Piano-projector</h1>
+            <div class ="getStarted">
+                <h2>Let's get started!
+                <i>First step is to calibrate your keyboard</i>
+                </h2>
+            </div>
+            <p id="infoText">Press any key on your keyboard to continue</p>
 
-    <ul id="meny">
-         <li><a href="GUI/Menu.html" target="_self">Play</a></li>
-         <li><a href="GUI/GetStarted.html" target="_self">Get started</a></li>
-         <li><a href="Options.html" target="_self">Options</a></li>
-    </ul>
+            <a href ="GUI/GetStarted.html">get started..</a>
+    </div>
+
+     <div class ="right">
+        <div class="background-image"></div>
+            <!--<h1>Piano-projector</h1>-->
+
+            <div class ="getStarted">
+                <h2>Let's get started!
+                <i>First step is to calibrate your keyboard</i>
+                </h2>
+            </div>
+            <p id="infoText">Press any key on your keyboard to continue</p>
+    </div>
 
 </body>
 </html>

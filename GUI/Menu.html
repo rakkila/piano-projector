@@ -2,38 +2,100 @@
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-    </head>
-    <body>
-
-    <h1>Level of difficulty</h1>
-        <ul id="meny">
-            <li><a id = "Easy" onclick ="sendID(this.id)">Easy</a></li>
-            <li><a href="Medium.html" target="_self">Medium</a></li>
-            <li><a href="Hard.html" target="_self">Hard</a></li>
-
-        </ul>
-        <ul id="back">
-            <li><a href="javascript:history.back()" target="_self">Go back</a></li>
-        </ul>
-        <script>
+        <meta charset="utf-8"/>
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
         
-            function sendID(id){
+        <script>
+             function sendID(id){
                 window.location.href = id + ".html?" + getID() ;
             }
                 function getID(){
                 return location.search.substring(1).split("?")[0];
             }
-
-        let NOfKeys = location.search.substring(6).split("?keys=");
-
-        if(NOfKeys == 49)
-        {
-            document.getElementById("meny").disabled = true;
-        }
-        
-
-        console.log(NOfKeys);
-
+                 //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+                //Fetching MIDI input
+                var input = WebMidi.inputs[0];
+                //Checking if MIDI input is connected
+                if(typeof input != 'undefined'){
+                    //Listening for a 'note on' message (on all channels) 
+                    input.addListener('noteon', "all", function(e){ 
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,   
+                            key = note + octave;
+                        //Button animation on key pressed
+                        if(key == 'C4'){
+                            document.getElementById('Easy').style.background = "red";
+                        }
+                        else if(key == 'D4'){
+                            document.getElementById('Medium').style.background = "green";
+                        }
+                        else if(key == 'E4'){
+                            document.getElementById('Hard').style.background = "blue";                               
+                        }
+                        else if(key == 'G4'){
+                                document.getElementById('goBack').style.background = "yellow";                               
+                        }
+                    });
+                    //Listening for a 'note off' message (on all channels) 
+                    input.addListener('noteoff', 'all', function(e){
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,
+                            key = note + octave;
+                        //Checking which key is pressed and going to next page with that information
+                        if(key == 'C4')
+                            sendID('Easy');
+                        else if(key == 'D4')
+                            sendID('Medium');
+                        else if(key == 'E4')
+                            sendID('Hard');
+                        else if(key == 'G4')
+                            window.location.href = "javascript:history.back()";
+                            
+                    });
+                }
+                else
+                    console.log('MIDI input not connected');
+            })
         </script>
+    </head>
+    <body>
+        <div class="left">
+            <div class="background-image"></div>
+
+            <h1>Level of difficulty</h1>
+
+            <ul id="meny">
+                <li><a id ="Easy" class="red" onclick ="sendID(this.id)">Easy</a></li>
+                <li><a id ="Medium" href="Medium.html" class="green" target="_self">Medium</a></li>
+                <li><a id="Hard" href="Hard.html" class="blue" target="_self">Hard</a></li>
+            </ul>
+
+            <ul id="back">
+                <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
+            </ul>
+
+        </div>
+         <div class="right">
+            <div class="background-image"></div>
+
+            <h1>Level of difficulty</h1>
+
+            <ul id="meny">
+                <li><a id ="Easy" class="red" onclick ="sendID(this.id)">Easy</a></li>
+                <li><a id ="Medium" href="Medium.html" class="green" target="_self">Medium</a></li>
+                <li><a id="Hard" href="Hard.html" class="blue" target="_self">Hard</a></li>
+            </ul>
+
+            <ul id="back">
+                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+            </ul>
+            
+        </div>
+
     </body>
-</html>    
+</html> 

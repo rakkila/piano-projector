@@ -2,29 +2,99 @@
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-
-        <script>
+        <meta charset="utf-8"/>
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
+       <script>
             //Sending songID from clicked button
             function sendID(id){
                 window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
-
             function getID(){
-            return location.search.substring(1).split("?")[0];
-        }
-        
+                return location.search.substring(1).split("?")[0];
+            }
+            //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+                //Fetching MIDI input
+                var input = WebMidi.inputs[0];
+                //Checking if MIDI input is connected
+                if(typeof input != 'undefined'){
+                    //Listening for a 'note on' message (on all channels) 
+                    input.addListener('noteon', "all", function(e){ 
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,   
+                            key = note + octave;
+                        //Button animation on key pressed
+                        if(key == 'C4'){
+                            document.getElementById('jason_mraz').style.background = "red";
+                        }
+                        else if(key == 'D4'){
+                            document.getElementById('roses').style.background = "green";
+                        }
+                        else if(key == 'E4'){
+                            document.getElementById('korv').style.background = "blue";                               
+                        }
+                        else if(key == 'G4'){
+                                document.getElementById('goBack').style.background = "yellow";                               
+                        }
+                    });
+                    //Listening for a 'note off' message (on all channels) 
+                    input.addListener('noteoff', 'all', function(e){
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,
+                            key = note + octave;
+                        //Checking which key is pressed and going to next page with that information
+                        if(key == 'C4')
+                            sendID('jason_mraz');
+                        else if(key == 'D4')
+                            sendID('roses');
+                        else if(key == 'E4')
+                            sendID('korv');
+                        else if(key == 'G4')
+                            window.location.href = "javascript:history.back()";
+                            
+                    });
+                }
+                else
+                    console.log('MIDI input not connected');
+            })
         </script>
 
     </head>
     <body>
-        <h1>Easy</h1>
-            <ul id="meny">
-                <li><a id ="jason_mraz" onclick="sendID(this.id);">Jason Mraz - I'm Yours</a></li>
-                <li><a id ="roses" onclick="sendID(this.id);">The Chainsmokers - Roses</a></li>
-                <li><a id ="korv" onclick="sendID(this.id);">Köp varm korv med hård kick</a></li>
-            </ul>
-            <ul id="back">
-                <li><a href="javascript:history.back()" target="_self">Go back</a></li>
-            </ul>
+        <div class="left">
+            <div class="background-image"></div>
+
+            <h1>Easy</h1>
+            <div class ="songList">
+                <ul id="meny">
+                    <li><a id ="jason_mraz" class="red" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                </ul>
+                <ul id="back">
+                    <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
+                </ul>
+            </div>
+        </div>
+
+         <div class="right">
+            <div class="background-image"></div>
+
+            <h1>Easy</h1>
+            <div class ="songList">
+                <ul id="meny">
+                    <li><a id ="jason_mraz" class="red"  onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                </ul>
+                <ul id="back">
+                    <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+                </ul>
+            </div>
+        </div>
     </body>
-</html>   
+</html> 

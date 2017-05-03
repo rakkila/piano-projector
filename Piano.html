@@ -175,7 +175,7 @@ var velCounter = 1;
 
 function animate(){
 
-    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
     var velocity = tempo * 1000;
     var elapsedTime = getCurrentTime() - startTime;
 

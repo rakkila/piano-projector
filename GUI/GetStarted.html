@@ -2,30 +2,91 @@
 <html>
     <head>
         <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        <script>
+               
+            //Sending songID from clicked button
+            function sendID(id){
+            window.location.href = "Calibrate.html?" + id;
+            }
+            
+            //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+                    //Fetching MIDI input
+                    var input = WebMidi.inputs[0];
+                    //Checking if MIDI input is connected
+                    if(typeof input != 'undefined'){
+                        //Listening for a 'note on' message (on all channels) 
+                        input.addListener('noteon', "all", function(e){ 
+                            let octave = e.note.octave + 2,
+                                note = e.note.name,   
+                                key = note + octave;
+                            //Button animation on key pressed
+                            if(key == 'C4'){
+                                document.getElementById('49').style.background = "red";
+                            }
+                            else if(key == 'D4'){
+                                document.getElementById('61').style.background = "green";
+                            }
+                            else if(key == 'E4'){
+                                document.getElementById('88').style.background = "blue";                               
+                            }
+                            else if(key == 'G4'){
+                                document.getElementById('goBack').style.background = "yellow";                               
+                            }
+                        });
+                        //Listening for a 'note off' message (on all channels) 
+                        input.addListener('noteoff', 'all', function(e){
+                            let octave = e.note.octave + 2,
+                                note = e.note.name,
+                                key = note + octave;
+                            //Checking which key is pressed and going to next page with that information
+                            if(key == 'C4')
+                                sendID('49');
+                            else if(key == 'D4')
+                                sendID('61');
+                            else if(key == 'E4')
+                                sendID('88');
+                            else if(key == 'G4')
+                                window.location.href = "javascript:history.back()";
+                                
+                        });
+                    }
+                    else
+                        console.log('MIDI input not connected');
+            })
+        </script>
 
     </head>
     <body>
-        <div>
-        <h1>How many keys are on your keyboard?</h1>
+        <div class ="left">
+            <h2>1. How many keys do your keyboard have?</h2>
             <ul id="meny">
-                <li><a id ="49" onclick="sendID(this.id);">49</a></li>
-                <li><a id ="61" onclick="sendID(this.id);">61</a></li>
-                <li><a id ="88" onclick="sendID(this.id);">88</a></li>
+                <li><a id ="49" class="red" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" class="green" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" class ="blue" onclick="sendID(this.id);">88</a></li>
+            </ul>
+            <ul id="back">
+                <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
+            </ul>
+        </div>
+        
+        <div class ="right">
+            <h2>1. How many keys do your keyboard have?</h2>
+            <ul id="meny">
+                <li><a id ="49" class="red" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" class ="green" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" class ="blue" onclick="sendID(this.id);">88</a></li>
             </ul>
             <ul id="back">
                 <li><a href="javascript:history.back()" target="_self">Go back</a></li>
             </ul>
-</div>
-        <script>
-               
-               //Sending songID from clicked button
-                function sendID(id){
-                window.location.href = "Calibrate.html?" + id;
-                }
-
-        </script>
-
+        </div>
+        
 
     </body>
-</html>   
+</html>

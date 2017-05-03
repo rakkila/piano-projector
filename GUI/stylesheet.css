@@ -1,15 +1,145 @@
 body {
-	  background-color: linen;
-      margin: 0px;
-      overflow: hidden;
+	margin: 0px;
+	overflow: hidden;
+	background-color: black;
+	height: 100%;
 }
 h1 {
-	font-size: 40px;
+	font-size: 60px;
+	margin-left: 5%;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	color: #000;
-   text-align: center;
-
+	color:lightskyblue;
+	text-align: center;
+	/*transform: rotate(-2deg);*/
+	animation: fadein 4s;
+	text-shadow: -7px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
+
+h2{
+	font-size: 30px;
+	margin-left: 5%;
+	padding-top: 5%;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	color:lightskyblue;
+	text-align: center;
+	/*transform: rotate(-2deg);*/
+	animation: fadein 4s;
+	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
+}
+
+h3{
+	font-size: 20px;
+	animation: fadein 4s;
+}
+/* index.html */
+.getStarted{
+	width: 500px;
+	margin: 0 auto 0 auto;
+	padding-top: 20%;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	color: lightskyblue;
+	animation: fadein 4s;
+}
+
+.getStarted h2{
+	font-size: 54px;
+}
+.getStarted i {
+	font-size: 20px;
+	text-shadow: none;
+	margin-left: 4%;
+	font-weight: normal;
+}
+
+#infoText{
+	padding-top: 30%;
+}
+
+.red{
+	border: 4px solid red;
+	text-decoration: none;
+}
+.green{
+	border: 4px solid green;
+	text-decoration: none;
+}
+.blue{
+	border: 4px solid blue;
+	text-decoration: none;
+}
+/* end of index.html*/
+
+/* Calibrate.html */
+.left p , .right p{
+	color: white;
+	font-size: 20px;
+	/*transform: rotate(-2deg);*/
+	text-align: center;
+	padding-left: 21%;
+	width:400px;
+	animation: fadein 4s;
+}
+
+#letsPlay{
+	padding-top: 5%;
+	padding-left: 20%;
+}
+
+.left #letsPlay li a, .right #letsPlay li a{
+	display: block;
+	width: 300px;
+	height: 50px;
+	margin-left: 10%;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 40px;
+	color: white;
+	border-radius: 5px;
+	border: 4px solid green;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	/*transform: rotate(-2deg);*/
+	transition: 1s;
+	animation: fadein 4s;
+}
+
+
+/* end of Calibrate.html */
+
+.left{
+	width:50%;
+	height:100%;
+	margin: 0;
+	float: left;
+}
+
+.right{
+	width: 50%;
+	height:100%;
+	float: right;
+	margin: 0;
+}
+
+.background-image{
+	width: 50%;
+	height: 100%;
+	background: url('images/piano.jpg');
+	background-size: cover;
+	/*filter: blur(7px);*/
+	position: absolute;
+	z-index: -1;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-right: 60%;
+}
+
+#meny{
+	/*transform: rotate(-2deg);*/
+	margin-top: 35%;
+}
+
 /* Listan <UL> med knapparna */
 ul {
 	margin: 0;
@@ -20,49 +150,54 @@ ul {
 	list-style: none;
 	margin: 5px 0 10px 0;
 }
+
 #meny li a {
 	display: block;
-	width: 250px;
+	width: 300px;
+	height: 30px auto;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
+	font-size: 30px;
+	color: white;
 	border-radius: 5px;
-	border: 1px solid rgba(105,181,50,1);
-	background: rgba(122,199,67,1);
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transition: 0.5s;
+	animation: fadein 4s;
 }
-#meny li a:hover {
-	cursor: pointer;
-	background: rgba(178,232,139,1);
-	color: rgba(0,0,0,1);
+
+
+/* Menu.html */
+.songList{
+	margin-top: -5%;
+	padding-left: 5%;
 }
-#meny a:link, #meny a:visited {
-	color: rgba(255,255,255,1);
-	text-decoration: none;
-}
-#meny a:active {
-	color: rgba(250,191,12,1);
-}
-#meny a#current {
-	background: rgba(85,137,48,1);
-}
-#meny li a {
+.songList #meny li a {
 	display: block;
-	width: 250px;
-	margin: 0 auto 0 auto;
-	padding: 5px 10px 5px 10px;
+	width: 350px;
+	height: 10px auto;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
-	border-radius: 5px;
-	border: 1px solid rgba(105,181,50,1);
-	background: rgba(122,199,67,1);
+	font-size: 30px;
+	color: white;
+	border-radius: 10px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	animation: fadein 2s;
 }
+
+.songList .red{
+	border: solid 4px red;
+}
+.songList .green{
+	border: solid 4px green;
+}
+.songList .blue{
+	border: solid 4px blue;
+}
+
+/* end of Menu.html */
+
 /* Listelement <LI> med tillbaka */
 #back li {
 	list-style: none;
@@ -70,30 +205,59 @@ ul {
 }
 #back a{
 	display: block;
-	width: 250px;
+	width: 300px;
+	height: 30px auto;
 	margin: 0 auto 0 auto;
 	padding: 5px 10px 5px 10px;
+	text-decoration: none;
 	text-align: center;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	font-size: 20px;
-	color: rgba(66,48,1,1);
+	font-size: 30px;
+	color: white;
+	border: 4px solid yellow;
 	border-radius: 5px;
-	border: 1px solid rgba(255,0,0,1);
-	background: rgba(255,0,0,1);
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	transition: 0.5s;
+	animation: fadein 4s;
 }
-#back li a:hover {
-	cursor: pointer;
-	background: rgba(232,178,139,1);
-	color: rgba(0,0,0,1);
+
+/* GameOver.html */
+#gameover{
+	padding-top: 20%;
 }
-#back a:link, #meny a:visited {
-	color: rgba(255,255,255,1);
+.left #scoreLeft, .right #scoreRight{
+	font-size: 30px;
+}
+
+#replay{
+	padding-top: 30%;
+}
+#replay a{
+	display: block;
+	width: 300px;
+	height: 30px auto;
+	margin: 0 auto 0 auto;
+	padding: 5px 10px 5px 10px;
 	text-decoration: none;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	color: white;
+	border: 4px solid blue;
+	border-radius: 5px;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
+	animation: fadein 4s;
 }
-#back a:active {
-	color: rgba(250,191,12,1);
+/* end of GameOver.hmtl */
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
-#back a#current {
-	background: rgba(250,137,48,1);
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
 }
