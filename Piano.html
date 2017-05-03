@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="playground">
 <head>
 <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
 <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -63,11 +63,11 @@
 
 //Global variables
 var keyboard = new Keyboard();
-var song = new Song(location.search.substring(1).split("?")[0]);
+var song = new Song(location.search.substring(1).split("?")[1]);
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var blockIndex = 0;
-var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
+var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
 var startTime;
 var meshGroup = new THREE.Object3D();
 //var fullScoreCounter = 0;
@@ -139,8 +139,8 @@ function animate(){
     let elapsedTime = getCurrentTime() - startTime;
 
     //if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime /* || points < 0 */ )
-    //if(blockIndex == 1)
-      //  initEndingAnimation(/*points*/);
+    if(blockIndex == 2)
+        initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length) {
        blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
@@ -174,7 +174,7 @@ function animate(){
     //cameraRight.position.y = elapsedTime * tempo;
 
     //Update score
-    dynamicTexture.clear('blue').drawText(keyboard.getTotalPoints(), 60, 300, 'white');
+    dynamicTexture.clear('blue').drawText(getScore(), 60, 300, 'white');
   
     requestAnimationFrame(animate);
 
@@ -267,61 +267,13 @@ function getSongTempo(s){
     return tempo;
 }
 
-function initEndingAnimation(/*points*/){
+function sendID(){
+    window.location.href = "GUI/GameOver.html?" + totalpoints;
+}
 
-    cameraLeft.position.x += 4;
-    cameraRight.position.x += 4;
-    /*
-    //Creating scoreboard
-    let tex  = new THREEx.DynamicTexture(1300,720/2);
-    tex.context.font	= "bolder 200px Verdana";
-    let geo = new THREE.BoxGeometry(35, 7, 2);
-    var mat = new THREE.MeshPhongMaterial({ map : tex.texture, specular: 10});
-    var boardMesh = new THREE.Mesh(geo, mat);
-    boardMesh.position.x = 30;
-    scene.add(boardMesh);
-    tex.clear('blue').drawText('Game Over', 50, 200, 'white');
-    //tex.texture.needsUpdate = true;
-*/
-
-    
-        //Creating 3D-text
-        var loader = new THREE.FontLoader(),
-            geometryText,
-            materialText,
-            textMesh;
-            
-        loader.load('./lib/three.js-master/examples/fonts/optimer_bold.typeface.json', function (font){
-
-            geometryText = new THREE.TextGeometry( 'Game Over', {
-            font: font,
-            size: 3,
-            height: 1,
-            curveSegments: 5,
-            bevelThickness: 0.01,
-            bevelSize: 0.01,
-            bevelSegments: 2,
-            bevelEnabled: true,
-            });
-
-            materialText = new THREE.MeshPhongMaterial( { color: 0xffffff , specular: 20} );
-
-            textMesh = new THREE.Mesh( geometryText, materialText );
-            textMesh.position.set(20, 0, 0);
-            scene.add(textMesh);
-
-        });
-        
-
-    var loader = new THREE.JSONLoader();
-
-    if(cameraLeft.position.x > 30){
-        cameraLeft.position.x = 30;
-        cameraRight.position.x = 30;
-
-        scene.remove(scoreBoard);
-    }
-
+function initEndingAnimation(totalpoints){
+    document.getElementById('playground').style.animation = "fadeout 4s";
+    setTimeout(sendID, 2000);
 }
 
 

@@ -3,16 +3,11 @@
  * Using MIDI.js for loading soundfont and play sound
  * Using WebMidi for event listeners
  */
+var totalpoints = 0;
 
 class Keyboard{
 
-    constructor(){
-        this.totalpoints = 0;
-    }
-
-    getTotalPoints(){
-        return this.totalpoints;
-    }
+    constructor(){}
 
     startInputOutput(song){
 
@@ -81,7 +76,7 @@ class Keyboard{
                             });
 
                             //Want to reach totalpoints in animation loop
-                            this.totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
+                            totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
 
                         }
                         else
@@ -108,6 +103,8 @@ function sharpToFlat(note){
 
 }
 
-
+function getScore(){
+    return totalpoints;
+}
 
  
