@@ -158,7 +158,8 @@ document.body.appendChild(renderer.domElement);
         var renderPass2 = new THREE.RenderPass(scene, cameraRight);
         var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
         //effectCopy.renderToScreen = true;
-        var bloomPass = new THREE.BloomBlendPass( 10, 3, new THREE.Vector2(100, 20));
+        //var bloomPass = new THREE.BloomBlendPass( 10, 3, new THREE.Vector2(100, 20));
+        var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(64, 64));
         bloomPass.renderToScreen = true;
 
 //First composer
@@ -252,7 +253,8 @@ function animate(){
 function loadGeometries(){
 
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-    light.position.set( 5, -5, -4 );
+    //light.position.set( 5, -5, -4 );
+    light.position.set( 5, 5, 5 );
     scene.add( light );
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
