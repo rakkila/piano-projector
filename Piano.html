@@ -151,7 +151,17 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
     dynamicTexture.context.font	= "bolder 200px Verdana";
     var scoreGeo = new THREE.BoxGeometry(12, 2, 2);
     var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+    var side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var side3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var materials = [scoreMat, side1, side2, side3];
+    var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
+
+
     var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+  // var scoreBoard = new THREE.Mesh(scoreGeo, meshFaceMaterial);
+
+
     scoreBoard.position.set(-10,12,0);
     scoreBoard.rotation.x = Math.PI/45;
     scoreBoard.rotation.y = -Math.PI/45;
@@ -165,26 +175,26 @@ var velCounter = 1;
 
 function animate(){
 
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z;
+    var velocity = tempo * 1000;
+    var elapsedTime = getCurrentTime() - startTime;
+
     if(blockIndex < noteBlockArray.length) {
-       blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
-
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
-        var velocity = tempo * 1000;
-        var elapsedTime = getCurrentTime() - startTime;
-        
-  //  console.log(elapsedTime*tempo / velCounter);
-
+         // console.log(elapsedTime*tempo / velCounter);
     }
-
+    
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
-
-        scene.add(noteBlockArray[blockIndex].mesh);
+    while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
 
         if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
         {
-        
+            
+            scene.add(noteBlockArray[blockIndex].mesh);
             scene.add(noteBlockArray[blockIndex+1].mesh);
+
+            noteBlockArray[blockIndex].active = true;
+            noteBlockArray[blockIndex+1].active = true;
 
             noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
             noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
@@ -192,45 +202,26 @@ function animate(){
             noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
             noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
 
-            blockIndex++;
+            blockIndex+=2;
+        }  
 
-                        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
-                        {
-                            scene.add(noteBlockArray[blockIndex+1].mesh);
-
-                            noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
-
-                            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex-1].noteLength)/2
-                            
-                            blockIndex++;
-
-                        }
-
-        }
-
-        else {
-                noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-
-                noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-
-        }
-        
-        blockIndex++;
-        if(blockIndex > noteBlockArray.length-1)
+        else
         {
-            scene.add(noteBlockArray[blockIndex-1].mesh);
-            noteBlockArray[blockIndex-1].mesh.position.x = getPositionX(noteBlockArray[blockIndex-1].note);
-            noteBlockArray[blockIndex-1].mesh.position.y = noteBlockArray[blockIndex-1].mesh.position.y;
-                            
-            //blockIndex--;
-        }
+            scene.add(noteBlockArray[blockIndex].mesh);
+            noteBlockArray[blockIndex].active = true;
             
+            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+            blockIndex++;
+        }
+   
     }
+            
 
     //Update score
     dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
 
-
+/*
 //implementera loop, peka på äldsta noten
    if(blockIndex < delBlockArray.length && elapsedTime > Math.round(delBlockArray[0].stopTime))
    {
@@ -238,7 +229,15 @@ function animate(){
         delBlockArray.splice(0, 1);
       //  console.log('Deleted');
    }
-        
+*/
+
+    for(var i = 0; i < blockIndex; i++){
+        if( noteBlockArray[i].active == true && elapsedTime > 1000+Math.round(noteBlockArray[i].stopTime)){
+            scene.remove(noteBlockArray[i].mesh);
+            noteBlockArray[i].active = false;
+        }
+    }  
+
     //Translating blocks 
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
@@ -252,12 +251,13 @@ function animate(){
     animationID = requestAnimationFrame(animate);
 
     // Cancel animation when the last block has left the scene
+    /*
     if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime)
     {
         cancelAnimationFrame( animationID );
         console.log('elapsedTime = ' + elapsedTime + 'stopTime = ' + noteBlockArray[noteBlockArray.length-1].stopTime);
     }
-        
+    */    
 
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
@@ -308,7 +308,7 @@ function getSongTempo(s){
 
         case 'roses': tempo = 0.01; break;
         case 'jason_mraz': tempo = 0.005; break;
-        case 'korv': tempo = 0.005; break;
+        case 'korv': tempo = 0.007; break;
 
         default: tempo = 0.001; break;
     }
