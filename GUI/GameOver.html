@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+       <script src="../lib\three.js-master\docs\build\three.js"></script>
+       <script src = "../lib/webmidi/src/webmidi.js"> </script>
+
+    </head>
+
+      <body>
+            <div class ="left">
+                <h1 id="gameover">Game Over</h1>
+
+                <p id="scoreLeft"></p>
+
+                <ul id="replay">
+                    <li><a id="replay" onclick="sendID();">Play again</a></li>
+                </ul>
+            </div>
+            <div class ="right">
+                <h1 id="gameover">Game Over</h1>
+                
+                <p id="scoreRight"></p>
+
+                <ul id="replay">
+                    <li><a id="replay" onclick="sendID();">Play again</a></li>
+                </ul>
+            </div>
+
+            <script>
+
+            function sendID(){
+                window.location.href = "Menu.html";
+            }
+
+            document.getElementById('scoreLeft').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
+            document.getElementById('scoreRight').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
+          /*
+            var scene = new THREE.Scene();
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.setClearColor( 0x000000 );
+            document.body.appendChild( renderer.domElement );
+            cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+            //var helper1 = new THREE.CameraHelper(cameraLeft);
+            //scene.add(helper1);
+            cameraLeft.position.set( 0, 0, 10 );
+            scene.add(cameraLeft);
+            cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+            cameraRight.position.set( 0, 0, 10);
+            scene.add(cameraRight);
+            let width = Math.round(window.innerWidth / 2),
+                height = window.innerHeight;
+
+            var linegeometry = new THREE.Geometry();
+            var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+            linegeometry.vertices.push(new THREE.Vector3(0, -3, 0));
+            linegeometry.vertices.push(new THREE.Vector3(0, 3, 0));
+            var theLine = new THREE.Line(linegeometry, linematerial);
+            var theLine2 = new THREE.Line(linegeometry, linematerial);
+            scene.add(theLine);
+            scene.add(theLine2);
+            theLine.position.x = 11.05;
+            theLine2.position.x = -10.22;
+            
+            renderer.setViewport( 0, 0, width, height);
+            renderer.setScissor( 0, 0, width, height);
+            renderer.setScissorTest ( true );
+            cameraLeft.aspect = width * 2 / height;
+            cameraLeft.updateProjectionMatrix();
+            //cameraLeft.position.x = -separation;
+            renderer.render( scene, cameraLeft );
+            renderer.setViewport( width, 0, width, height);
+            renderer.setScissor( width, 0, width, height);
+            renderer.setScissorTest ( true );
+            cameraRight.aspect = width * 2 / height;
+            cameraRight.updateProjectionMatrix();
+            //cameraRight.position.x = separation; 
+            renderer.render( scene, cameraRight );
+*/
+
+            //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+
+                    //Fetching MIDI input
+                    var input = WebMidi.inputs[0];
+
+                    //Checking if MIDI input is connected
+                    if(typeof input != 'undefined'){
+
+                        //Listening for a 'note on' message (on all channels) 
+                        input.addListener('noteon', "all", function(e){ 
+
+                            let octave = e.note.octave + 2,
+                                note = e.note.name,   
+                                key = note + octave;
+
+                            //Button animation on key pressed
+                            if(key == 'E4')
+                                document.getElementById('replay').style.background = "blue";
+                                
+                        });
+
+                         //Listening for a 'note off' message (on all channels) 
+                        input.addListener('noteoff', 'all', function(e){
+                            let octave = e.note.octave + 2,
+                                note = e.note.name,
+                                key = note + octave;
+
+                            //Checking which key is pressed and going to next page with that information
+                            if(key == 'E4')
+                                sendID();
+                                
+                        });
+                    }
+                    else
+                        console.log('MIDI input not connected');
+            })
+   
+        </script>
+    </body>
+</html>  

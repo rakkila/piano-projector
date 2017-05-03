@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="playground">
 <head>
     <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
     <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -179,6 +179,10 @@ function animate(){
     var velocity = tempo * 1000;
     var elapsedTime = getCurrentTime() - startTime;
 
+        if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+        initEndingAnimation(getScore());
+
+
     if(blockIndex < noteBlockArray.length) {
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
          // console.log(elapsedTime*tempo / velCounter);
@@ -315,6 +319,17 @@ function getSongTempo(s){
 
     return tempo;
 }
+
+
+function sendID(){
+    window.location.href = "GUI/GameOver.html?" + totalpoints;
+}
+
+function initEndingAnimation(totalpoints){
+    document.getElementById('playground').style.animation = "fadeout 4s";
+    setTimeout(sendID, 2000);
+}
+
 
 
 </script>
