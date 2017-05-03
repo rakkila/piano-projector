@@ -9,31 +9,33 @@
 
       <body>
             <div class ="left">
-                <h2>2. Adjust your keyboard setup</h2>
+                <h1 id="gameover">Game Over</h1>
 
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+                <p id="scoreLeft"></p>
 
-                <ul id="letsPlay">
-                    <li><a id="play" onclick="sendID();">Let's play!</a></li>
+                <ul id="replay">
+                    <li><a id="replay" onclick="sendID();">Play again</a></li>
                 </ul>
             </div>
             <div class ="right">
-                <h2>2. Adjust your keyboard setup</h2>
+                <h1 id="gameover">Game Over</h1>
                 
-                <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+                <p id="scoreRight"></p>
 
-                <ul id="letsPlay">
-                    <li><a id="play" onclick="sendID();">Let's Play!</a></li>
+                <ul id="replay">
+                    <li><a id="replay" onclick="sendID();">Play again</a></li>
                 </ul>
             </div>
 
-                 <script>
+            <script>
+
             function sendID(){
-                window.location.href = "Menu.html?" + getID();
+                window.location.href = "Menu.html";
             }
-            function getID(){
-                return location.search.substring(1).split("?")[0];
-            }
+
+            document.getElementById('scoreLeft').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
+            document.getElementById('scoreRight').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
+          /*
             var scene = new THREE.Scene();
             var renderer = new THREE.WebGLRenderer();
             renderer.setSize( window.innerWidth, window.innerHeight );
@@ -49,6 +51,7 @@
             scene.add(cameraRight);
             let width = Math.round(window.innerWidth / 2),
                 height = window.innerHeight;
+
             var linegeometry = new THREE.Geometry();
             var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
             linegeometry.vertices.push(new THREE.Vector3(0, -3, 0));
@@ -74,33 +77,42 @@
             cameraRight.updateProjectionMatrix();
             //cameraRight.position.x = separation; 
             renderer.render( scene, cameraRight );
+*/
+
             //Enabling keyboard input
             WebMidi.enable(function(err){ 
                 if(err) 
                     console.log("WebMidi could not be enabled");
                 else
                     console.log("WebMidi is enabled!");
+
                     //Fetching MIDI input
                     var input = WebMidi.inputs[0];
+
                     //Checking if MIDI input is connected
                     if(typeof input != 'undefined'){
+
                         //Listening for a 'note on' message (on all channels) 
                         input.addListener('noteon', "all", function(e){ 
+
                             let octave = e.note.octave + 2,
                                 note = e.note.name,   
                                 key = note + octave;
+
                             //Button animation on key pressed
-                            if(key == 'D4')
-                                document.getElementById('play').style.background = "green";
+                            if(key == 'E4')
+                                document.getElementById('replay').style.background = "blue";
                                 
                         });
+
                          //Listening for a 'note off' message (on all channels) 
                         input.addListener('noteoff', 'all', function(e){
                             let octave = e.note.octave + 2,
                                 note = e.note.name,
                                 key = note + octave;
+
                             //Checking which key is pressed and going to next page with that information
-                            if(key == 'D4')
+                            if(key == 'E4')
                                 sendID();
                                 
                         });
@@ -111,4 +123,4 @@
    
         </script>
     </body>
-</html> 
+</html>  

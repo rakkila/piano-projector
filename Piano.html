@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="playground">
 <head>
 
     <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
@@ -33,6 +33,7 @@
     <!-- Other external libraries -->
     <script src="lib/soundfontplayer.js"></script>
     <script src="lib/webmidi/src/webmidi.js"></script>
+    <script src="lib\threex.dynamictexture.js"></script>
     <script src="lib\three.js-master\docs\build\three.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
@@ -57,6 +58,7 @@
     <script src="SongResizer.js"></script>
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
+    
 
 
 </head>
@@ -66,11 +68,14 @@
 
 //Global variables
 var keyboard = new Keyboard();
-var song = new Song(location.search.substring(1).split("?")[0]);
+var song = new Song(location.search.substring(1).split("?")[1]);
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
+var delBlockArray = [];
 var blockIndex = 0;
-var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
+var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
+var animationID;
+
 var startTime;
 //var fullScoreCounter = 0;
 //var starPower = false;
@@ -176,8 +181,31 @@ document.body.appendChild(renderer.domElement);
         composer2.addPass(effectCopy);
 
 //Render
-        animate();
+      //  animate();
 
+
+    //Creating scoreboard
+    var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
+    dynamicTexture.context.font	= "bolder 200px Verdana";
+    var scoreGeo = new THREE.BoxGeometry(12, 2, 2);
+    var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+    var side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var side3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    var materials = [scoreMat, side1, side2, side3];
+    var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
+
+
+    var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+  // var scoreBoard = new THREE.Mesh(scoreGeo, meshFaceMaterial);
+
+
+    scoreBoard.position.set(-10,12,0);
+    scoreBoard.rotation.x = Math.PI/45;
+    scoreBoard.rotation.y = -Math.PI/45;
+    //scoreBoard.rotation.y = Math.PI/10;
+    scene.add(scoreBoard);
+    dynamicTexture.texture.needsUpdate = true;
 
 //Starting program
 main();
@@ -189,22 +217,49 @@ function animate(){
     var velocity = tempo * 1000;
     var elapsedTime = getCurrentTime() - startTime;
 
+        if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+        initEndingAnimation(getScore());
+
     if(blockIndex < noteBlockArray.length) {
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
          // console.log(elapsedTime*tempo / velCounter);
     }
     
     //Adding note blocks to scene (depending on song)
-    if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity)){
-        scene.add(noteBlockArray[blockIndex].mesh);
-        noteBlockArray[blockIndex].active = true;
-        
-        noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-        noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
 
-        blockIndex++;       
+    while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
+
+        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+        {
+            
+            scene.add(noteBlockArray[blockIndex].mesh);
+            scene.add(noteBlockArray[blockIndex+1].mesh);
+
+            noteBlockArray[blockIndex].active = true;
+            noteBlockArray[blockIndex+1].active = true;
+
+            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+            noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
+
+            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
+
+            blockIndex+=2;
+        }  
+
+        else
+        {
+            scene.add(noteBlockArray[blockIndex].mesh);
+            noteBlockArray[blockIndex].active = true;
+            
+            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
+            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
+            blockIndex++;
+        }
+   
+
     }
-
+            
     
     //implementera loop, peka på äldsta noten
     //Removing block when not active
@@ -216,6 +271,20 @@ function animate(){
     }   
         
 
+/*
+//implementera loop, peka på äldsta noten
+   if(blockIndex < delBlockArray.length && elapsedTime > Math.round(delBlockArray[0].stopTime))
+   {
+        scene.remove(noteBlockArray[blockIndex].mesh);
+        delBlockArray.splice(0, 1);
+      //  console.log('Deleted');
+   }
+*/
+    //Update score
+    dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
+
+
+
     //Translating blocks 
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
@@ -224,7 +293,7 @@ function animate(){
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
-  
+    scoreBoard.position.y = cameraLeft.position.y +5;
 
     requestAnimationFrame(animate);
 
@@ -259,18 +328,7 @@ function loadGeometries(){
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 
-/*
-        for(let i = 0; i < noteBlockArray.length; i++)
-        {
-                noteBlockArray[i].mesh.position.y = cameraLeft.position.y + (noteBlockArray[i].startTime/1000) * tempo ;
-
-                scene.add(noteBlockArray[i].mesh);
-
-                noteBlockArray[i].mesh.position.x = getPositionX(noteBlockArray[i].note);  
-
-        }
-        */
-
+  //  delBlockArray = loadNoteBlocks();
 
 }
 
@@ -281,14 +339,24 @@ function getSongTempo(s){
 
 
         case 'roses': tempo = 0.01; break;
-        case 'jason_mraz': tempo = 0.5; break;
-        case 'korv': tempo = 0.005; break;
+        case 'jason_mraz': tempo = 0.005; break;
+        case 'korv': tempo = 0.007; break;
 
 
         default: tempo = 0.001; break;
     }
     return tempo;
 }
+
+function sendID(){
+    window.location.href = "GUI/GameOver.html?" + totalpoints;
+}
+
+function initEndingAnimation(totalpoints){
+    document.getElementById('playground').style.animation = "fadeout 4s";
+    setTimeout(sendID, 2000);
+}
+
 </script>
 </body>
 
