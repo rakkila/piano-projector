@@ -183,14 +183,14 @@ function main(){
 //Render loop
 function animate(){
 
-    //If game has ended, init "game over"-animation
-    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
-        initEndingAnimation(getScore());
-
     //Updating values
     blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
     var velocity = tempo * 1000,
         elapsedTime = getCurrentTime() - startTime;
+
+    //If game has ended, init "game over"-animation
+    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+        initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
