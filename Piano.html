@@ -77,6 +77,22 @@ var startTime;
 //Creating a scene
 var scene = new THREE.Scene();
 
+
+// load background texture
+var loader = new THREE.TextureLoader();
+texture = loader.load('./textures/crowd.jpg');
+var backgroundMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(40,20, 0),
+    new THREE.MeshBasicMaterial({
+        map: texture
+    })
+);
+backgroundMesh.material.depthTest = false;
+backgroundMesh.material.depthWrite = false;
+
+// add background to scene
+scene.add( backgroundMesh );
+
 //Create black line at bottom of scene
 var geometry = new THREE.BoxGeometry(20, 0.2, 1);
 var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
@@ -284,6 +300,7 @@ function updatePositions(elapsedTime, blockpos){
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
 
+    backgroundMesh.position.y = cameraLeft.position.y;
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
