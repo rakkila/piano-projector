@@ -64,7 +64,10 @@ class Keyboard{
                                // console.log(a);
                                 
                              //   console.log(getCurrentTime()-startTime);
-
+                             //Stars to scoreboard
+                             //if(totalpoints = 500){
+                                 
+                             //}
                                 totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
 
