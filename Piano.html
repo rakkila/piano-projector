@@ -79,10 +79,12 @@ var scene = new THREE.Scene();
 
 
 // load background texture
+//var scale = (window.innerWidth / 2) / window.innerHeight;
+/*
 var loader = new THREE.TextureLoader();
-texture = loader.load('./textures/crowd.jpg');
+texture = loader.load('./textures/audience.jpg');
 var backgroundMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(40,20, 0),
+    new THREE.PlaneGeometry(1024*((window.innerWidth / 2)/1024),512*(window.innerHeight/512),0),
     new THREE.MeshBasicMaterial({
         map: texture
     })
@@ -91,7 +93,7 @@ backgroundMesh.material.depthTest = false;
 backgroundMesh.material.depthWrite = false;
 
 // add background to scene
-scene.add( backgroundMesh );
+scene.add( backgroundMesh );*/
 
 //Create black line at bottom of scene
 var geometry = new THREE.BoxGeometry(20, 0.2, 1);
@@ -241,6 +243,11 @@ function animate(){
 
     //Render frame
     //Left camera
+
+    renderer.autoClear = false;
+    renderer.clear();
+
+
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
@@ -248,6 +255,7 @@ function animate(){
     cameraLeft.updateProjectionMatrix();
     composer.render();
     composer2.render();
+
   
     //Right camera
     renderer.setViewport( width, 0, width, height);
@@ -256,6 +264,8 @@ function animate(){
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
     composer2.render();
+
+   
 }
 
 function loadGeometries(){
@@ -300,7 +310,7 @@ function updatePositions(elapsedTime, blockpos){
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
 
-    backgroundMesh.position.y = cameraLeft.position.y;
+    //backgroundMesh.position.y = cameraLeft.position.y;
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
