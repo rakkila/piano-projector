@@ -142,7 +142,7 @@ loadGeometries();
 var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
 var renderPass2 = new THREE.RenderPass(scene, cameraRight);
 var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(64, 64));
+var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
 
 //First composer
