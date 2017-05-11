@@ -3,7 +3,7 @@
  * Using MIDI.js for loading soundfont and play sound
  * Using WebMidi for event listeners
  */
-                var totalpoints = 0;
+var totalpoints = 0;
 class Keyboard{
 
     constructor(){}
@@ -38,14 +38,14 @@ class Keyboard{
                             //Listening for a 'note on' message (on all channels) 
                             input.addListener('noteon', "all", function(e){ 
 
-                            let octave = e.note.octave + 2,
-                                note = sharpToFlat(e.note.name),   
-                                key = note + octave;
+                            const octave = e.note.octave + 2,
+                                  note = sharpToFlat(e.note.name),   
+                                  key = note + octave;
 
                             //console.log(key);
                             //a.push(key);
                             //a.push(time);
-                        //    console.log(getCurrentTime()-startTime);
+                            //console.log(getCurrentTime()-startTime);
                             noteon(key, getCurrentTime()-startTime, pArray);
 
                             //Play pressed note (0 delay)
@@ -55,20 +55,20 @@ class Keyboard{
 
                             //Listening for a 'note off' message (on all channels) 
                             input.addListener('noteoff', 'all', function(e){
-                                let octave = e.note.octave + 2,
-                                    note = sharpToFlat(e.note.name),
-                                    key = note + octave;
+                                const octave = e.note.octave + 2,
+                                      note = sharpToFlat(e.note.name),
+                                      key = note + octave;
 
-                              //  console.log("off" + ',' + key + ',' + time);
-                               // a.push(time);
-                               // console.log(a);
+                                //console.log("off" + ',' + key + ',' + time);
+                                //a.push(time);
+                                //console.log(a);
                                 
-                             //   console.log(getCurrentTime()-startTime);
+                                //console.log(getCurrentTime()-startTime);
 
                                 totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
 
-                           //     console.log('TOTAL POINTS: ' + totalpoints);
+                                //console.log('TOTAL POINTS: ' + totalpoints);
 
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect

@@ -66,7 +66,7 @@
 //Global variables
 var keyboard = new Keyboard();
 var song = new Song(location.search.substring(1).split("?")[1]);
-var errorSound = new Audio('./songs-mp3/error.wav');
+//var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var delBlockArray = [];
 var blockIndex = 0;
@@ -96,10 +96,10 @@ backgroundMesh.material.depthWrite = false;
 scene.add( backgroundMesh );*/
 
 //Create black line at bottom of scene
-var geometry = new THREE.BoxGeometry(20, 0.2, 1);
-var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
-var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
-var line = new THREE.Mesh(geometry, material);
+const geometry = new THREE.BoxGeometry(20, 0.2, 1);
+const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
+const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+const line = new THREE.Mesh(geometry, material);
 scene.add(line);
 
 //3D camera
@@ -112,12 +112,12 @@ scene.add(cameraRight);
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
-var linegeometry = new THREE.Geometry();
-var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+const linegeometry = new THREE.Geometry();
+const linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
 linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
 linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
-var theLine = new THREE.Line(linegeometry, linematerial);
-var theLine2 = new THREE.Line(linegeometry, linematerial);
+const theLine = new THREE.Line(linegeometry, linematerial);
+const theLine2 = new THREE.Line(linegeometry, linematerial);
 
 scene.add(theLine);
 scene.add(theLine2);
@@ -139,21 +139,21 @@ renderer.shadowMapEnabled = true;
 loadGeometries();
 
 //PASSES
-var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
-var renderPass2 = new THREE.RenderPass(scene, cameraRight);
-var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+const renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+const renderPass2 = new THREE.RenderPass(scene, cameraRight);
+const effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+const bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
 
 //First composer
-var composer = new THREE.EffectComposer(renderer);
+const composer = new THREE.EffectComposer(renderer);
 composer.addPass(renderPass1);
 composer.addPass(renderPass2);
 composer.addPass(effectCopy);
-var renderScene = new THREE.TexturePass(composer.renderTarget2);
+const renderScene = new THREE.TexturePass(composer.renderTarget2);
 
 //Second composer (BloomPass)
-var composer2 = new THREE.EffectComposer(renderer);
+const composer2 = new THREE.EffectComposer(renderer);
 composer2.addPass(renderScene);
 composer2.addPass(bloomPass);
 composer2.addPass(effectCopy);
@@ -161,15 +161,15 @@ composer2.addPass(effectCopy);
 //Creating scoreboard
 var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
 dynamicTexture.context.font	= "bolder 200px Verdana";
-var scoreGeo = new THREE.BoxGeometry(12, 2, 2);
-var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
-var side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-var side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-var side3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-var materials = [scoreMat, side1, side2, side3];
+const scoreGeo = new THREE.BoxGeometry(12, 2, 2);
+const scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+const side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+const side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+const side3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+const materials = [scoreMat, side1, side2, side3];
 var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
 
-var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+const scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
 
 scoreBoard.position.set(-10,12,0);
 scoreBoard.rotation.x = Math.PI/45;
@@ -270,8 +270,7 @@ function animate(){
 
 function loadGeometries(){
 
-    var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-    //light.position.set( 5, -5, -4 );
+    const light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
     light.position.set( 5, 5, 5 );
     scene.add( light );
     //Loading note blocks from picked song
