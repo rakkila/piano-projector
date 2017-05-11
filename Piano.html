@@ -74,17 +74,18 @@ var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
 var animationID;
 var startTime;
 
+var meshGroup = new THREE.Object3D();
 //Creating a scene
 var scene = new THREE.Scene();
 
 
 // load background texture
 //var scale = (window.innerWidth / 2) / window.innerHeight;
-/*
+
 var loader = new THREE.TextureLoader();
-texture = loader.load('./textures/audience.jpg');
+texture = loader.load('./textures/audience2.png');
 var backgroundMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(1024*((window.innerWidth / 2)/1024),512*(window.innerHeight/512),0),
+    new THREE.PlaneGeometry(40,20,0),
     new THREE.MeshBasicMaterial({
         map: texture
     })
@@ -93,7 +94,7 @@ backgroundMesh.material.depthTest = false;
 backgroundMesh.material.depthWrite = false;
 
 // add background to scene
-scene.add( backgroundMesh );*/
+scene.add( backgroundMesh );
 
 //Create black line at bottom of scene
 var geometry = new THREE.BoxGeometry(20, 0.2, 1);
@@ -280,6 +281,9 @@ function loadGeometries(){
 
 function addChordNoteBlocks(noteBlock1, noteBlock2){
 
+    //meshGroup.add(noteBlock1.mesh);
+    //meshGroup.add(noteBlock2.mesh);
+
     scene.add(noteBlock1.mesh);
     scene.add(noteBlock2.mesh);
 
@@ -297,24 +301,24 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
 
 function addSingleNoteBlock(noteBlock){
 
-    scene.add(noteBlock.mesh);
+    meshGroup.add(noteBlock.mesh);
+    scene.add(meshGroup);
     noteBlock.active = true;
     
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
-    noteBlock.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock.noteLength/2;
+    noteBlock.mesh.position.y = meshGroup.position.y + blockpos + noteBlock.noteLength/2;
     blockIndex++;
 }
 
 function updatePositions(elapsedTime, blockpos){
 
-    cameraLeft.position.y = elapsedTime * tempo;
-    cameraRight.position.y = elapsedTime * tempo;
+    meshGroup.position.y = -elapsedTime*tempo;
 
     //backgroundMesh.position.y = cameraLeft.position.y;
-    line.position.y = cameraLeft.position.y-blockpos+1;
-    theLine.position.y = cameraLeft.position.y;
-    theLine2.position.y = cameraLeft.position.y;
-    scoreBoard.position.y = cameraLeft.position.y +5;
+    line.position.y = -blockpos+1;
+    theLine.position.y =0;
+    theLine2.position.y = 0;
+    scoreBoard.position.y = 5;
 }
 
 
