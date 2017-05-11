@@ -74,17 +74,33 @@ var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
 var animationID;
 var startTime;
 
+var meshGroup = new THREE.Object3D();
+
+//Create the particle variables
+var particleCount = 500;
+var particleCount2 = 30;
+var particles = new THREE.Geometry();
+var particles2 = new THREE.Geometry();
+var pMaterial, pMaterial2;
+var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare_0.png"), blending: THREE.AdditiveBlending, transparent: true});
+var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+
+// create the particle system
+var particleSystem;
+var particleSystem2;
+
+
 //Creating a scene
 var scene = new THREE.Scene();
 
 
 // load background texture
 //var scale = (window.innerWidth / 2) / window.innerHeight;
-/*
+
 var loader = new THREE.TextureLoader();
-texture = loader.load('./textures/audience.jpg');
+texture = loader.load('./textures/audience2.png');
 var backgroundMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(1024*((window.innerWidth / 2)/1024),512*(window.innerHeight/512),0),
+    new THREE.PlaneGeometry(40,20,0),
     new THREE.MeshBasicMaterial({
         map: texture
     })
@@ -93,7 +109,7 @@ backgroundMesh.material.depthTest = false;
 backgroundMesh.material.depthWrite = false;
 
 // add background to scene
-scene.add( backgroundMesh );*/
+scene.add( backgroundMesh );
 
 //Create black line at bottom of scene
 const geometry = new THREE.BoxGeometry(20, 0.2, 1);
@@ -134,6 +150,9 @@ renderer.setClearColor( 0x000000 );
 document.body.appendChild( renderer.domElement );
 
 renderer.shadowMapEnabled = true;
+
+//Large particleSystem
+setUpParticleSystem();
 
 //Loading geometries to scene
 loadGeometries();
@@ -200,6 +219,7 @@ function main(){
 
 //Render loop
 function animate(){
+    particleSystem.rotation.y += 0.001;
 
     //Updating values
     blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
@@ -216,12 +236,13 @@ function animate(){
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
 
-        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime){
             //Adding group of note blocks
             addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
-
-        else
+            setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
+        else{
             addSingleNoteBlock(noteBlockArray[blockIndex]);
+            setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
     }
             
     //Removing block when not active
@@ -277,7 +298,48 @@ function loadGeometries(){
     noteBlockArray = loadNoteBlocks();
 }
 
+function setUpParticleSystem(){
+for (var p = 0; p < particleCount; p++){
+
+  // create a particle with random postion values
+  var pX = Math.random() * 10 - 5,
+      pY = Math.random() * 500 - 250,
+      pZ = Math.random() * 20 - 10,
+      particle = new THREE.Vector3(pX, pY, pZ);
+
+  particleSystem = new THREE.Points( particles, pMaterial);
+  // add it to the geometry
+  //particleSystem.position.set(1, 1, 1);
+  particles.vertices.push(particle);
+}
+
+// add it to the scene
+scene.add(particleSystem);
+}
+
+function setUpExplosion(xpos){
+for (var p = 0; p < particleCount2; p++){
+
+  // create a particle with random postion values
+  var pX2 = xpos,
+      pY2 = Math.random() * 20 - 10,
+      pZ2 = Math.random() * 20 - 10,
+      particle2 = new THREE.Vector3(pX2, pY2, pZ2);
+
+  particleSystem2 = new THREE.Points( particles2, pMaterial2);
+  // add it to the geometry
+  //particleSystem.position.set(1, 1, 1);
+  particles2.vertices.push(particle2);
+}
+
+// add it to the scene
+scene.add(particleSystem2);
+}
+
 function addChordNoteBlocks(noteBlock1, noteBlock2){
+
+    //meshGroup.add(noteBlock1.mesh);
+    //meshGroup.add(noteBlock2.mesh);
 
     scene.add(noteBlock1.mesh);
     scene.add(noteBlock2.mesh);
@@ -296,24 +358,24 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
 
 function addSingleNoteBlock(noteBlock){
 
-    scene.add(noteBlock.mesh);
+    meshGroup.add(noteBlock.mesh);
+    scene.add(meshGroup);
     noteBlock.active = true;
     
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
-    noteBlock.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock.noteLength/2;
+    noteBlock.mesh.position.y = meshGroup.position.y + blockpos + noteBlock.noteLength/2;
     blockIndex++;
 }
 
 function updatePositions(elapsedTime, blockpos){
 
-    cameraLeft.position.y = elapsedTime * tempo;
-    cameraRight.position.y = elapsedTime * tempo;
+    meshGroup.position.y = -elapsedTime*tempo;
 
     //backgroundMesh.position.y = cameraLeft.position.y;
-    line.position.y = cameraLeft.position.y-blockpos+1;
-    theLine.position.y = cameraLeft.position.y;
-    theLine2.position.y = cameraLeft.position.y;
-    scoreBoard.position.y = cameraLeft.position.y +5;
+    line.position.y = -blockpos+1;
+    theLine.position.y =0;
+    theLine2.position.y = 0;
+    scoreBoard.position.y = 5;
 }
 
 
