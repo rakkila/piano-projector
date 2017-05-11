@@ -13,7 +13,7 @@ class NoteBlock{
         this.noteLength = (stopTime - startTime)*0.005;
 
                     this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001),       
-                    new THREE.MeshPhongMaterial({color: 0x0000ffff}));
+                    new THREE.MeshPhongMaterial({color: 0x0000ffff, specular: 10}));
     }
 
     toString () {
