@@ -72,12 +72,22 @@ var noteBlockArray = [];
 var blockIndex = 0;
 var tempo = getSongTempo(location.search.substring(1).split("?")[0]);
 var startTime;
+
 // create the particle variables
 var particleCount = 500;
+var particleCount2 = 30;
 var particles = new THREE.Geometry();
-var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+var particles2 = new THREE.Geometry();
+var pMaterial, pMaterial2;
+
+
+var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare_0.png"), blending: THREE.AdditiveBlending, transparent: true});
+var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+
 // create the particle system
 var particleSystem;
+var particleSystem2;
+
 //var fullScoreCounter = 0;
 //var starPower = false;
 
@@ -137,7 +147,7 @@ let width = Math.round(window.innerWidth / 2), height = window.innerHeight;
 //Creating a renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x000000 );
+renderer.setClearColor( 0x000000);
 //document.body.appendChild( renderer.domElement );
 
 renderer.shadowMapEnabled = true;
@@ -146,6 +156,7 @@ var theTime = new Date();
 
 //Function calls
 setUpParticleSystem();
+setUpExplosion();
 loadGeometries();
 document.body.appendChild(renderer.domElement);
 
@@ -207,7 +218,6 @@ if(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(noteBlockArra
 if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.round(noteBlockArray[blockIndex].stopTime))
     scene.remove(noteBlockArray[blockIndex].mesh);
 
-
     //Translating blocks 
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
@@ -249,7 +259,7 @@ for (var p = 0; p < particleCount; p++){
   // create a particle with random postion values
   var pX = Math.random() * 10 - 5,
       pY = Math.random() * 500 - 250,
-      pZ = Math.random() * 30 - 15,
+      pZ = Math.random() * 20 - 10,
       particle = new THREE.Vector3(pX, pY, pZ);
 
   particleSystem = new THREE.Points( particles, pMaterial);
@@ -262,9 +272,28 @@ for (var p = 0; p < particleCount; p++){
 scene.add(particleSystem);
 }
 
+function setUpExplosion(){
+for (var p = 0; p < particleCount2; p++){
+
+  // create a particle with random postion values
+  var pX2 = Math.random() * 20 - 10,
+      pY2 = Math.random() * 20 - 10,
+      pZ2 = Math.random() * 20 - 10,
+      particle2 = new THREE.Vector3(pX2, pY2, pZ2);
+
+  particleSystem2 = new THREE.Points( particles2, pMaterial2);
+  // add it to the geometry
+  //particleSystem.position.set(1, 1, 1);
+  particles2.vertices.push(particle2);
+}
+
+// add it to the scene
+scene.add(particleSystem2);
+}
+
 function loadGeometries(){
 
-    var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
+    var light = new THREE.DirectionalLight( 0xb4e7f2, 5);
     light.position.set( 5, 5, 5 );
     scene.add( light );
     //Loading note blocks from picked song
