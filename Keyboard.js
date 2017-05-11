@@ -3,7 +3,7 @@
  * Using MIDI.js for loading soundfont and play sound
  * Using WebMidi for event listeners
  */
-                var totalpoints = 1226;
+                var totalpoints = 0
 class Keyboard{
 
     constructor(){}
