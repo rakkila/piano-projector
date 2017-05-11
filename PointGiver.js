@@ -5,7 +5,7 @@
 function noteon(keyOn, timeOn, pArray)
 {
     var points = 0;
-    setUpExplosion();
+    //setUpExplosion();
     document.body.appendChild(renderer.domElement);
     for(let i = 0; i < pArray.length; i++)
     {

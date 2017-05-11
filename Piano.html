@@ -156,7 +156,7 @@ var theTime = new Date();
 
 //Function calls
 setUpParticleSystem();
-setUpExplosion();
+
 loadGeometries();
 document.body.appendChild(renderer.domElement);
 
@@ -189,6 +189,9 @@ main();
 var velCounter = 1;
 
 function animate(){
+
+//particleSystem2. particle2.pX2 = -10;
+//particleSystem2. particle2.pY2 = 10;
 
 var velocity = tempo * 1000;
 var elapsedTime = getCurrentTime() - startTime;
@@ -227,6 +230,7 @@ if(blockIndex < noteBlockArray.length && (getCurrentTime() - startTime) == Math.
     theLine.position.y = cameraLeft.position.y;
     theLine2.position.y = cameraLeft.position.y;
      
+    setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); 
     particleSystem.rotation.y += 0.001;
     requestAnimationFrame(animate);
 
@@ -272,11 +276,11 @@ for (var p = 0; p < particleCount; p++){
 scene.add(particleSystem);
 }
 
-function setUpExplosion(){
+function setUpExplosion(xpos){
 for (var p = 0; p < particleCount2; p++){
 
   // create a particle with random postion values
-  var pX2 = Math.random() * 20 - 10,
+  var pX2 = xpos,
       pY2 = Math.random() * 20 - 10,
       pZ2 = Math.random() * 20 - 10,
       particle2 = new THREE.Vector3(pX2, pY2, pZ2);
