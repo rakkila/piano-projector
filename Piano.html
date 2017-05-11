@@ -87,6 +87,7 @@ var particles = new THREE.Geometry();
 var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
 // create the particle system
 var particleSystem;
+var meshGroup = new THREE.Object3D();
 
 var startTime;
 //var fullScoreCounter = 0;
@@ -135,17 +136,21 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.z = 10;
 */
 
-//3D camera
-
-cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-//var helper1 = new THREE.CameraHelper(cameraLeft);
-//scene.add(helper1);
-cameraLeft.position.set( 0, 0, 10 );
+//3D camera, Left camera
+cameraLeft = new THREE.PerspectiveCamera(30.07*2, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
+cameraLeft.position.set(-0.08, -3.89*3, 5.16*3);
+cameraLeft.lookAt(scene.position);
 scene.add(cameraLeft);
-cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraRight.position.set( 0, 0, 10);
+//Right Camera
+cameraRight = new THREE.PerspectiveCamera(50, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
+cameraRight.position.set(0.08, -3.89*3, 5.16*3);
+cameraRight.lookAt(scene.position);
 scene.add(cameraRight);
-let width = Math.round(window.innerWidth / 2),
+
+/*let width = localToWorld(Math.round(window.innerWidth / 2)),
+    height = localToWorld(window.innerHeight);*/
+
+    let width = Math.round(window.innerWidth / 2),
     height = window.innerHeight;
 
 var theTime = new Date();
@@ -202,7 +207,7 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
     //Creating scoreboard
     var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
     dynamicTexture.context.font	= "150px Verdana";
-    var scoreGeo = new THREE.CubeGeometry(2, 1, 2);
+    var scoreGeo = new THREE.CubeGeometry(1.5*2, 1.5*1, 1.5*2);
     scoreGeo.side = THREE.DoubleSide;
     var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
     scoreMat.side = THREE.DoubleSide;
@@ -226,8 +231,8 @@ var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
 
     scoreBoard.position.set(-8,12,0);
-    scoreBoard.rotation.x = Math.PI/45;
-    scoreBoard.rotation.y = -15.5*Math.PI/75;
+    scoreBoard.rotation.x = 15*Math.PI/45;
+    scoreBoard.rotation.y = -17*Math.PI/75;
     //scoreBoard.rotation.y = Math.PI/10;
     scene.add(scoreBoard);
     dynamicTexture.texture.needsUpdate = true;
@@ -238,51 +243,36 @@ var velCounter = 1;
 
 function animate(){
 
-    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
-    var velocity = tempo * 1000;
-    var elapsedTime = getCurrentTime() - startTime;
+    //Updating values
+    blockpos = Math.tan(75*0.5*(Math.PI/180))*10 + 1;
+    var velocity = tempo * 1000,
+        elapsedTime = getCurrentTime() - startTime;
 
-        if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    //If game has ended, init "game over"-animation
+    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
         initEndingAnimation(getScore());
 
-
-    if(blockIndex < noteBlockArray.length) {
+    if(blockIndex < noteBlockArray.length)
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
-         // console.log(elapsedTime*tempo / velCounter);
-    }
     
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
 
         if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
-        {
-            
-            scene.add(noteBlockArray[blockIndex].mesh);
-            scene.add(noteBlockArray[blockIndex+1].mesh);
-
-            noteBlockArray[blockIndex].active = true;
-            noteBlockArray[blockIndex+1].active = true;
-
-            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-            noteBlockArray[blockIndex+1].mesh.position.x = getPositionX(noteBlockArray[blockIndex+1].note);
-
-            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-            noteBlockArray[blockIndex+1].mesh.position.y = noteBlockArray[blockIndex].mesh.position.y + (noteBlockArray[blockIndex+1].noteLength)/2 - (noteBlockArray[blockIndex].noteLength)/2;
-
-            blockIndex+=2;
-        }  
+            //Adding group of note blocks
+            addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
 
         else
-        {
-            scene.add(noteBlockArray[blockIndex].mesh);
-            noteBlockArray[blockIndex].active = true;
-            
-            noteBlockArray[blockIndex].mesh.position.x = getPositionX(noteBlockArray[blockIndex].note);
-            noteBlockArray[blockIndex].mesh.position.y = cameraLeft.position.y + blockpos + noteBlockArray[blockIndex].noteLength/2;
-            blockIndex++;
-        }
-   
+            addSingleNoteBlock(noteBlockArray[blockIndex]);
     }
+            
+    //Removing block when not active
+    for(var i = 0; i < blockIndex; i++){
+        if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
+            scene.remove(noteBlockArray[i].mesh);
+            noteBlockArray[i].active = false;
+        }
+    } 
             
 
     //Update score
@@ -313,13 +303,15 @@ if(noteBlockArray[blockIndex].note == 'G4')
 
 
       dynamicTexture.clear('blue').drawText(getScore(), 50, 500, 'white');
+particleSystem.rotation.y += 0.001;
 
+/*
     //Translating blocks 
     cameraLeft.position.y = elapsedTime * tempo;
     cameraRight.position.y = elapsedTime * tempo;
     velCounter++;
 
-    particleSystem.rotation.y += 0.001;
+    
 
     line.position.y = cameraLeft.position.y-blockpos+1;
     theLine.position.y = cameraLeft.position.y;
@@ -330,8 +322,10 @@ if(noteBlockArray[blockIndex].note == 'G4')
     l2.position.y = cameraLeft.position.y;
     l3.position.y = cameraLeft.position.y;
     l4.position.y = cameraLeft.position.y;
-  
+*/  
     animationID = requestAnimationFrame(animate);
+
+        updatePositions(elapsedTime, blockpos);
 
         //Render frame
     //Left camera
@@ -406,7 +400,7 @@ function loadGeometries(){
 
     var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
   //  light.position.set( 5, 5, 5 );
-  light.position.set( 5, -1, 5 );
+  light.position.set( 5, -3.5, 5 );
 
     scene.add( light );
 
@@ -456,6 +450,48 @@ function initEndingAnimation(totalpoints){
     setTimeout(sendID, 2000);
 }
 
+function addChordNoteBlocks(noteBlock1, noteBlock2){
+
+    scene.add(noteBlock1.mesh);
+    scene.add(noteBlock2.mesh);
+
+    noteBlock1.active = true;
+    noteBlock2.active = true;
+
+    noteBlock1.mesh.position.x = getPositionX(noteBlock1.note);
+    noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
+
+    noteBlock1.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock1.noteLength/2;
+    noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
+
+    blockIndex += 2;
+}
+
+function addSingleNoteBlock(noteBlock){
+
+    meshGroup.add(noteBlock.mesh);
+    scene.add(meshGroup);
+    //scene.add(noteBlock.mesh);
+    noteBlock.active = true;
+    
+    noteBlock.mesh.position.x = getPositionX(noteBlock.note);
+    //noteBlock.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock.noteLength/2;
+    noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2;
+    blockIndex++;
+}
+
+function updatePositions(elapsedTime, blockpos){
+
+    //cameraLeft.position.y = elapsedTime * tempo;
+    //cameraRight.position.y = elapsedTime * tempo;
+    meshGroup.position.y = -elapsedTime * tempo;
+
+    line.position.y = -blockpos+1;
+    theLine.position.y = 0;
+    theLine2.position.y = 0;
+    scoreBoard.position.y = 9;
+    // axis.position.y = cameraLeft.position.y +5;
+}
 
 
 </script>
