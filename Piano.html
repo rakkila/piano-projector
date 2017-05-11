@@ -102,7 +102,7 @@ cameraRight.position.set( 0, 0, 10);
 scene.add(cameraRight);*/
 
 //3D camera, Left camera
-/*cameraLeft = new THREE.PerspectiveCamera(30.07*2, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
+cameraLeft = new THREE.PerspectiveCamera(30.07*2, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
 cameraLeft.position.set(-0.08, -3.89*3, 5.16*3);
 cameraLeft.lookAt(scene.position);
 scene.add(cameraLeft);
@@ -110,12 +110,15 @@ scene.add(cameraLeft);
 cameraRight = new THREE.PerspectiveCamera(50, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
 cameraRight.position.set(0.08, -3.89*3, 5.16*3);
 cameraRight.lookAt(scene.position);
-scene.add(cameraRight);*/
+scene.add(cameraRight);
 
-let width = localToWorld(Math.round(window.innerWidth / 2)),
-    height = localToWorld(window.innerHeight);
+/*let width = localToWorld(Math.round(window.innerWidth / 2)),
+    height = localToWorld(window.innerHeight);*/
 
-cameraLeft = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+    let width = Math.round(window.innerWidth / 2),
+    height = window.innerHeight;
+
+/*cameraLeft = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
 cameraLeft.position.set(-0.08, -3.89, 5.16);
 cameraLeft.lookAt(scene.position);
 scene.add(cameraLeft);
@@ -123,7 +126,7 @@ scene.add(cameraLeft);
 cameraRight = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
 cameraRight.position.set(0.08, -3.89, 5.16);
 cameraRight.lookAt(scene.position);
-scene.add(cameraRight);
+scene.add(cameraRight);*/
 
 var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
 
