@@ -19,10 +19,10 @@ function lightOff(key, stopTime)
     {
         if(noteBlockArray[i].note == key && noteBlockArray[i].stopTime == stopTime)
         {
-            noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
+            noteBlockArray[i].mesh.material.color.setHex(0x0000ffff);
 
             noteBlockArray[i].mesh.position.z = 0;
-             line.material.color.setHex(0x050505);
+             line.material.color.setHex(0x00ff00);
 
             break;
         }
