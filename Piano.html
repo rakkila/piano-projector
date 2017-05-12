@@ -109,14 +109,13 @@
     document.body.appendChild( renderer.domElement );
     renderer.shadowMapEnabled = true;
 
-
         //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(20, 0.2, 1);
+        var geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
         var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
         var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
-
+        
     document.body.appendChild(renderer.domElement);
 
     // Creating 3D camera
@@ -164,8 +163,12 @@ bloomPass.renderToScreen = true;
             var theLine2 = new THREE.Line(linegeometry, linematerial);
             scene.add(theLine);
             scene.add(theLine2);
-            theLine.position.x = 11.05;
-            theLine2.position.x = -10.22;
+
+            theLine.position.x = rightLinePos;
+            theLine2.position.x = leftLinePos;
+            theLine.position.y = 0;
+            theLine2.position.y = 0;
+            
 
     //Creating lanes
     var l1  = new THREE.Line(linegeometry, linematerial);
@@ -206,8 +209,7 @@ bloomPass.renderToScreen = true;
 
     scene.add(scoreBoard);
     dynamicTexture.texture.needsUpdate = true;
-    theLine.position.y = 0;
-    theLine2.position.y = 0;
+
 
         function main(){
 
@@ -229,7 +231,7 @@ bloomPass.renderToScreen = true;
     main();
 
 var blockpos = Math.tan(75*0.5*(Math.PI/180))*10 + 1;
-    line.position.y = -blockpos+1;
+    line.position.y = -blockpos+1.5;
 
 function animate(){
 
