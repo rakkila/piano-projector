@@ -81,27 +81,20 @@ var scene = new THREE.Scene();
 
 //Create black line at bottom of scene
 var geometry = new THREE.BoxGeometry(20, 0.2, 1);
-var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, /*transparent: true, opacity: 0.8*/ });
+var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
 var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
 var line = new THREE.Mesh(geometry, material);
 scene.add(line);
 
+
 //Create black line at bottom of scene
 var gg = new THREE.BoxGeometry(2,2,2);
-var mm = new THREE.MeshPhongMaterial({ color: 0x00ff00, /*transparent: true, opacity: 0.8*/ });
+var mm = new THREE.MeshPhongMaterial({ color: 0x00ff00, wirefram: true});
 var b = new THREE.Mesh(gg, mm);
-
+b.position.set(0,0,0);
 scene.add(b);
 
-/*//3D camera
-cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraLeft.position.set( 0, 0, 10 );
-scene.add(cameraLeft);
-cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraRight.position.set( 0, 0, 10);
-scene.add(cameraRight);*/
-
-//3D camera, Left camera
+/*//3D camera, Left camera
 cameraLeft = new THREE.PerspectiveCamera(30.07*2, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
 cameraLeft.position.set(-0.08, -3.89*3, 5.16*3);
 cameraLeft.lookAt(scene.position);
@@ -110,48 +103,42 @@ scene.add(cameraLeft);
 cameraRight = new THREE.PerspectiveCamera(50, (window.innerWidth / 2) / window.innerHeight, 1, 4000);
 cameraRight.position.set(0.08, -3.89*3, 5.16*3);
 cameraRight.lookAt(scene.position);
-scene.add(cameraRight);
-
-/*let width = localToWorld(Math.round(window.innerWidth / 2)),
-    height = localToWorld(window.innerHeight);*/
+scene.add(cameraRight);*/
 
     let width = Math.round(window.innerWidth / 2),
     height = window.innerHeight;
-
-/*cameraLeft = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-cameraLeft.position.set(-0.08, -3.89, 5.16);
+/*3D camera implementation*/
+//Left orthographic camera
+cameraLeft = new THREE.OrthographicCamera(-6.54*2, 6.76*2, 7.8*2, -5.68*2, 1, 1000);
+cameraLeft.position.set(/*-0.41*/-0.3, -3.89*2, 5.16*2);
 cameraLeft.lookAt(scene.position);
 scene.add(cameraLeft);
-//Right Camera
-cameraRight = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-cameraRight.position.set(0.08, -3.89, 5.16);
+//Right orthographic camera
+cameraRight = new THREE.OrthographicCamera(-6.76*2, 6.54*2, 7.8*2, -5.68*2, 1, 1000);
+cameraRight.position.set(/*0.41*/0.3, -3.89*2, 5.16*2);
 cameraRight.lookAt(scene.position);
-scene.add(cameraRight);*/
+scene.add(cameraRight);
 
-var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
+console.log(cameraRight.position.y+' '+cameraRight.position.z);
 
+//Verticle lines for keyboard calibration
 var linegeometry = new THREE.Geometry();
 var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
 linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
 linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
 var theLine = new THREE.Line(linegeometry, linematerial);
 var theLine2 = new THREE.Line(linegeometry, linematerial);
-
-scene.add(theLine);
-scene.add(theLine2);
 theLine.position.x = 11.05;
 theLine2.position.x = -10.22;
+scene.add(theLine);
+scene.add(theLine2);
 
-
-
-
-    
 
 
 //Creating a renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x000000 );
+renderer.setClearColor( 0xffffff );
 document.body.appendChild( renderer.domElement );
 
 renderer.shadowMapEnabled = true;
@@ -159,30 +146,36 @@ renderer.shadowMapEnabled = true;
 //Loading geometries to scene
 loadGeometries();
 
+/*Passes and composers for bloompass*/
 //PASSES
 var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
 var renderPass2 = new THREE.RenderPass(scene, cameraRight);
 var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-var bloomPass = new THREE.BloomBlendPass( 10.0, 0.8, new THREE.Vector2(64, 64));
+var bloomPass = new THREE.BloomBlendPass(0, 1.5, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
+
 
 //First composer
 var composer = new THREE.EffectComposer(renderer);
-composer.addPass(renderPass1);
-composer.addPass(renderPass2);
-composer.addPass(effectCopy);
 var renderScene = new THREE.TexturePass(composer.renderTarget2);
+composer.addPass(renderPass1);
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+composer.addPass(effectCopy);
+
 
 //Second composer (BloomPass)
 var composer2 = new THREE.EffectComposer(renderer);
-composer2.addPass(renderScene);
+var renderScene2 = new THREE.TexturePass(composer2.renderTarget2);
+composer2.addPass(renderPass2);
+composer2.addPass(renderScene2);
 composer2.addPass(bloomPass);
 composer2.addPass(effectCopy);
 
 //Creating scoreboard
 var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
 dynamicTexture.context.font	= "bolder 200px Verdana";
-var scoreGeo = new THREE.BoxGeometry(12, 2, 2);
+var scoreGeo = new THREE.BoxGeometry(7, 2, 2);
 var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
 var side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
 var side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
@@ -260,7 +253,9 @@ function animate(){
     dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
 
     //Translating blocks 
-    updatePositions(elapsedTime, blockpos);
+    // updatePositions(elapsedTime, blockpos);
+    meshGroup.position.y = -elapsedTime * tempo;
+    line.position.y = -blockpos+1;
 
     //Updating frame
     requestAnimationFrame(animate);
@@ -273,7 +268,7 @@ function animate(){
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
     composer.render();
-    composer2.render();
+  
   
     //Right camera
     renderer.setViewport( width, 0, width, height);
@@ -282,22 +277,35 @@ function animate(){
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
     composer2.render();
+
+
 }
 
 function loadGeometries(){
 
-    var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-    //light.position.set( 5, -5, -4 );
-    light.position.set( 5, 5, 5 );
-    scene.add( light );
+    var light = new THREE.PointLight(0xb4e7f2, 2);
+    light.position.set(10, 8, 8);
+    scene.add(light);
+
+    var light2 = new THREE.PointLight(0xb4e7f2, 2);
+    light2.position.set(-10, 8, 8);
+    scene.add(light2);
+
+    var light3 = new THREE.PointLight(0xb4e7f2, 2);
+    light3.position.set(0, -8, 2);
+    scene.add(light3);
+
     //Loading note blocks from picked song
     noteBlockArray = loadNoteBlocks();
 }
 
 function addChordNoteBlocks(noteBlock1, noteBlock2){
 
-    scene.add(noteBlock1.mesh);
-    scene.add(noteBlock2.mesh);
+    meshGroup.add(noteBlock1.mesh);
+    meshGroup.add(noteBlock2.mesh);
+    /*scene.add(noteBlock1.mesh);
+    scene.add(noteBlock2.mesh);*/
+    scene.add(meshGroup);
 
     noteBlock1.active = true;
     noteBlock2.active = true;
@@ -322,19 +330,6 @@ function addSingleNoteBlock(noteBlock){
     //noteBlock.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock.noteLength/2;
     noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2;
     blockIndex++;
-}
-
-function updatePositions(elapsedTime, blockpos){
-
-    //cameraLeft.position.y = elapsedTime * tempo;
-    //cameraRight.position.y = elapsedTime * tempo;
-    meshGroup.position.y = -elapsedTime * tempo;
-
-    line.position.y = -blockpos+1;
-    theLine.position.y = 0;
-    theLine2.position.y = 0;
-    scoreBoard.position.y = 0;
-    // axis.position.y = cameraLeft.position.y +5;
 }
 
 
