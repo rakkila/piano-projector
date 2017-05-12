@@ -9,8 +9,10 @@
             function sendID(id){
                 window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
-            function getID(){
-                return location.search.substring(1).split("?")[0];
+                function getID(){
+                return location.search.substring(1).split("?")[0] + "?" +
+                       location.search.substring(1).split("?")[1] + "?" +
+                       location.search.substring(1).split("?")[2];
             }
             //Enabling keyboard input
             WebMidi.enable(function(err){ 

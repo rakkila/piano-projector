@@ -25,9 +25,19 @@ function getPositionX(n){
         noBlackKeys = 36;
     }   
 
-        let left = -10.20,
-            right = 11.05,
-            pianoLength = right-left,
+     // let left = -10.20,
+     //       right = 11.05,
+
+        // Extracting calibrated right- and left line positions from URL
+          var right = location.search.substring(1).split("?")[1],
+              left = location.search.substring(1).split("?")[2];
+
+              if(left.includes('-'))
+                {
+                    left = -left.split("-").pop();
+                }
+
+           let pianoLength = right-left,
 
             noteWidth = pianoLength/noWhiteKeys,
             blackNoteWidth = 0.68181818 * noteWidth,
@@ -37,8 +47,6 @@ function getPositionX(n){
           //  blackDist1 = 0.59090909 * noteWidth,
             blackDist1 = 0.52 * noteWidth,
             blackDist2 = 1.18181818 * noteWidth;
-
-          //  console.log('blackNoteWidth = ' +  blackNoteWidth + 'blackNoteCenter = ' + blackNoteCenter + 'blackDist1 = ' + blackDist1);
 
     switch(n){
 

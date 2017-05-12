@@ -75,12 +75,21 @@
 
 //Global variables
 var keyboard = new Keyboard();
-var song = new Song(location.search.substring(1).split("?")[1]);
+
+//var song = new Song(location.search.substring(1).split("?")[1]);
+var song = new Song(location.search.substring(1).split("?")[3]);
+// Extracting line positions
+ var rightLinePos = location.search.substring(1).split("?")[1];
+ var leftLinePos = location.search.substring(1).split("?")[2];
+var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
+
 var errorSound = new Audio('./songs-mp3/error.wav');
 var noteBlockArray = [];
 var delBlockArray = [];
 var blockIndex = 0;
-var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
+
+//var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
+
 var animationID;
 var particleCount = 500;
 var particles = new THREE.Geometry();
@@ -146,7 +155,8 @@ loadGeometries();
 var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
 var renderPass2 = new THREE.RenderPass(scene, cameraRight);
 var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+//var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+var bloomPass = new THREE.BloomBlendPass( 1, 0.1, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
 //First composer
 var composer = new THREE.EffectComposer(renderer);
@@ -238,8 +248,8 @@ function animate(){
         elapsedTime = getCurrentTime() - startTime;
 
     //If game has ended, init "game over"-animation
-    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
-        initEndingAnimation(getScore());
+  //  if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+      //  initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
@@ -248,8 +258,10 @@ function animate(){
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
 
         if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
-            //Adding group of note blocks
+        {
+                        //Adding group of note blocks
             addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
+        }
 
         else
             addSingleNoteBlock(noteBlockArray[blockIndex]);
@@ -350,7 +362,6 @@ function getSongTempo(s){
     return tempo;
 }
 
-
 function sendID(){
     window.location.href = "GUI/GameOver.html?" + totalpoints;
 }
@@ -362,8 +373,10 @@ function initEndingAnimation(totalpoints){
 
 function addChordNoteBlocks(noteBlock1, noteBlock2){
 
-    scene.add(noteBlock1.mesh);
-    scene.add(noteBlock2.mesh);
+    meshGroup.add(noteBlock1.mesh);
+    meshGroup.add(noteBlock2.mesh);
+
+    scene.add(meshGroup);
 
     noteBlock1.active = true;
     noteBlock2.active = true;
@@ -371,14 +384,14 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
     noteBlock1.mesh.position.x = getPositionX(noteBlock1.note);
     noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
 
-    noteBlock1.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock1.noteLength/2;
+    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2;
     noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
-
     blockIndex += 2;
+
 }
 
 function addSingleNoteBlock(noteBlock){
-
+    
     meshGroup.add(noteBlock.mesh);
     scene.add(meshGroup);
     noteBlock.active = true;
