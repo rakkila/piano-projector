@@ -29,11 +29,17 @@
 
                  <script>
             function sendID(){
-                window.location.href = "Menu.html?" + getID();
+                window.location.href = "Menu.html?" + getID() + "?" + getLinePos();
             }
             function getID(){
                 return location.search.substring(1).split("?")[0];
             }
+
+            function getLinePos() {
+                return theLine.position.x.toFixed(2) + "?" + 
+                       theLine2.position.x.toFixed(2);
+            }
+            
             var scene = new THREE.Scene();
             var renderer = new THREE.WebGLRenderer();
             renderer.setSize( window.innerWidth, window.innerHeight );
@@ -59,7 +65,9 @@
             scene.add(theLine2);
             theLine.position.x = 11.05;
             theLine2.position.x = -10.22;
-            
+            renderCal();
+
+            function renderCal() {
             renderer.setViewport( 0, 0, width, height);
             renderer.setScissor( 0, 0, width, height);
             renderer.setScissorTest ( true );
@@ -74,6 +82,8 @@
             cameraRight.updateProjectionMatrix();
             //cameraRight.position.x = separation; 
             renderer.render( scene, cameraRight );
+            }
+
             //Enabling keyboard input
             WebMidi.enable(function(err){ 
                 if(err) 
@@ -92,6 +102,33 @@
                             //Button animation on key pressed
                             if(key == 'D4')
                                 document.getElementById('play').style.background = "green";
+                            
+                            // Change linePositions
+
+                            // move left line
+                            if(key == 'C2')
+                            {
+                                theLine2.position.x -= 0.05;
+                                renderCal();
+                            }
+                            if(key == 'E2')
+                            {
+                                theLine2.position.x += 0.05;
+                                renderCal();
+                            }
+
+                            // move right line
+                            if(key == 'C3')
+                            {
+                                theLine.position.x -= 0.05;
+                                renderCal();
+                            }
+                            if(key == 'E3')
+                            {
+                                theLine.position.x += 0.05;
+                                renderCal();
+                            }
+
                                 
                         });
                          //Listening for a 'note off' message (on all channels) 
@@ -111,4 +148,4 @@
    
         </script>
     </body>
-</html> 
+</html>

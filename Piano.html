@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html id="playground">
 <head>
-
     <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
     <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Piano-projector</title>
@@ -45,6 +44,15 @@
     <script src="lib/three.js-master/examples/js/postprocessing/TexturePass.js"></script>
     <script src="lib/three.js-master/examples/js/postprocessing/BloomBlendPass.js"></script>
 
+    </script>
+    <script src="lib\threex.dynamictexture.js"></script>
+    <script src="lib\three.js-master\docs\build\three.js"></script>
+    <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
+    <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
+    <script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
+    <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
+    <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
+
     <!-- Internal js files -->
     <script src="getPositionX.js"></script>
     <script src="NoteBlock.js"></script>
@@ -59,216 +67,214 @@
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
     
+
 </head>
+
 <body>
 <script>
 
-//Global variables
-var keyboard = new Keyboard();
-var song = new Song(location.search.substring(1).split("?")[1]);
-//var errorSound = new Audio('./songs-mp3/error.wav');
-var noteBlockArray = [];
-var delBlockArray = [];
-var blockIndex = 0;
-var tempo = getSongTempo(location.search.substring(1).split("?")[1]);
-var animationID;
-var startTime;
+    //Global variables
+    var keyboard = new Keyboard();
+    var song = new Song(location.search.substring(1).split("?")[3]);
 
-var meshGroup = new THREE.Object3D();
+    // Extracting line positions
+    var rightLinePos = location.search.substring(1).split("?")[1];
+    var leftLinePos = location.search.substring(1).split("?")[2];
+    var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
+    var errorSound = new Audio('./songs-mp3/error.wav');
+    var noteBlockArray = [];
+    var delBlockArray = [];
+    var blockIndex = 0;
+    var startTime;
 
-//Create the particle variables
-var particleCount = 500;
-var particleCount2 = 30;
-var particles = new THREE.Geometry();
-var particles2 = new THREE.Geometry();
-var pMaterial, pMaterial2;
-var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare_0.png"), blending: THREE.AdditiveBlending, transparent: true});
-var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    //Create the particle variables
+    var particleCount = 500;
+    var particleCount2 = 30;
+    var particles = new THREE.Geometry();
+    var particles2 = new THREE.Geometry();
+    var pMaterial, pMaterial2;
+    var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    // create the particle system
+    var particleSystem;
+    var particleSystem2;
+        
+    var meshGroup = new THREE.Object3D();
 
-// create the particle system
-var particleSystem;
-var particleSystem2;
+        //Creating scene
+    var scene = new THREE.Scene();
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor( 0x000000 );
+    document.body.appendChild( renderer.domElement );
+    renderer.shadowMapEnabled = true;
 
 
-//Creating a scene
-var scene = new THREE.Scene();
+        //Create black line at bottom of scene
+        var geometry = new THREE.BoxGeometry(20, 0.2, 1);
+        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
+        var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        var line = new THREE.Mesh(geometry, material);
+        scene.add(line);
 
+    document.body.appendChild(renderer.domElement);
 
-// load background texture
-//var scale = (window.innerWidth / 2) / window.innerHeight;
+    // Creating 3D camera
+    cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+    cameraLeft.position.set( 0, 0, 10 );
+    scene.add(cameraLeft);
+    cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
+    cameraRight.position.set( 0, 0, 10);
+    scene.add(cameraRight);
+    let width = Math.round(window.innerWidth / 2),
+        height = window.innerHeight;
 
-var loader = new THREE.TextureLoader();
-texture = loader.load('./textures/audience2.png');
-var backgroundMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(40,20,0),
-    new THREE.MeshBasicMaterial({
-        map: texture
-    })
-);
-backgroundMesh.material.depthTest = false;
-backgroundMesh.material.depthWrite = false;
+    //Large particleSystem
+    setUpParticleSystem();
 
-// add background to scene
-scene.add( backgroundMesh );
-
-//Create black line at bottom of scene
-const geometry = new THREE.BoxGeometry(20, 0.2, 1);
-const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
-const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
-const line = new THREE.Mesh(geometry, material);
-scene.add(line);
-
-//3D camera
-cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraLeft.position.set( 0, 0, 10 );
-scene.add(cameraLeft);
-cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-cameraRight.position.set( 0, 0, 10);
-scene.add(cameraRight);
-
-var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
-
-const linegeometry = new THREE.Geometry();
-const linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
-linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
-const theLine = new THREE.Line(linegeometry, linematerial);
-const theLine2 = new THREE.Line(linegeometry, linematerial);
-
-scene.add(theLine);
-scene.add(theLine2);
-theLine.position.x = 11.05;
-theLine2.position.x = -10.22;
-    
-let width = Math.round(window.innerWidth / 2),
-    height = window.innerHeight;
-
-//Creating a renderer
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x000000 );
-document.body.appendChild( renderer.domElement );
-
-renderer.shadowMapEnabled = true;
-
-//Large particleSystem
-setUpParticleSystem();
-
-//Loading geometries to scene
-loadGeometries();
+    //Loading geometries to scene
+    loadGeometries();
 
 //PASSES
-const renderPass1 = new THREE.RenderPass(scene, cameraLeft);
-const renderPass2 = new THREE.RenderPass(scene, cameraRight);
-const effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-const bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+var renderPass2 = new THREE.RenderPass(scene, cameraRight);
+var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+//var bloomPass = new THREE.BloomBlendPass( 1, 0.1, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
 
-//First composer
-const composer = new THREE.EffectComposer(renderer);
-composer.addPass(renderPass1);
-composer.addPass(renderPass2);
-composer.addPass(effectCopy);
-const renderScene = new THREE.TexturePass(composer.renderTarget2);
+    //First composer
+    var composer = new THREE.EffectComposer(renderer);
+    composer.addPass(renderPass1);
+    composer.addPass(renderPass2);
+    composer.addPass(effectCopy);
+    var renderScene = new THREE.TexturePass(composer.renderTarget2);
 
-//Second composer (BloomPass)
-const composer2 = new THREE.EffectComposer(renderer);
-composer2.addPass(renderScene);
-composer2.addPass(bloomPass);
-composer2.addPass(effectCopy);
+        //Second composer (BloomPass)
+        var composer2 = new THREE.EffectComposer(renderer);
+        composer2.addPass(renderScene);
+        composer2.addPass(bloomPass);
+        composer2.addPass(effectCopy);
+        var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
+            var linegeometry = new THREE.Geometry();
+            var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+            linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
+            linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
+            var theLine = new THREE.Line(linegeometry, linematerial);
+            var theLine2 = new THREE.Line(linegeometry, linematerial);
+            scene.add(theLine);
+            scene.add(theLine2);
+            theLine.position.x = 11.05;
+            theLine2.position.x = -10.22;
 
-//Creating scoreboard
-var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
-dynamicTexture.context.font	= "bolder 200px Verdana";
-const scoreGeo = new THREE.BoxGeometry(12, 2, 2);
-const scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
-const side1 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-const side2 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-const side3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
-const materials = [scoreMat, side1, side2, side3];
-var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
+    //Creating lanes
+    var l1  = new THREE.Line(linegeometry, linematerial);
+    var l2  = new THREE.Line(linegeometry, linematerial);
+    var l3  = new THREE.Line(linegeometry, linematerial);
+    var l4  = new THREE.Line(linegeometry, linematerial);
+    scene.add(l1);
+    scene.add(l2);
+    scene.add(l3);
+    scene.add(l4);
+    l1.position.x = getPositionX('C2');
+    l2.position.x = getPositionX('C3');
+    l3.position.x = getPositionX('C4');
+    l4.position.x = getPositionX('C5');
 
-const scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+    //Creating scoreboard
+    var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
+    dynamicTexture.context.font	= "150px Verdana";
+    var scoreGeo = new THREE.CubeGeometry(2, 1, 2);
+    scoreGeo.side = THREE.DoubleSide;
+    var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
+    scoreMat.side = THREE.DoubleSide;
+    var side1 = new THREE.MeshPhongMaterial({ color: 0x0033ff, specular: 0x555555, shininess: 5});
+    var side2 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    var side3 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    var side4 = new THREE.MeshPhongMaterial({ color: 0x0033ff }); // left
+    var side5 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    var materials = [scoreMat, side1, side2, side3,  side4,  side5];
+    materials.side = THREE.DoubleSide;
+    var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
+    meshFaceMaterial.side = THREE.DoubleSide;
+    //  var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
+    var scoreBoard = new THREE.Mesh(scoreGeo, meshFaceMaterial);
+    scoreBoard.side = THREE.DoubleSide;
+    scoreBoard.position.set(-10,6,0);
+    scoreBoard.rotation.x = 3*Math.PI/45;
+    scoreBoard.rotation.y = -6*Math.PI/45;
 
-scoreBoard.position.set(-10,12,0);
-scoreBoard.rotation.x = Math.PI/45;
-scoreBoard.rotation.y = -Math.PI/45;
-scene.add(scoreBoard);
-dynamicTexture.texture.needsUpdate = true;
+    scene.add(scoreBoard);
+    dynamicTexture.texture.needsUpdate = true;
+    theLine.position.y = 0;
+    theLine2.position.y = 0;
 
-//Starting program
-main();
+        function main(){
 
+            //Start keyboard input
+            keyboard.startInputOutput(song);
 
-/*********  Functions    *********/
+            //Start visualization
+            animate();
 
-function main(){
+            //Play picked song
+            song.setVolume(0.4);
+            song.playSong();
 
-    //Start keyboard input
-    keyboard.startInputOutput(song);
+            // start clock
+            startTime = getStartTime();
+        }    
 
-    //Start visualization
-    animate();
+    //Starting program
+    main();
 
-    //Play picked song
-    song.setVolume(0.4);
-    song.playSong();
+var blockpos = Math.tan(75*0.5*(Math.PI/180))*10 + 1;
+    line.position.y = -blockpos+1;
 
-    startTime = getStartTime();
-}
-
-//Render loop
 function animate(){
-    particleSystem.rotation.y += 0.001;
 
-    //Updating values
-    blockpos = Math.tan(75*0.5*(Math.PI/180))*cameraLeft.position.z + 1;
+    particleSystem.rotation.y += 0.001;
+    
     var velocity = tempo * 1000,
         elapsedTime = getCurrentTime() - startTime;
 
-    //If game has ended, init "game over"-animation
     if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
         initEndingAnimation(getScore());
-
     if(blockIndex < noteBlockArray.length)
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
     
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
-
-        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime){
-            //Adding group of note blocks
+        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+        {
+                        //Adding group of note blocks
             addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
-            setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
-        else{
+           // setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
+        }
+        else
             addSingleNoteBlock(noteBlockArray[blockIndex]);
-            setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
+          //  setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
     }
             
     //Removing block when not active
     for(var i = 0; i < blockIndex; i++){
-        if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime + 1000)){
+        if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
-    }   
-
+    } 
+            
     //Update score
     dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
-
-    //Translating blocks 
-    updatePositions(elapsedTime, blockpos);
-
-    //Updating frame
-    requestAnimationFrame(animate);
+    dynamicTexture.clear('blue').drawText(getScore(), 50, 500, 'white');
+    animationID = requestAnimationFrame(animate);
+        updatePositions(elapsedTime, blockpos);
 
     //Render frame
-    //Left camera
-
     renderer.autoClear = false;
     renderer.clear();
 
-
+    //Left camera
     renderer.setViewport( 0, 0, width, height);
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
@@ -276,7 +282,6 @@ function animate(){
     cameraLeft.updateProjectionMatrix();
     composer.render();
     composer2.render();
-
   
     //Right camera
     renderer.setViewport( width, 0, width, height);
@@ -285,110 +290,98 @@ function animate(){
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
     composer2.render();
-
    
 }
 
-function loadGeometries(){
+//FUNCTIONS
 
-    const light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-    light.position.set( 5, 5, 5 );
-    scene.add( light );
-    //Loading note blocks from picked song
-    noteBlockArray = loadNoteBlocks();
-}
+    // Function to load geometries
+    function loadGeometries(){
+
+        var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
+        light.position.set( 5, -3.5, 5 );
+        scene.add( light );
+
+        scene.add(particleSystem);
+        //Loading note blocks from picked song
+        noteBlockArray = loadNoteBlocks();
+        delBlockArray = loadNoteBlocks();
+    }
 
 function setUpParticleSystem(){
-for (var p = 0; p < particleCount; p++){
-
-  // create a particle with random postion values
-  var pX = Math.random() * 10 - 5,
-      pY = Math.random() * 500 - 250,
-      pZ = Math.random() * 20 - 10,
-      particle = new THREE.Vector3(pX, pY, pZ);
-
-  particleSystem = new THREE.Points( particles, pMaterial);
-  // add it to the geometry
-  //particleSystem.position.set(1, 1, 1);
-  particles.vertices.push(particle);
-}
-
+    for (var p = 0; p < particleCount; p++){
+    // create a particle with random postion values
+    var pX = Math.random() * 10 - 5,
+        pY = Math.random() * 500 - 250,
+        pZ = Math.random() * 20 - 10,
+        particle = new THREE.Vector3(pX, pY, pZ);
+    particleSystem = new THREE.Points( particles, pMaterial);
+    // add it to the geometry
+    //particleSystem.position.set(1, 1, 1);
+    particles.vertices.push(particle);
+    }
 // add it to the scene
 scene.add(particleSystem);
 }
 
 function setUpExplosion(xpos){
-for (var p = 0; p < particleCount2; p++){
-
-  // create a particle with random postion values
-  var pX2 = xpos,
-      pY2 = Math.random() * 20 - 10,
-      pZ2 = Math.random() * 20 - 10,
-      particle2 = new THREE.Vector3(pX2, pY2, pZ2);
-
-  particleSystem2 = new THREE.Points( particles2, pMaterial2);
-  // add it to the geometry
-  //particleSystem.position.set(1, 1, 1);
-  particles2.vertices.push(particle2);
+    for (var p = 0; p < particleCount2; p++){
+    // create a particle with random postion values
+    var pX2 = xpos,
+        pY2 = Math.random() * 20 - 10,
+        pZ2 = Math.random() * 20 - 10,
+        particle2 = new THREE.Vector3(pX2, pY2, pZ2);
+    particleSystem2 = new THREE.Points( particles2, pMaterial2);
+    // add it to the geometry
+    //particleSystem.position.set(1, 1, 1);
+    particles2.vertices.push(particle2);
 }
-
 // add it to the scene
 scene.add(particleSystem2);
 }
 
 function addChordNoteBlocks(noteBlock1, noteBlock2){
-
-    //meshGroup.add(noteBlock1.mesh);
-    //meshGroup.add(noteBlock2.mesh);
-
-    scene.add(noteBlock1.mesh);
-    scene.add(noteBlock2.mesh);
-
+    meshGroup.add(noteBlock1.mesh);
+    meshGroup.add(noteBlock2.mesh);
+    scene.add(meshGroup);
     noteBlock1.active = true;
     noteBlock2.active = true;
-
     noteBlock1.mesh.position.x = getPositionX(noteBlock1.note);
     noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
-
-    noteBlock1.mesh.position.y = cameraLeft.position.y + blockpos + noteBlock1.noteLength/2;
+    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2;
     noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
-
     blockIndex += 2;
 }
 
 function addSingleNoteBlock(noteBlock){
-
+    
     meshGroup.add(noteBlock.mesh);
     scene.add(meshGroup);
     noteBlock.active = true;
     
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
-    noteBlock.mesh.position.y = meshGroup.position.y + blockpos + noteBlock.noteLength/2;
+    noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2;
     blockIndex++;
 }
 
 function updatePositions(elapsedTime, blockpos){
-
-    meshGroup.position.y = -elapsedTime*tempo;
-
-    //backgroundMesh.position.y = cameraLeft.position.y;
-    line.position.y = -blockpos+1;
-    theLine.position.y =0;
-    theLine2.position.y = 0;
-    scoreBoard.position.y = 5;
+    //cameraLeft.position.y = elapsedTime * tempo;
+    //cameraRight.position.y = elapsedTime * tempo;
+    meshGroup.position.y = -elapsedTime * tempo;
+    // axis.position.y = cameraLeft.position.y +5;
 }
 
-
-//Setting tempo depending on song picked
-function getSongTempo(s){
-    switch(s){
-        case 'roses': tempo = 0.01; break;
-        case 'jason_mraz': tempo = 0.005; break;
-        case 'korv': tempo = 0.006; break;
-        default: tempo = 0.006; break;
-    }
-    return tempo;
+    //Setting tempo depending on song picked
+    function getSongTempo(s){
+        switch(s){
+            case 'roses': tempo = 0.01; break;
+            case 'jason_mraz': tempo = 0.005; break;
+            case 'korv': tempo = 0.007; break;
+            default: tempo = 0.001; break;
+        }
+        return tempo;
 }
+
 
 function sendID(){
     window.location.href = "GUI/GameOver.html?" + totalpoints;
@@ -397,11 +390,10 @@ function sendID(){
 function initEndingAnimation(totalpoints){
     document.getElementById('playground').style.animation = "fadeout 4s";
     setTimeout(sendID, 2000);
+
 }
 
 </script>
 </body>
 
-
 </html>
-

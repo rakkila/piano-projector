@@ -10,8 +10,11 @@
                 window.location.href = id + ".html?" + getID() ;
             }
                 function getID(){
-                return location.search.substring(1).split("?")[0];
+                return location.search.substring(1).split("?")[0] + "?" +
+                       location.search.substring(1).split("?")[1] + "?" +
+                       location.search.substring(1).split("?")[2];
             }
+
                  //Enabling keyboard input
             WebMidi.enable(function(err){ 
                 if(err) 
