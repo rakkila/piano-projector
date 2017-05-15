@@ -81,17 +81,17 @@
     var rightLinePos = location.search.substring(1).split("?")[1];
     var leftLinePos = location.search.substring(1).split("?")[2];
     var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
-    var errorSound = new Audio('./songs-mp3/error.wav');
+    //var errorSound = new Audio('./songs-mp3/error.wav');
     var noteBlockArray = [];
     var delBlockArray = [];
     var blockIndex = 0;
     var startTime;
 
     //Create the particle variables
-    var particleCount = 500;
-    var particleCount2 = 30;
-    var particles = new THREE.Geometry();
-    var particles2 = new THREE.Geometry();
+    const particleCount = 500;
+    const particleCount2 = 30;
+    const particles = new THREE.Geometry();
+    const particles2 = new THREE.Geometry();
     var pMaterial, pMaterial2;
     var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
     var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
@@ -99,20 +99,20 @@
     var particleSystem;
     var particleSystem2;
         
-    var meshGroup = new THREE.Object3D();
+    const meshGroup = new THREE.Object3D();
 
         //Creating scene
-    var scene = new THREE.Scene();
-    var renderer = new THREE.WebGLRenderer();
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.setClearColor( 0x000000 );
     document.body.appendChild( renderer.domElement );
     renderer.shadowMapEnabled = true;
 
         //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
-        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
-        var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
+        const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
+        const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
         
@@ -135,28 +135,28 @@
     loadGeometries();
 
 //PASSES
-var renderPass1 = new THREE.RenderPass(scene, cameraLeft);
-var renderPass2 = new THREE.RenderPass(scene, cameraRight);
-var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-var bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
+const renderPass1 = new THREE.RenderPass(scene, cameraLeft);
+const renderPass2 = new THREE.RenderPass(scene, cameraRight);
+const effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+const bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
 //var bloomPass = new THREE.BloomBlendPass( 1, 0.1, new THREE.Vector2(512, 512));
 bloomPass.renderToScreen = true;
 
     //First composer
-    var composer = new THREE.EffectComposer(renderer);
+    const composer = new THREE.EffectComposer(renderer);
     composer.addPass(renderPass1);
     composer.addPass(renderPass2);
     composer.addPass(effectCopy);
-    var renderScene = new THREE.TexturePass(composer.renderTarget2);
+    const renderScene = new THREE.TexturePass(composer.renderTarget2);
 
         //Second composer (BloomPass)
-        var composer2 = new THREE.EffectComposer(renderer);
+        const composer2 = new THREE.EffectComposer(renderer);
         composer2.addPass(renderScene);
         composer2.addPass(bloomPass);
         composer2.addPass(effectCopy);
         var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
-            var linegeometry = new THREE.Geometry();
-            var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+            const linegeometry = new THREE.Geometry();
+            const linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
             linegeometry.vertices.push(new THREE.Vector3(0, -10, 0));
             linegeometry.vertices.push(new THREE.Vector3(0, 10, 0));
             var theLine = new THREE.Line(linegeometry, linematerial);
@@ -187,16 +187,16 @@ bloomPass.renderToScreen = true;
     //Creating scoreboard
     var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
     dynamicTexture.context.font	= "150px Verdana";
-    var scoreGeo = new THREE.CubeGeometry(2, 1, 2);
+    const scoreGeo = new THREE.CubeGeometry(2, 1, 2);
     scoreGeo.side = THREE.DoubleSide;
     var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
     scoreMat.side = THREE.DoubleSide;
-    var side1 = new THREE.MeshPhongMaterial({ color: 0x0033ff, specular: 0x555555, shininess: 5});
-    var side2 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    var side3 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    var side4 = new THREE.MeshPhongMaterial({ color: 0x0033ff }); // left
-    var side5 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    var materials = [scoreMat, side1, side2, side3,  side4,  side5];
+    const side1 = new THREE.MeshPhongMaterial({ color: 0x0033ff, specular: 0x555555, shininess: 5});
+    const side2 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    const side3 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    const side4 = new THREE.MeshPhongMaterial({ color: 0x0033ff }); // left
+    const side5 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
+    const materials = [scoreMat, side1, side2, side3,  side4,  side5];
     materials.side = THREE.DoubleSide;
     var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
     meshFaceMaterial.side = THREE.DoubleSide;
@@ -230,7 +230,7 @@ bloomPass.renderToScreen = true;
     //Starting program
     main();
 
-var blockpos = Math.tan(75*0.5*(Math.PI/180))*10 + 1;
+var blockpos = Math.tan(75*0.5*(Math.PI/180))*10;
     line.position.y = -blockpos+1.5;
 
 function animate(){
