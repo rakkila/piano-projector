@@ -47,6 +47,7 @@
 
     </script>
     <script src="lib\threex.dynamictexture.js"></script>
+    <script src="lib/GPUParticleSystem.js"></script>
     <script src="lib\three.js-master\docs\build\three.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\EffectComposer.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\MaskPass.js"></script>
@@ -62,12 +63,12 @@
     <script src="Clock.js"></script>
     <script src="parseSongData.js"></script>
     <script src="getSongArray.js"></script>
+    <script src="ParticleSystem_KeyPressed.js"></script>   
     <script src="keyEffects.js"></script>
     <script src="PointGiver.js"></script>
     <script src="SongResizer.js"></script>
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
-    <script src="lib/GPUParticleSystem.js"></script>
 
 
 </head>
@@ -79,8 +80,6 @@
 
     var tick = 0;
     var clock = new THREE.Clock();
-    var spawnerOptions, particleSystem1;
-    var keyPressed = false;
 
     var keyboard = new Keyboard();
     var song = new Song(location.search.substring(1).split("?")[3]);
@@ -106,6 +105,7 @@
     // create the particle system
     var particleSystem;
     var particleSystem2;
+    var particleSystem_keyPressed = [];
         
     var meshGroup = new THREE.Object3D();
 
@@ -118,9 +118,9 @@
     renderer.shadowMapEnabled = true;
 
         //Create black line at bottom of scene
-        var geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
-        var material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.2 });
-        var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.2 });
+        var geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos + 2, 0.2, 1);
+        var material = new THREE.MeshPhongMaterial({ color: 0x9C9C9C, transparent: true, opacity: 0.2 });
+        //var material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.2 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
         
@@ -234,54 +234,28 @@ bloomPass.renderToScreen = true;
 
     function init() {
 
+        // The GPU Particle system extends THREE.Object3D, and so you can use it
+        // as you would any other scene graph component.	Particle positions will be
+        // relative to the position of the particle system, but you will probably only need one
+        // system for your whole scene
 
-    // The GPU Particle system extends THREE.Object3D, and so you can use it
-    // as you would any other scene graph component.	Particle positions will be
-    // relative to the position of the particle system, but you will probably only need one
-    // system for your whole scene
+        //Adding particle systems to the array particleSystem_keyPressed and to the scene
+        //Mapping each particle system to the keys in the selected song
+        let particleElement = 0;
+        for(let i = 0; i < noteBlockArray.length; ++i)
+        {
+            //Don't adding duplicates. 
+            if( particleSystem_keyPressed.map(x => x.note).indexOf(noteBlockArray[i].note) == -1 ){
 
-    //  cameraLeft.position.z = 20;
-    //  cameraRight.position.z = 20;
+                //Setting x position of particle system the same as the corresponding note
+                const xPosition = getPositionX(noteBlockArray[i].note);
+                particleSystem_keyPressed[particleElement] = new ParticleSystem_KeyPressed(xPosition, noteBlockArray[i].note);
+                scene.add(particleSystem_keyPressed[particleElement].particleSystem);
+                particleElement++;
+            }     
+        }
+    }
 
-    particleSystem1 = new THREE.GPUParticleSystem( {
-        maxParticles: 250000
-    } );
-
-    scene.add( particleSystem1 );
-
-    // options passed during each spawned
-
-    options = {
-        position: new THREE.Vector3(),
-    //	positionRandomness: .3,
-        positionRandomness: 0.1,
-        velocity: new THREE.Vector3(0,0.3,0),
-    //	velocityRandomness: .5,
-        velocityRandomness: 0.5,
-        color: 0xaa88ff,
-        colorRandomness: .2,
-    //	turbulence: .5,
-        turbulence: 0.0005,
-        lifetime: 0.0001,
-        size: 6,
-        sizeRandomness: 1
-    };
-
-    spawnerOptions = {
-        spawnRate: 6000,
-    //	horizontalSpeed: 1.5,
-    //	verticalSpeed: 1.33,
-
-        horizontalSpeed: 0.1,
-        verticalSpeed: 0.001,
-
-        timeScale: 1
-    };
-
-    //
-    particleSystem1.position.y = -8;
-
-}
 
 function main(){
 
@@ -304,20 +278,17 @@ function main(){
 main();
 
 var blockpos = Math.tan(75*0.5*(Math.PI/180))*10;
-    line.position.y = -blockpos+1.5;
+    line.position.y = -blockpos;
 
 function animate(){
 
-        var velocity = tempo * 1000,
-        elapsedTime = getCurrentTime() - startTime;
+    var velocity = tempo * 1000,
+    elapsedTime = getCurrentTime() - startTime;
 
-        renderParticles();
+    renderParticles();
 
-
-////
     particleSystem.rotation.y += 0.001;
     
-
 
     // Trigger GameOVer sequence
   //  if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
@@ -341,16 +312,16 @@ function animate(){
             
     //Removing block when not active and activating particle system on active noteblock
     for(var i = 0; i < blockIndex; i++){
-
-        if(keyPressed){
+/*
+        if(keyPressed[0] == true){
             options.lifetime = 9;
-            particleSystem1.position.x = noteBlockArray[i].mesh.position.x;
+            particleSystem_keyPressed.position.x = noteBlockArray[i].mesh.position.x;
         }
 
         else if(!keyPressed)
-            options.lifetime = 0.001;
-            particleSystem1.position.x = noteBlockArray[i].mesh.position.x;
-
+            options.lifetime = 0.9;
+            //particleSystem1.position.x = noteBlockArray[i].mesh.position.x;
+*/
         
         if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
             scene.remove(noteBlockArray[i].mesh);
@@ -389,28 +360,26 @@ function animate(){
 
 function renderParticles(noteblock){
 
-    var delta = clock.getDelta() * spawnerOptions.timeScale;
+    var delta = clock.getDelta() * particleSystem_keyPressed[0].spawnerOptions.timeScale;
     tick += delta;
 
     if ( tick < 0 ) tick = 0;
 
     if ( delta > 0 ) {
 
-        options.positionRandomness = 0.6;
-        options.turbulence = 0.2;
+        for ( let x = 0; x < particleSystem_keyPressed[0].spawnerOptions.spawnRate * delta; x++ ) {
 
-        for ( var x = 0; x < spawnerOptions.spawnRate * delta; x++ ) {
-
-            // Yep, that's really it.	Spawning particles is super cheap, and once you spawn them, the rest of
+            //Spawning particles is super cheap, and once you spawn them, the rest of
             // their lifecycle is handled entirely on the GPU, driven by a time uniform updated below
-
-            particleSystem1.spawnParticle( options );
+            for(let i = 0; i < particleSystem_keyPressed.length; ++i){
+                 particleSystem_keyPressed[i].particleSystem.spawnParticle( particleSystem_keyPressed[i].options );
+            }
         }
     }
 
    // particleSystem1.position.x 
-
-    particleSystem1.update( tick );
+    for(let i = 0; i < particleSystem_keyPressed.length; ++i)
+        particleSystem_keyPressed[i].particleSystem.update( tick );
 }
 
 //FUNCTIONS
@@ -443,7 +412,7 @@ function setUpParticleSystem(){
 // add it to the scene
 //scene.add(particleSystem);
 }
-
+/*
 function setUpExplosion(xpos){
     for (var p = 0; p < particleCount2; p++){
     // create a particle with random postion values
@@ -459,6 +428,7 @@ function setUpExplosion(xpos){
 // add it to the scene
 scene.add(particleSystem2);
 }
+*/
 
 function addChordNoteBlocks(noteBlock1, noteBlock2){
     meshGroup.add(noteBlock1.mesh);
@@ -511,6 +481,27 @@ function initEndingAnimation(totalpoints){
     document.getElementById('playground').style.animation = "fadeout 4s";
     setTimeout(sendID, 2000);
 
+}
+
+
+// TESTING -----
+
+window.addEventListener("keydown", dealWithKeyboard, false);
+ 
+function dealWithKeyboard(e) {
+    for(let i = 0; i < particleSystem_keyPressed.length; ++i)
+        particleSystem_keyPressed[i].setLifeTime(2);
+
+    console.log("x: " + particleSystem_keyPressed[4].particleSystem.position.x + "  y: " + particleSystem_keyPressed[4].particleSystem.position.y);
+    //particleSystem1.position.x = noteBlockArray[i].mesh.position.x;
+}
+
+window.addEventListener("keyup", dealWithKeyboard2, false);
+ 
+function dealWithKeyboard2(e) {
+     for(let i = 0; i < particleSystem_keyPressed.length; ++i)
+        particleSystem_keyPressed[i].setLifeTime(0.00001);
+    //particleSystem1.position.x = noteBlockArray[i].mesh.position.x;
 }
 
 </script>

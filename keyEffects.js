@@ -5,12 +5,18 @@ function lightUp(key, startTime)
 
         if(noteBlockArray[i].note == key && noteBlockArray[i].startTime == startTime )
         {
+            //changing pressed key color
             noteBlockArray[i].mesh.material.color.setHex(0x00ff00);
-         // noteBlockArray[i].mesh.position.z = 2;
+            
+            //rendering particle system at the pressed key
+            //getting correct index in particle array to render
+            const particleIndex = particleSystem_keyPressed.map(x => x.note).indexOf(key);
+            particleSystem_keyPressed[particleIndex].setLifeTime(4);
+
             break;
         }
     }  
-     //sound?
+     
 }
 
 function lightOff(key, stopTime)
@@ -19,10 +25,15 @@ function lightOff(key, stopTime)
     {
         if(noteBlockArray[i].note == key && noteBlockArray[i].stopTime == stopTime)
         {
+            //reseting note block color
             noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
 
-            noteBlockArray[i].mesh.position.z = 0;
-             line.material.color.setHex(0x050505);
+            //stopping to render particle system at the pressed key
+            //getting correct index in particle array to render
+            const particleIndex = particleSystem_keyPressed.map(x => x.note).indexOf(key);
+            particleSystem_keyPressed[particleIndex].setLifeTime(0.00001);
+
+            line.material.color.setHex(0x050505);
 
             break;
         }
@@ -30,9 +41,3 @@ function lightOff(key, stopTime)
     }
       
 }
-
-/*function fullScore()
-{
-   fullScoreCounter = 0;
-    noteBlockArray.mesh.material.color.setHex(0xffffff);
-}*/

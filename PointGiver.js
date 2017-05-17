@@ -16,7 +16,6 @@ function noteon(keyOn, timeOn, pArray)
             {
                 
                 lightUp(keyOn, pArray[i].starttime);
-                keyPressed = true;
 
                 pArray[i].points = pArray[i].points + 50;
                 break;
@@ -55,7 +54,6 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
                 pArray[i].points -= Math.round(Math.abs(pArray[i].stoptime - timeOff) * 0.05); 
 
                 lightOff(pArray[i].note, pArray[i].stoptime);
-                keyPressed = false;
 
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
@@ -65,7 +63,6 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
             else if((Math.abs(pArray[i].stoptime - timeOff) < 200) && pArray[i].points != 0)
             {
                 lightOff(pArray[i].note, pArray[i].stoptime);
-                keyPressed = false;
 
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
