@@ -189,7 +189,8 @@ function animate(){
         elapsedTime = getCurrentTime() - startTime;
 
     //If game has ended, init "game over"-animation
-    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    //if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    if(blockIndex == 3)
         initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)

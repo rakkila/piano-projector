@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-       <script src="../lib\three.js-master\docs\build\three.js"></script>
-       <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+        <script src="../lib\three.js-master\docs\build\three.js"></script>
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        <script src = "../Piano.js"> </script>
 
     </head>
 
-      <body id="gameOverBackground">
+      <body>
+          <div class ="gameOverBackground"></div>
             <div class ="left">
                 <h1 id="gameover">Game Over
                     <p id="scoreLeft"></p>
+                    <p id="percentageLeft"></p>
                 </h1>
 
                 <ul id="replay">
@@ -20,6 +23,7 @@
             <div class ="right">
                 <h1 id="gameover">Game Over
                     <p id="scoreRight"></p>
+                    <p id="percentageRight"></p>
                 </h1>
             
 
@@ -34,8 +38,16 @@
         window.location.href = "Menu.html";
     }
 
-    document.getElementById('scoreLeft').innerHTML = 'and you scored ' + location.search.substring(1).split("?")[0] + ' points!';
-    document.getElementById('scoreRight').innerHTML = 'and you scored ' + location.search.substring(1).split("?")[0] + ' points!';
+    function getScorePercentage(){
+        return (location.search.substring(1).split("?")[0]/location.search.substring(1).split("?")[1] * 100);
+    }
+
+    document.getElementById('scoreLeft').innerHTML = 'You scored';
+    document.getElementById('scoreRight').innerHTML = 'You scored';
+    document.getElementById('percentageLeft').innerHTML = getScorePercentage() + '%';
+    document.getElementById('percentageRight').innerHTML = getScorePercentage() + '%';
+
+    
     /*
     var scene = new THREE.Scene();
     var renderer = new THREE.WebGLRenderer();

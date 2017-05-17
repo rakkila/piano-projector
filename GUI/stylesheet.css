@@ -239,6 +239,17 @@ ul {
 	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
+.left #percentageLeft, .right #percentageRight{
+	font-size: 70px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	color:grey;
+	text-align: center;
+	margin-top: 1%;
+	/*transform: rotate(-2deg);*/
+	animation: fadein 4s;
+	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
+}
+
 #replay{
 	padding-top: 30%;
 }
