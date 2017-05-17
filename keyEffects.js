@@ -11,7 +11,7 @@ function lightUp(key, startTime)
             //rendering particle system at the pressed key
             //getting correct index in particle array to render
             const particleIndex = particleSystem_keyPressed.map(x => x.note).indexOf(key);
-            particleSystem_keyPressed[particleIndex].setLifeTime(4);
+            particleSystem_keyPressed[particleIndex].setLifeTime(15);
 
             break;
         }

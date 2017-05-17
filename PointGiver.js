@@ -72,6 +72,8 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
         }
         else {
             line.material.color.setHex(0x050505);
+            lightOff(pArray[i].note, pArray[i].stoptime);
+
             continue;
         }
     }

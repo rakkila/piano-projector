@@ -63,13 +63,13 @@ function loadNoteBlocks(){
         if(note.includes("b"))
         {
             noteWidth = 0.19;
-            keyColor = 0x00000fff;    
+            keyColor = 0x00000ff;    
         }
 
         else
         {
             noteWidth =  pianoLength/36 - 0.1;
-            keyColor = 0x0000ffff;
+            keyColor = 0x0000ff;
         }
             
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime, keyColor);
