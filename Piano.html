@@ -66,6 +66,7 @@
     <script src="SongResizer.js"></script>
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
+    <script src="Shine.js"></script>
     
 
 </head>
@@ -86,6 +87,7 @@
     var delBlockArray = [];
     var blockIndex = 0;
     var startTime;
+    var shineArray = [];
 
     //Create the particle variables
     const particleCount = 500;
@@ -254,13 +256,17 @@ function animate(){
            // setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
         }
         else
+        {
             addSingleNoteBlock(noteBlockArray[blockIndex]);
+        }
+           
           //  setUpExplosion(getPositionX(noteBlockArray[blockIndex].mesh.position.x )); }
     }
             
     //Removing block when not active
     for(var i = 0; i < blockIndex; i++){
         if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
+            removeShine(noteBlockArray[i], i);
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
@@ -308,6 +314,7 @@ function animate(){
         //Loading note blocks from picked song
         noteBlockArray = loadNoteBlocks();
         delBlockArray = loadNoteBlocks();
+        shineArray = loadShine();
     }
 
 function setUpParticleSystem(){
