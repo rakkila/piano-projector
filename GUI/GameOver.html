@@ -1,126 +1,198 @@
 <!DOCTYPE html>
 <html>
     <head>
-       <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
-       <script src="../lib\three.js-master\docs\build\three.js"></script>
-       <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        <link rel="stylesheet" href="stylesheet.css" type="text/css" media="screen">
+        <script src="../lib\three.js-master\docs\build\three.js"></script>
+        <script src = "../lib/webmidi/src/webmidi.js"> </script>
+        <script src = "../Piano.js"> </script>
 
     </head>
-
       <body>
+          <div class ="gameOverBackground"></div>
             <div class ="left">
-                <h1 id="gameover">Game Over</h1>
-
-                <p id="scoreLeft"></p>
+                <h1 id="gameover">Game Over
+                    <p id="scoreLeft"></p>
+                    <canvas id ="area"></canvas>
+                    <p id="percentageLeft"></p>
+                    <p id="gradeLeft"></p>    
+                </h1>
 
                 <ul id="replay">
                     <li><a id="replay" onclick="sendID();">Play again</a></li>
                 </ul>
             </div>
             <div class ="right">
-                <h1 id="gameover">Game Over</h1>
-                
-                <p id="scoreRight"></p>
+                <h1 id="gameover">Game Over
+                    <p id="scoreRight"></p>
+                    <p id="percentageRight"></p>
+                    <p id="gradeRight"></p>
+                </h1>
+            
 
                 <ul id="replay">
-                    <li><a id="replay" onclick="sendID();">Play again</a></li>
+                    <li><a id="playAgain" onclick="sendID();">Play again</a></li>
                 </ul>
             </div>
-
-            <script>
-
-            function sendID(){
-                window.location.href = "Menu.html";
-            }
-
-            document.getElementById('scoreLeft').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
-            document.getElementById('scoreRight').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];
-          /*
-            var scene = new THREE.Scene();
-            var renderer = new THREE.WebGLRenderer();
-            renderer.setSize( window.innerWidth, window.innerHeight );
-            renderer.setClearColor( 0x000000 );
-            document.body.appendChild( renderer.domElement );
-            cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-            //var helper1 = new THREE.CameraHelper(cameraLeft);
-            //scene.add(helper1);
-            cameraLeft.position.set( 0, 0, 10 );
-            scene.add(cameraLeft);
-            cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-            cameraRight.position.set( 0, 0, 10);
-            scene.add(cameraRight);
-            let width = Math.round(window.innerWidth / 2),
-                height = window.innerHeight;
-
-            var linegeometry = new THREE.Geometry();
-            var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-            linegeometry.vertices.push(new THREE.Vector3(0, -3, 0));
-            linegeometry.vertices.push(new THREE.Vector3(0, 3, 0));
-            var theLine = new THREE.Line(linegeometry, linematerial);
-            var theLine2 = new THREE.Line(linegeometry, linematerial);
-            scene.add(theLine);
-            scene.add(theLine2);
-            theLine.position.x = 11.05;
-            theLine2.position.x = -10.22;
-            
-            renderer.setViewport( 0, 0, width, height);
-            renderer.setScissor( 0, 0, width, height);
-            renderer.setScissorTest ( true );
-            cameraLeft.aspect = width * 2 / height;
-            cameraLeft.updateProjectionMatrix();
-            //cameraLeft.position.x = -separation;
-            renderer.render( scene, cameraLeft );
-            renderer.setViewport( width, 0, width, height);
-            renderer.setScissor( width, 0, width, height);
-            renderer.setScissorTest ( true );
-            cameraRight.aspect = width * 2 / height;
-            cameraRight.updateProjectionMatrix();
-            //cameraRight.position.x = separation; 
-            renderer.render( scene, cameraRight );
-*/
-
-            //Enabling keyboard input
-            WebMidi.enable(function(err){ 
-                if(err) 
-                    console.log("WebMidi could not be enabled");
-                else
-                    console.log("WebMidi is enabled!");
-
-                    //Fetching MIDI input
-                    var input = WebMidi.inputs[0];
-
-                    //Checking if MIDI input is connected
-                    if(typeof input != 'undefined'){
-
-                        //Listening for a 'note on' message (on all channels) 
-                        input.addListener('noteon', "all", function(e){ 
-
-                            let octave = e.note.octave + 2,
-                                note = e.note.name,   
-                                key = note + octave;
-
-                            //Button animation on key pressed
-                            if(key == 'E4')
-                                document.getElementById('replay').style.background = "blue";
-                                
-                        });
-
-                         //Listening for a 'note off' message (on all channels) 
-                        input.addListener('noteoff', 'all', function(e){
-                            let octave = e.note.octave + 2,
-                                note = e.note.name,
-                                key = note + octave;
-
-                            //Checking which key is pressed and going to next page with that information
-                            if(key == 'E4')
-                                sendID();
-                                
-                        });
-                    }
-                    else
-                        console.log('MIDI input not connected');
-            })
-   
-        </script>
     </body>
+    <script>
+
+    //Go to menu.html
+    function sendID(){
+        window.location.href = "Menu.html";
+    }
+
+    //Calculate score in percentage
+    function getScorePercentage(){
+        return (location.search.substring(1).split("?")[0]/location.search.substring(1).split("?")[1] * 100);
+    }
+
+    //Displaying score 
+    document.getElementById('scoreLeft').innerHTML = 'You scored ' + location.search.substring(1).split("?")[0] + ' points';
+    document.getElementById('scoreRight').innerHTML = 'You scored ' + location.search.substring(1).split("?")[0] + ' points';
+    document.getElementById('percentageLeft').innerHTML = getScorePercentage() + '%';
+    document.getElementById('percentageRight').innerHTML = getScorePercentage() + '%';
+
+
+    //Setting grade depending on score
+    let score = getScorePercentage();
+
+    if(score <= 10){
+        document.getElementById('gradeLeft').innerHTML = 'That was... embarrassing!';
+        document.getElementById('gradeRight').innerHTML = 'That was... embarrassing!';
+    }
+    else if(score > 10 && score <= 30 ){
+        document.getElementById('gradeLeft').innerHTML = 'You can do better than that!';
+        document.getElementById('gradeRight').innerHTML = 'You can do better than that!';
+    }
+    else if(score > 30 && score <= 50){
+        document.getElementById('gradeLeft').innerHTML = "You just need a bit more practice";
+        document.getElementById('gradeRight').innerHTML = "You just need a bit more practice";
+    }
+    else if(score > 50 && score <= 65){
+        document.getElementById('gradeLeft').innerHTML = "That was pretty good!";
+        document.getElementById('gradeRight').innerHTML = "That was pretty good!";
+    }
+    else if(score > 65 && score <= 85){
+        document.getElementById('gradeLeft').innerHTML = "Well done!";
+        document.getElementById('gradeRight').innerHTML = "Well done!";
+    }
+    else if(score > 85){
+        document.getElementById('gradeLeft').innerHTML = "Legendary!";
+        document.getElementById('gradeRight').innerHTML = "Legendary!";
+    }
+
+    //Particles
+    console.clear();
+    (function() {
+    //setup document
+    var w = 700;
+    var h = 500;
+    var hyp = Math.sqrt((w*w)+(h*h)) / 2;
+    var canvas = document.getElementById('area');
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext("2d");
+    
+    var color = [58, 213, 228];
+    
+    //get particle origin
+    var origin = [w/2, h/2];
+    
+    var getParticle = function() {
+        return [origin[0], origin[1], Math.random()*360, Math.random()*2+1];
+    };
+    
+    var particles = (function() {
+        var arr = [],i=0;
+        while(i++ < 100) 
+        arr.push(getParticle());
+        return arr;
+    })();
+    
+    var fountain = function() {
+        if (particles.length < 350) 
+        particles.push(getParticle(), getParticle());
+    };
+    
+
+    var render = function() {
+        [].forEach.call(particles, function(particle, i) {
+        //get new position for particle
+        particle[0] += particle[3] * Math.cos(particle[2]);
+        particle[1] += particle[3] * Math.sin(particle[2]);
+        
+        //get distance from origin 
+        var diffX = particle[0] - origin[0];
+        var diffY = particle[1] - origin[1];
+        var dis = Math.sqrt((diffX*diffX)+(diffY*diffY));
+        
+        //add twirl at 30% distance from origin
+        if (dis > hyp*0.3) 
+            particle[2] += 0.05;
+        
+        //fade out at distance
+        var alpha = 1 - (dis/(hyp*0.5));
+        
+        //determine particle size
+        var size = i%2 == 0 ? 1.5 : 3;
+        
+        //draw this particle
+        ctx.fillStyle = 'rgba('+color.join()+','+alpha+')';
+        ctx.fillRect(particle[0],particle[1],size,size);
+        });
+    };
+    
+    (function step() {
+        requestAnimationFrame(step);
+        ctx.clearRect(0,0,w,h);
+        fountain();
+        render();
+    })();
+    
+    })();
+
+// =======================================================================================
+
+    //Enabling keyboard input
+    WebMidi.enable(function(err){ 
+        if(err) 
+            console.log("WebMidi could not be enabled");
+        else
+            console.log("WebMidi is enabled!");
+
+            //Fetching MIDI input
+            var input = WebMidi.inputs[0];
+
+            //Checking if MIDI input is connected
+            if(typeof input != 'undefined'){
+
+                //Listening for a 'note on' message (on all channels) 
+                input.addListener('noteon', "all", function(e){ 
+
+                    let octave = e.note.octave + 2,
+                        note = e.note.name,   
+                        key = note + octave;
+
+                    //Button animation on key pressed
+                    if(key == 'E4')
+                        document.getElementById('playAgain').style.background = "blue";
+                        
+                });
+
+                    //Listening for a 'note off' message (on all channels) 
+                input.addListener('noteoff', 'all', function(e){
+                    let octave = e.note.octave + 2,
+                        note = e.note.name,
+                        key = note + octave;
+
+                    //Checking which key is pressed and going to next page with that information
+                    if(key == 'E4')
+                        sendID();
+                        
+                });
+            }
+            else
+                console.log('MIDI input not connected');
+    })
+
+</script>
 </html>  

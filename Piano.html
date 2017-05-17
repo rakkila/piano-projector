@@ -242,8 +242,10 @@ function animate(){
     var velocity = tempo * 1000,
         elapsedTime = getCurrentTime() - startTime;
 
+    //Trigger game over animation if song has ended
     if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
         initEndingAnimation(getScore());
+
     if(blockIndex < noteBlockArray.length)
         var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
     
@@ -391,15 +393,21 @@ function updatePositions(elapsedTime, blockpos){
         return tempo;
 }
 
-
+//send parameters in url to gameover.html
 function sendID(){
-    window.location.href = "GUI/GameOver.html?" + totalpoints;
+    window.location.href = "GUI/GameOver.html?" + totalpoints + '?' + getMaximumScore();
 }
 
+//fading out page and going to gameOver.html
 function initEndingAnimation(totalpoints){
     document.getElementById('playground').style.animation = "fadeout 4s";
     setTimeout(sendID, 2000);
 
+}
+
+//Returning maximum score of song
+function getMaximumScore(){
+    return (blockIndex * 50);
 }
 
 </script>
