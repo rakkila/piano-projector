@@ -304,12 +304,16 @@ function getSongTempo(s){
 }
 
 function sendID(){
-    window.location.href = "GUI/GameOver.html?" + totalpoints;
+    window.location.href = "GUI/GameOver.html?" + totalpoints + '?' + getMaximumScore();
 }
 
 function initEndingAnimation(totalpoints){
     document.getElementById('playground').style.animation = "fadeout 4s";
     setTimeout(sendID, 2000);
+}
+
+function getMaximumScore(){
+    return (blockIndex * 50);
 }
 
 </script>

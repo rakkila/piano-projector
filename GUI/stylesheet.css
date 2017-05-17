@@ -77,7 +77,7 @@ h3{
 	font-size: 20px;
 	/*transform: rotate(-2deg);*/
 	text-align: center;
-	padding-left: 21%;
+	/*padding-left: 25%;*/
 	width:400px;
 	animation: fadein 4s;
 }
@@ -224,34 +224,47 @@ ul {
 
 /* GameOver.html */
 #gameover{
-	padding-top: 5%;
 	font-size: 80px;
-	color: black;
+	color: lightblue;
 }
 .left #scoreLeft, .right #scoreRight{
 	font-size: 28px;
+	width: 100%;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	color:grey;
+	color:black;
 	text-align: center;
-	margin-top: 1%;
+	margin-top: 10%;
 	/*transform: rotate(-2deg);*/
 	animation: fadein 4s;
 	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
 .left #percentageLeft, .right #percentageRight{
-	font-size: 70px;
+	font-size: 110px;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-	color:grey;
+	color:black;
+	width:100%;
 	text-align: center;
-	margin-top: 1%;
-	/*transform: rotate(-2deg);*/
-	animation: fadein 4s;
+	animation: percentageAnimation 2s;
 	text-shadow: -2px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
+	margin: 0;
+	z-index: 4;
+}
+
+.left #gradeLeft, .right #gradeRight{
+	font-size: 30px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+	color:blue;
+	width:100%;
+	text-align: center;
+	margin-top: 15%;
+	transform: rotate(-3deg);
+	animation: gradeAnimation 4s;
+	text-shadow: -1px 0 lightcyan, 0 1px lightcyan, 1px 0 lightcyan, 0 -1px lightcyan;
 }
 
 #replay{
-	padding-top: 30%;
+	padding-top: 0%;
 }
 #replay a{
 	display: block;
@@ -266,7 +279,6 @@ ul {
 	color: white;
 	border: 4px solid blue;
 	background: blue;
-	opacity: 0.7;
 	border-radius: 5px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 2px 3px rgba(0,0,0,0.70);
 	animation: fadein 4s;
@@ -279,9 +291,25 @@ ul {
 	background-repeat: repeat-x;
 	animation: animatedBackground 80s linear infinite;
 }
-@keyframes animatedBackground {
-	from { background-position: 0 0; }
-	to { background-position: 0 100%; }
+
+canvas{
+	z-index: -1;
+	position:absolute;
+	top:12%;
+	left: 7%;
+	margin-right: 15%;
+	margin-bottom: 10%;
+}
+@keyframes gradeAnimation {
+	0% { font-size: 0; }
+	72% { font-size: 0; }
+	85% {font-size: 30px}
+}
+@keyframes percentageAnimation {
+	0% { font-size: 0; }
+	65% {font-size: 0}
+	80% { font-size: 120px; }
+	85% {font-size: 110px}
 }
 /* end of GameOver.hmtl */
 
