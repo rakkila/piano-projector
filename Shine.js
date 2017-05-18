@@ -15,6 +15,7 @@ function addShine(noteBlock, index){
     var xPos = getPositionX(noteBlock.note);
     shineArray[index].position.x = xPos;
     shineArray[index].position.y = -blockpos+1.5;
+    shineArray[index].position.z = 2;
     shineArray[index].scale.set(2,1,1);
     scene.add(shineArray[index]);
 }
