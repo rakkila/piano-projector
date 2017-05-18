@@ -45,12 +45,13 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
 
         if (keyOff == pArray[i].note) {
 
+            lightOff(pArray[i].note, pArray[i].stoptime);
             line.material.color.setHex(0x050505);
 
             if((Math.abs(pArray[i].stoptime - timeOff) > 200) && pArray[i].points != 0)
             {    
                 pArray[i].points -= Math.round(Math.abs(pArray[i].stoptime - timeOff) * 0.05); 
-                lightOff(pArray[i].note, pArray[i].stoptime);
+                //lightOff(pArray[i].note, pArray[i].stoptime);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;
@@ -58,7 +59,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
 
             else if((Math.abs(pArray[i].stoptime - timeOff) < 200) && pArray[i].points != 0)
             {
-                lightOff(pArray[i].note, pArray[i].stoptime);
+                //lightOff(pArray[i].note, pArray[i].stoptime);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
                 break;

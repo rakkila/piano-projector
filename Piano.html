@@ -88,7 +88,13 @@
     var blockIndex = 0;
     var startTime;
     var shineArray = [];
-
+    let size = noteBlockArray.length;
+    var bigShine = new Array(size);
+    var sx = new Array(size);
+    var sy = new Array(size);
+    var sz = new Array(size);
+    
+   
     //Create the particle variables
     const particleCount = 500;
     const particleCount2 = 30;
@@ -237,6 +243,7 @@ var blockpos = Math.tan(75*0.5*(Math.PI/180))*10;
 
 function animate(){
 
+
     particleSystem.rotation.y += 0.001;
     
     var velocity = tempo * 1000,
@@ -272,7 +279,9 @@ function animate(){
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
+        scaleShine(i);
     } 
+
             
     //Update score
     dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
