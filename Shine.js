@@ -11,6 +11,7 @@ function loadShine()
         sx[i] = 1;
         sy[i] = 0.5;
         sz[i] = 0.5;
+        removing[i] = false;
     }
     return shineArray;
 }  
@@ -25,7 +26,7 @@ function addShine(noteBlock, index){
 }
 
 function removeShine(noteBlock, index){
-    scene.remove(shineArray[index]);
+    removing[index] = true;
 }
 
 function scaleShine(index)
@@ -39,6 +40,18 @@ function scaleShine(index)
 
         if(sx[index] == 2){
             bigShine[index] = true;
+        }
+    }
+    if(removing[index] == true)
+    {
+        sx[index] = sx[index] - 0.1;
+        sy[index] = sy[index] - 0.1;
+        sz[index] = sz[index] - 0.1;
+        shineArray[index].scale.set(sx[index],sy[index],sz[index]);
+        if(sx[index] < 1)
+        {
+            scene.remove(shineArray[index]);
+            removing[index] = false;
         }
     }
 }
