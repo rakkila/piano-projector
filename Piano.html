@@ -54,7 +54,6 @@
     <script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
     <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
-    <script src = "lib/normaltextfont.js"></script>
 
             
     <!-- Internal js files -->
@@ -84,15 +83,11 @@
 
     var keyboard = new Keyboard();
     var song = new Song(location.search.substring(1).split("?")[3]);
-    var jingleBells2  = new Song('jingleBells2');
-    var jingleIntro = new Song('jingleIntro2');
-    var jingleTest = new Song('jingleBellsNoIntro');
     var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
     var velocity = tempo * 1000;
     var elapsedTime = 0;
 
     song.setVolume(0.4);
-    jingleBells2.setVolume(0.4);
 
     var asd = -1;
     var asd2 = -1;
@@ -273,8 +268,6 @@ function main(){
     //Start visualization
     animate();
 
-  //  jingleBells2.playSong();
-
     // start clock
     startTime = getStartTime();
 
@@ -304,9 +297,9 @@ function animate(){
 
         if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
     {
-        console.log('Nu hände de');
-        jingleTest.setVolume(0.4);
-        jingleTest.playSong();
+        console.log('Låten startade vid: ' + elapsedTime);
+        song.setVolume(0.4);
+        song.playSong();
         asd2 = 1;
     }
 
@@ -415,6 +408,7 @@ function renderParticles(noteblock){
         //Loading note blocks from picked song
         noteBlockArray = loadNoteBlocks();
         shineArray = loadShine();
+        console.log(noteBlockArray[0]);
 
     }
 
@@ -483,15 +477,16 @@ function updatePositions(elapsedTime, blockpos){
 
         var chosenTempo = location.search.substring(1).split("?")[4];
 
-            if ( chosenTempo == "Low" && s == 'korv' ) {chosenTempo = 0.0035;}
-            if ( chosenTempo == "Medium" && s == 'korv' ) {chosenTempo = 0.005;}
-            if ( chosenTempo == "High" && s == 'korv' ) {chosenTempo = 0.007;}
+            if ( chosenTempo == "Low" && s == 'paris' ) {chosenTempo = 0.0035;}
+            if ( chosenTempo == "Medium" && s == 'paris' ) {chosenTempo = 0.005;}
+            if ( chosenTempo == "High" && s == 'paris' ) {chosenTempo = 0.007;}
 
         switch(s){
 
             case 'roses': tempo = 0.01; break;
             case 'jason_mraz': tempo = 0.005; break;
             case 'korv': tempo = chosenTempo; break;
+            case 'paris': tempo = chosenTempo; break;
             default: tempo = 0.001; break;
         }
         return tempo;
@@ -564,7 +559,7 @@ function getSetupInfo(){
 // input variable startNum conatains displayed string
 function getStartText(startNum)
 {
-loader.load( 'lib/normaltextfont.js', function ( font ) {
+loader.load( 'lib/three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
   var textGeometry = new THREE.TextGeometry( startNum, {
 

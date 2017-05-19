@@ -8,11 +8,13 @@
        <script>
             //Sending songID from clicked button
             function sendID(id){
-                window.location.href = "../Piano.html?" + getID() + "?" + id;
+                window.location.href = "PickTempo.html?" + getID() + "?" + id;
             }
-            function getID(){
-            return location.search.substring(1).split("?")[0];
-        }
+                function getID(){
+                return location.search.substring(1).split("?")[0] + "?" +
+                       location.search.substring(1).split("?")[1] + "?" +
+                       location.search.substring(1).split("?")[2];
+            }
         </script>
 
     </head>
@@ -21,7 +23,7 @@
             <div class="background-image"></div>
             <h1>Medium</h1>
                 <ul id="meny">
-                    <li><a id ="#" onclick="sendID(this.id);">song name....</a></li>
+                    <li><a id ="paris" class="red" onclick="sendID(this.id);"><h3>The Chainsmokers - Paris</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>
@@ -32,7 +34,7 @@
             <div class="background-image"></div>
             <h1>Medium</h1>
                 <ul id="meny">
-                    <li><a id ="#" onclick="sendID(this.id);">song name....</a></li>
+                    <li><a id ="paris" class="red" onclick="sendID(this.id);"><h3>The Chainsmokers - Paris</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>
