@@ -30,7 +30,11 @@
             <script>
 
             function sendID(){
-                window.location.href = "Menu.html";
+                window.location.href = "Menu.html" + '?' +
+                                        location.search.substring(1).split("?")[0] + '?' +
+                                        location.search.substring(1).split("?")[1] + '?' +
+                                        location.search.substring(1).split("?")[2];
+                           
             }
 
             document.getElementById('scoreLeft').innerHTML = 'Your score: ' + location.search.substring(1).split("?")[0];

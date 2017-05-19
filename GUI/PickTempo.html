@@ -7,12 +7,13 @@
        <script>
             //Sending songID from clicked button
             function sendID(id){
-                window.location.href = "PickTempo.html?" + getID() + "?" + id;
+                window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
                 function getID(){
                 return location.search.substring(1).split("?")[0] + "?" +
                        location.search.substring(1).split("?")[1] + "?" +
-                       location.search.substring(1).split("?")[2];
+                       location.search.substring(1).split("?")[2] + "?" + 
+                       location.search.substring(1).split("?")[3];
             }
             //Enabling keyboard input
             WebMidi.enable(function(err){ 
@@ -31,17 +32,18 @@
                             key = note + octave;
                         //Button animation on key pressed
                         if(key == 'C4'){
-                            document.getElementById('jason_mraz').style.background = "red";
+                            document.getElementById('High').style.background = "red";
                         }
                         else if(key == 'D4'){
-                            document.getElementById('roses').style.background = "green";
+                            document.getElementById('Medium').style.background = "green";
                         }
                         else if(key == 'E4'){
-                            document.getElementById('korv').style.background = "blue";                               
+                            document.getElementById('Low').style.background = "blue";                               
                         }
                         else if(key == 'G4'){
                                 document.getElementById('goBack').style.background = "yellow";                               
                         }
+
                     });
                     //Listening for a 'note off' message (on all channels) 
                     input.addListener('noteoff', 'all', function(e){
@@ -50,11 +52,11 @@
                             key = note + octave;
                         //Checking which key is pressed and going to next page with that information
                         if(key == 'C4')
-                            sendID('jason_mraz');
+                            sendID('High');
                         else if(key == 'D4')
-                            sendID('roses');
+                            sendID('Medium');
                         else if(key == 'E4')
-                            sendID('korv');
+                            sendID('Low');
                         else if(key == 'G4')
                             window.location.href = "javascript:history.back()";
                             
@@ -71,11 +73,11 @@
             <div class="background-image"></div>
 
             <h1>Easy</h1>
-            <div class ="songList">
+            <div class ="tempoList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="red" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="High" class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
+                    <li><a id ="Medium" class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
+                    <li><a id ="Low" class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
@@ -87,11 +89,11 @@
             <div class="background-image"></div>
 
             <h1>Easy</h1>
-            <div class ="songList">
+            <div class ="tempoList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="red"  onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="High" class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
+                    <li><a id ="Medium" class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
+                    <li><a id ="Low" class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>
