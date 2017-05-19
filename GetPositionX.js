@@ -3,50 +3,22 @@
 */
 
 function getPositionX(n){
-
-    let noKeys = location.search.substring(1).split("?")[0],
-    
-    noWhiteKeys = 0,
-    noBlackKeys = 0;
-
-    if(noKeys == 49)
-    {
-        noWhiteKeys = 29;
-        noBlackKeys = 20;
-    }
-    else if(noKeys == 61)
-    {
-        noWhiteKeys = 36;
-        noBlackKeys = 25;
-    }
-    else
-    {
-        noWhiteKeys = 88 - 36;
-        noBlackKeys = 36;
-    }   
-
-     // let left = -10.20,
-     //       right = 11.05,
-
-        // Extracting calibrated right- and left line positions from URL
-          var right = location.search.substring(1).split("?")[1],
-              left = location.search.substring(1).split("?")[2];
-
-              if(left.includes('-'))
-                {
-                    left = -left.split("-").pop();
-                }
+         
+           let noWhiteKeys = getSetupInfo()[0],
+               noBlackKeys = getSetupInfo()[1],
+               noKeys = noWhiteKeys + noBlackKeys,
+               right = getSetupInfo()[2],
+               left = getSetupInfo()[3];
 
            let pianoLength = right-left,
+               noteWidth = pianoLength/noWhiteKeys,
+               blackNoteWidth = 0.68181818 * noteWidth,
+               noteCenter = noteWidth/2,
 
-            noteWidth = pianoLength/noWhiteKeys,
-            blackNoteWidth = 0.68181818 * noteWidth,
-            noteCenter = noteWidth/2,
-
-            blackNoteCenter = blackNoteWidth/2,
+               blackNoteCenter = blackNoteWidth/2,
           //  blackDist1 = 0.59090909 * noteWidth,
-            blackDist1 = 0.52 * noteWidth,
-            blackDist2 = 1.18181818 * noteWidth;
+               blackDist1 = 0.52 * noteWidth,
+               blackDist2 = 1.18181818 * noteWidth;
 
     switch(n){
 

@@ -6,6 +6,7 @@ var d = new Date();
 var b = new Date();
 
 function getStartTime(){
+
     return (new Date()).getTime();
 }
 

@@ -84,6 +84,8 @@ class Keyboard{
                 })
             }
         })
+
+        console.log('Keyboard DONE');
     }  
 }
    

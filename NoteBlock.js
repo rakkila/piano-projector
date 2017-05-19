@@ -13,8 +13,8 @@ class NoteBlock{
         this.stopTime = stopTime;
         this.noteLength = (stopTime - startTime)*tempo;
 
-                    this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001),       
-                    new THREE.MeshPhongMaterial({color: kColor}));
+        this.mesh = new THREE.Mesh(new THREE.BoxGeometry(this.blockWidth,this.noteLength,0.001),       
+        new THREE.MeshPhongMaterial({color: kColor}));
 
     }
 
@@ -34,27 +34,17 @@ function loadNoteBlocks(){
 
    // let left = -10.20,
   //  right = 11.05;
-  let right = location.search.substring(1).split("?")[1],
-      left = location.search.substring(1).split("?")[2],
-      
-    pianoLength = right-left;
-    let noKeys = location.search.substring(1).split("?")[0],
-        NoWhiteKeys = 0;
 
-    if(noKeys == 49)
-    {
-        noWhiteKeys = 49 - 20;
-    }
-    else if(noKeys == 61)
-    {
-        noWhiteKeys = 61 - 25;
-    }
-    else
-        noWhiteKeys = 88 - 36;
+           let noWhiteKeys = getSetupInfo()[0],
+               noBlackKeys = getSetupInfo()[1],
+               noKeys = noWhiteKeys + noBlackKeys,
+               right = getSetupInfo()[2],
+               left = getSetupInfo()[3];
 
-    let whiteNoteWidth = pianoLength/noWhiteKeys - 0.1, 
-        blackNoteWidth = 0.68181818 * whiteNoteWidth, 
-        noteWidth;
+           let pianoLength = right-left,
+               whiteNoteWidth = pianoLength/noWhiteKeys - 0.01,
+               blackNoteWidth = 0.68181818 * whiteNoteWidth,
+               noteCenter = noteWidth/2;
     
     for(let i = 0; i < size; ++i){
          
@@ -62,14 +52,14 @@ function loadNoteBlocks(){
 
         if(note.includes("b"))
         {
-            noteWidth = 0.19;
-            keyColor = 0x00000fff;    
+            noteWidth = blackNoteWidth;
+            keyColor = 0x00000ff;    
         }
 
         else
         {
-            noteWidth =  pianoLength/36 - 0.1;
-            keyColor = 0x0000ffff;
+            noteWidth =  whiteNoteWidth;
+            keyColor = 0x0000ff;
         }
             
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime, keyColor);

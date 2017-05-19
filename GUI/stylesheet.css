@@ -199,6 +199,18 @@ ul {
 	border: solid 4px blue;
 }
 
+#Low{
+	border: solid 4px green;
+}
+
+#Medium{
+	border: solid 4px yellow;
+}
+
+#High{
+	border: solid 4px red;
+}
+
 /* end of Menu.html */
 
 /* Listelement <LI> med tillbaka */

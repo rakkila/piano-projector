@@ -10,10 +10,11 @@ function noteon(keyOn, timeOn, pArray)
     {
         if (keyOn == pArray[i].note)
         {
+            console.log(Math.abs(pArray[i].starttime - timeOn));
 
-            if( Math.abs(pArray[i].starttime - timeOn) < 200 && timeOn < pArray[i].stoptime)
+            if( Math.abs(pArray[i].starttime - timeOn) < 250)
             {
-                console.log(Math.abs(pArray[i].starttime - timeOn));
+                
                 lightUp(keyOn, pArray[i].starttime);
                 pArray[i].points = pArray[i].points + 50;
                 break;
@@ -68,6 +69,8 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
         }
         else {
             line.material.color.setHex(0x050505);
+            lightOff(pArray[i].note, pArray[i].stoptime);
+
             continue;
         }
     }

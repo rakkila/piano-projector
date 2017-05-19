@@ -4,6 +4,8 @@ class Song{
     {
         this.name = song;
         this.song = new Audio('./songs-mp3/' + song + '.mp3');
+        this.song.preload = 'auto';
+
     } 
 
     playSong(){

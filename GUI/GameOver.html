@@ -38,17 +38,20 @@
 
     //Go to menu.html
     function sendID(){
-        window.location.href = "Menu.html";
+            window.location.href = "Menu.html" + '?' +
+            location.search.substring(1).split("?")[0] + '?' +
+            location.search.substring(1).split("?")[1] + '?' +
+            location.search.substring(1).split("?")[2];
     }
 
     //Calculate score in percentage
     function getScorePercentage(){
-        return (location.search.substring(1).split("?")[0]/location.search.substring(1).split("?")[1] * 100);
+        return Math.round((location.search.substring(1).split("?")[3]/location.search.substring(1).split("?")[4] * 100));
     }
 
     //Displaying score 
-    document.getElementById('scoreLeft').innerHTML = 'You scored ' + location.search.substring(1).split("?")[0] + ' points';
-    document.getElementById('scoreRight').innerHTML = 'You scored ' + location.search.substring(1).split("?")[0] + ' points';
+    document.getElementById('scoreLeft').innerHTML = 'You scored ' + location.search.substring(1).split("?")[3] + ' points';
+    document.getElementById('scoreRight').innerHTML = 'You scored ' + location.search.substring(1).split("?")[3] + ' points';
     document.getElementById('percentageLeft').innerHTML = getScorePercentage() + '%';
     document.getElementById('percentageRight').innerHTML = getScorePercentage() + '%';
 
@@ -189,6 +192,7 @@
                         sendID();
                         
                 });
+
             }
             else
                 console.log('MIDI input not connected');
