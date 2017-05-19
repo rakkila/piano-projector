@@ -55,6 +55,7 @@ h3{
 
 #infoText{
 	padding-top: 30%;
+	padding-left: 25%;
 }
 
 .red{
@@ -75,6 +76,7 @@ h3{
 .left p , .right p{
 	color: white;
 	font-size: 20px;
+	padding-left: 20%;
 	/*transform: rotate(-2deg);*/
 	text-align: center;
 	/*padding-left: 25%;*/
@@ -138,7 +140,7 @@ h3{
 
 #meny{
 	/*transform: rotate(-2deg);*/
-	margin-top: 35%;
+	margin-top: 25%;
 }
 
 /* Listan <UL> med knapparna */
