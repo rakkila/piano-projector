@@ -163,26 +163,6 @@
     let width = Math.round(window.innerWidth / 2),
         height = window.innerHeight;
 
-//PASSES
-const renderPass1 = new THREE.RenderPass(scene, cameraLeft);
-const renderPass2 = new THREE.RenderPass(scene, cameraRight);
-const effectCopy = new THREE.ShaderPass(THREE.CopyShader);
-const bloomPass = new THREE.BloomBlendPass( 3.0, 1.5, new THREE.Vector2(512, 512));
-//var bloomPass = new THREE.BloomBlendPass( 1, 0.1, new THREE.Vector2(512, 512));
-bloomPass.renderToScreen = true;
-
-    //First composer
-    const composer = new THREE.EffectComposer(renderer);
-    composer.addPass(renderPass1);
-    composer.addPass(renderPass2);
-    composer.addPass(effectCopy);
-    const renderScene = new THREE.TexturePass(composer.renderTarget2);
-
-        //Second composer (BloomPass)
-        const composer2 = new THREE.EffectComposer(renderer);
-        composer2.addPass(renderScene);
-        composer2.addPass(bloomPass);
-        composer2.addPass(effectCopy);
         var theHeight = 2 * Math.tan( ( 75*Math.PI/180 / 2 ) ) * cameraLeft.position.z;
             const linegeometry = new THREE.Geometry();
             const linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
@@ -197,8 +177,7 @@ bloomPass.renderToScreen = true;
             theLine2.position.x = leftLinePos;
             theLine.position.y = 0;
             theLine2.position.y = 0;
-            
-
+ 
     //Creating lanes
     var l1  = new THREE.Line(linegeometry, linematerial);
     var l2  = new THREE.Line(linegeometry, linematerial);
@@ -277,7 +256,6 @@ bloomPass.renderToScreen = true;
         }
 
     }
-
 
 function main(){
 
@@ -387,16 +365,15 @@ function animate(){
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
     cameraLeft.updateProjectionMatrix();
-    composer.render();
-    composer2.render();
-  
+    renderer.render(scene, cameraLeft);
+
     //Right camera
     renderer.setViewport( width, 0, width, height);
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
     cameraRight.updateProjectionMatrix();
-    composer2.render();
+    renderer.render(scene, cameraRight);
    
 }
 
