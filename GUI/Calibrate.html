@@ -12,6 +12,7 @@
                 <h2>2. Adjust your keyboard setup</h2>
 
                 <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+                <p>Move the lines by pressing the arrowed keys</p>
 
                 <ul id="letsPlay">
                     <li><a id="play" onclick="sendID();">Let's play!</a></li>
@@ -21,6 +22,7 @@
                 <h2>2. Adjust your keyboard setup</h2>
                 
                 <p>Adjust your keyboard so that the blue lines below align with the outer edge of the first and last key</p>
+                <p>Move the lines by pressing the arrowed keys</p>
 
                 <ul id="letsPlay">
                     <li><a id="play" onclick="sendID();">Let's Play!</a></li>
@@ -57,8 +59,8 @@
                 height = window.innerHeight;
             var linegeometry = new THREE.Geometry();
             var linematerial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-            linegeometry.vertices.push(new THREE.Vector3(0, -3, 0));
-            linegeometry.vertices.push(new THREE.Vector3(0, 3, 0));
+            linegeometry.vertices.push(new THREE.Vector3(0, -6, 0));
+            linegeometry.vertices.push(new THREE.Vector3(0, 6, 0));
             var theLine = new THREE.Line(linegeometry, linematerial);
             var theLine2 = new THREE.Line(linegeometry, linematerial);
             scene.add(theLine);
