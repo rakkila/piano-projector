@@ -343,15 +343,16 @@ function animate(){
     }
      
     //Removing block when not active
-    for(var i = 0; i < blockIndex+1; i++){
+    for(let i = 0; i < blockIndex+1; i++){
         
         if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
-            removeShine(noteBlockArray[i], i);
+            removeShine(i);
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
         scaleShine(i);
     } 
+
 
             
     //Update score
