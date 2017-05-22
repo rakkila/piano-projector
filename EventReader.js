@@ -1,6 +1,5 @@
-
 /**
- * Reading textfile of music events.
+ * Reading a textfile of music events.
  */
 
 class EventReader 
