@@ -135,9 +135,8 @@
     renderer.shadowMapEnabled = true;
 
         //Create black line at bottom of scene
-        const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
-        const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
-        const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.8, 0.4);
+        const material = new THREE.MeshPhongMaterial({ color: 0x3e4049, transparent: true, opacity: 0.8 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
 
@@ -251,7 +250,7 @@ main();
 
 //Spawn-points for the falling blocks.
 var blockpos = Math.tan(75*0.5*(Math.PI/180))*10;
-        line.position.y = -blockpos+0.3;
+        line.position.y = -blockpos;
 
 //"GIVE MY CREATION... LIIIIIFE!"
 function animate(){
@@ -280,6 +279,9 @@ function animate(){
 
     //Render the particles
     renderParticles();
+
+    updatePositions(elapsedTime, blockpos);
+
     particleSystem.rotation.y += 0.001;
     
     //Trigger game over animation if song has ended
@@ -287,7 +289,7 @@ function animate(){
         initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
-        var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
+        var lengthToTravel = 2 * blockpos;
     
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
@@ -311,8 +313,6 @@ function animate(){
     }      
 
     requestAnimationFrame(animate);
-    updatePositions(elapsedTime, blockpos);
-
 
     //Render frame
     renderer.autoClear = false;
@@ -397,6 +397,8 @@ function setUpParticleSystem(){
 //Multiple blocks falling
 function addChordNoteBlocks(noteBlock1, noteBlock2){
 
+    let barHeight = 0.8;
+
     meshGroup.add(noteBlock1.mesh);
     meshGroup.add(noteBlock2.mesh);
     scene.add(meshGroup);
@@ -404,7 +406,7 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
     noteBlock2.active = true;
     noteBlock1.mesh.position.x = getPositionX(noteBlock1.note);
     noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
-    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2;
+    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2 + barHeight;
     noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
     blockIndex += 2;
 }
@@ -416,17 +418,19 @@ function addSingleNoteBlock(noteBlock){
     scene.add(meshGroup);
     noteBlock.active = true;
 
+    let barHeight = 0.8;
+
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
 
     // ERROR here. This particular noteblock gets misplaced. This fixes it temporarily
    if(noteBlock.note == 'G4' && noteBlock.startTime == 11200)
     {
 
-        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/4;
+        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/4 + barHeight;
     }
     else
     {
-        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2;
+        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2 + barHeight;
     }
     
     blockIndex++;
@@ -446,7 +450,7 @@ function updatePositions(elapsedTime, blockpos){
 
             if ( chosenTempo == "Low") {chosenTempo = 0.0035;}
             if ( chosenTempo == "Medium") {chosenTempo = 0.005;}
-            if ( chosenTempo == "High") {chosenTempo = 0.007;}
+            if ( chosenTempo == "High") {chosenTempo = 0.009;}
 
         switch(s){
 
