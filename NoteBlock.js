@@ -6,6 +6,7 @@ class NoteBlock{
 
     constructor(note, width, startTime, stopTime, kColor){
 
+        //All the information a note block contains is set
         this.active = new Boolean(false);
         this.note = note;
         this.blockWidth = width;
@@ -17,7 +18,7 @@ class NoteBlock{
         new THREE.MeshPhongMaterial({color: kColor}));
 
     }
-
+    //A string containing the current note, start time and note length
     toString () {
         return "Note: " + this.note + '  StartTime: ' + this.startTime + ' NoteLength: ' + this.noteLength;
     }
@@ -32,16 +33,16 @@ function loadNoteBlocks(){
     var noteBlockArray = new Array(size);
     let keyColor;
 
-           let noWhiteKeys = getSetupInfo()[0],
-               noBlackKeys = getSetupInfo()[1],
-               noKeys = noWhiteKeys + noBlackKeys,
-               right = getSetupInfo()[2],
-               left = getSetupInfo()[3];
+    let noWhiteKeys = getSetupInfo()[0],
+        noBlackKeys = getSetupInfo()[1],
+        noKeys = noWhiteKeys + noBlackKeys,
+        right = getSetupInfo()[2],
+        left = getSetupInfo()[3];
 
-           let pianoLength = right-left,
-               whiteNoteWidth = pianoLength/noWhiteKeys - 0.01,
-               blackNoteWidth = 0.68181818 * whiteNoteWidth,
-               noteCenter = noteWidth/2;
+    let pianoLength = right-left,
+        whiteNoteWidth = pianoLength/noWhiteKeys - 0.01,
+        blackNoteWidth = 0.68181818 * whiteNoteWidth,
+        noteCenter = noteWidth/2;
     
     for(let i = 0; i < size; ++i){
          
@@ -52,7 +53,6 @@ function loadNoteBlocks(){
             noteWidth = blackNoteWidth;
             keyColor = 0x0000ff;    
         }
-
         else
         {
             noteWidth =  whiteNoteWidth;

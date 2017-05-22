@@ -1,5 +1,5 @@
-/*
-/ Returns chosen song array
+/** 
+ * Returns chosen song array
 */
 
 /*

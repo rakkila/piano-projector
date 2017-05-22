@@ -1,5 +1,5 @@
 /**
-* Returning note block x position
+* Returning the note blocks x-position
 */
 
 function getPositionX(n){
@@ -16,7 +16,6 @@ function getPositionX(n){
                noteCenter = noteWidth/2,
 
                blackNoteCenter = blackNoteWidth/2,
-          //  blackDist1 = 0.59090909 * noteWidth,
                blackDist1 = 0.52 * noteWidth,
                blackDist2 = 1.18181818 * noteWidth;
 
@@ -65,7 +64,6 @@ function getPositionX(n){
 
 
     // Black notes
-
     case 'Db1':  return left + 1 * blackDist1 + blackNoteCenter; break;
     case 'Eb1':  return left + 2 * blackDist1 + 1 *blackNoteWidth + blackNoteCenter; break;
 
@@ -100,9 +98,6 @@ function getPositionX(n){
     case 'Gb5':  return left + 32 * blackDist1 + 22 * blackNoteWidth + blackNoteCenter; break;
     case 'Ab5':  return left + 33 * blackDist1 + 23 * blackNoteWidth + blackNoteCenter; break;
     case 'Bb5':  return left + 34 * blackDist1 + 24 * blackNoteWidth + blackNoteCenter; break;
-
-
-
 
     default: return 0;  break;
     }

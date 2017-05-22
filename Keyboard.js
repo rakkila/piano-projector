@@ -22,9 +22,10 @@ class Keyboard{
 
                 var point = 0;
                 var pArray = [];
-                //var a = [];
+
                 pArray = parseSongData(song.getSongName());
 
+                //Checking if WebMidi can enable
                 WebMidi.enable(function(err){ 
                     if(err) 
                         console.log("WebMidi could not be enabled");
@@ -44,10 +45,6 @@ class Keyboard{
                                   note = sharpToFlat(e.note.name),   
                                   key = note + octave;
 
-                            //console.log(key);
-                            //a.push(key);
-                            //a.push(time);
-                            //console.log(getCurrentTime()-startTime);
                             noteon(key, getCurrentTime()-startTime, pArray);
 
                             //Play pressed note (0 delay)
@@ -61,16 +58,9 @@ class Keyboard{
                                       note = sharpToFlat(e.note.name),
                                       key = note + octave;
 
-                                //console.log("off" + ',' + key + ',' + time);
-                                //a.push(time);
-                                //console.log(a);
-                                
-                                //console.log(getCurrentTime()-startTime);
-
+                                //Adding points from noteoff to the totalpoints
                                 totalpoints += noteoff(key, getCurrentTime()-startTime, pArray, point);
                                 pArray = SongResizer(pArray);
-
-                                //console.log('TOTAL POINTS: ' + totalpoints);
 
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect

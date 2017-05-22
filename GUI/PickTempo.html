@@ -33,16 +33,16 @@
                             key = note + octave;
                         //Button animation on key pressed
                         if(key == 'C4'){
-                            document.getElementById('High').style.background = "red";
+                            document.getElementById('Low').style.background = "green";
                         }
                         else if(key == 'D4'){
-                            document.getElementById('Medium').style.background = "green";
+                            document.getElementById('Medium').style.background = "yellow";
                         }
                         else if(key == 'E4'){
-                            document.getElementById('Low').style.background = "blue";                               
+                            document.getElementById('High').style.background = "red";                               
                         }
                         else if(key == 'G4'){
-                                document.getElementById('goBack').style.background = "yellow";                               
+                                document.getElementById('goBack').style.background = "blue";                               
                         }
 
                     });
@@ -53,11 +53,11 @@
                             key = note + octave;
                         //Checking which key is pressed and going to next page with that information
                         if(key == 'C4')
-                            sendID('High');
+                            sendID('Low');
                         else if(key == 'D4')
                             sendID('Medium');
                         else if(key == 'E4')
-                            sendID('Low');
+                            sendID('High');
                         else if(key == 'G4')
                             window.location.href = "javascript:history.back()";
                             
@@ -78,9 +78,9 @@
 
                 <ul id="meny">
                 
-                    <li><a id="High" class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
-                    <li><a id ="Medium" class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
-                    <li><a id ="Low" class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
+                    <li><a id="Low" class="green" onclick="sendID(this.id);"><h3>Low</h3></a></li>
+                    <li><a id ="Medium" class="yellow" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
+                    <li><a id ="High" class ="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
@@ -95,9 +95,9 @@
             <p>Select at what tempo you would like to play the song</p>
       
                 <ul id="meny">
-                    <li><a class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
-                    <li><a class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
-                    <li><a class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
+                    <li><a class="green" onclick="sendID(this.id);"><h3>Low</h3></a></li>
+                    <li><a class="yellow" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
+                    <li><a class ="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>
