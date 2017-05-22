@@ -318,8 +318,7 @@ function animate(){
     particleSystem.rotation.y += 0.001;
     
     //Trigger game over animation if song has ended
-    //if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
-    if(blockIndex > 1)
+    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
         initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
