@@ -55,7 +55,6 @@
     <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
 
-            
     <!-- Internal js files -->
     <script src="getPositionX.js"></script>
     <script src="NoteBlock.js"></script>
@@ -71,14 +70,6 @@
     <script src="Keyboard.js"></script>
     <script src="midi-player.js"></script>
     <script src="Shine.js"></script>
-    
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-//>>>>>>> RasmusAdd
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 
 </head>
@@ -96,12 +87,13 @@
     var asd = -1;
     var asd2 = -1;
     var letsGo = -1;
+    var textBool = true;
 
     // Declaring starting text variables
     var loader = new THREE.FontLoader();
     var group = new THREE.Group();
-    var textMesh, textMaterial;
-    
+    var textMesh, textMaterial, scoreTextMaterial, scoreTextMesh, scale;
+
     var SetupArray = getSetupInfo();
     var tick = 0;
     var clock = new THREE.Clock();
@@ -205,33 +197,6 @@
     l3.position.x = getPositionX('C4')-noteWidth/2;
     l4.position.x = getPositionX('C5')-noteWidth/2;
 
-    //Creating scoreboard
-    var dynamicTexture  = new THREEx.DynamicTexture(512,512*2);
-    dynamicTexture.context.font	= "150px Verdana";
-    const scoreGeo = new THREE.CubeGeometry(2, 1, 2);
-    scoreGeo.side = THREE.DoubleSide;
-    var scoreMat = new THREE.MeshPhongMaterial({ map : dynamicTexture.texture, specular: 10});
-    scoreMat.side = THREE.DoubleSide;
-    const side1 = new THREE.MeshPhongMaterial({ color: 0x0033ff, specular: 0x555555, shininess: 5});
-    const side2 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    const side3 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    const side4 = new THREE.MeshPhongMaterial({ color: 0x0033ff }); // left
-    const side5 = new THREE.MeshPhongMaterial({ color: 0x0033ff});
-    const materials = [scoreMat, side1, side2, side3,  side4,  side5];
-    materials.side = THREE.DoubleSide;
-    var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
-    meshFaceMaterial.side = THREE.DoubleSide;
-    
-        //var scoreBoard = new THREE.Mesh(scoreGeo, scoreMat);
-    var scoreBoard = new THREE.Mesh(scoreGeo, meshFaceMaterial);
-    scoreBoard.side = THREE.DoubleSide;
-    scoreBoard.position.set(-10,6,0);
-    scoreBoard.rotation.x = 3*Math.PI/45;
-    scoreBoard.rotation.y = -6*Math.PI/45;
-
-    scene.add(scoreBoard);
-    dynamicTexture.texture.needsUpdate = true;
-
     function init() {
 
         // The GPU Particle system extends THREE.Object3D, and so you can use it
@@ -278,6 +243,7 @@ function main(){
     // start clock
     startTime = getStartTime();
 
+    get3Dscore('0');
 }    
 
 //Starting program
@@ -295,7 +261,7 @@ function animate(){
     //"Let's go"-text for a fixed time//
     if(elapsedTime >= 1000 && letsGo == -1)
     {
-        getStartText('LETS GO');
+        getStartText('HERE WE GO!')
         letsGo = 1;
     }
 
@@ -307,6 +273,7 @@ function animate(){
     //WTF is happening here???
     if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
     {
+
         console.log('Nu hände de');
         song.setVolume(0.4);
         song.playSong();
@@ -338,7 +305,6 @@ function animate(){
             addSingleNoteBlock(noteBlockArray[blockIndex]);
         }
 
-
     }
      
     //Removing block when not active
@@ -350,15 +316,11 @@ function animate(){
             noteBlockArray[i].active = false;
         }
         scaleShine(i);
-    } 
+    }      
 
+    requestAnimationFrame(animate);
+    updatePositions(elapsedTime, blockpos);
 
-            
-    //Update score
-    dynamicTexture.clear('blue').drawText(getScore(), 150, 500, 'white');
-    dynamicTexture.clear('blue').drawText(getScore(), 50, 500, 'white');
-    animationID = requestAnimationFrame(animate);
-        updatePositions(elapsedTime, blockpos);
 
     //Render frame
     renderer.autoClear = false;
@@ -571,40 +533,84 @@ function getSetupInfo(){
 
 }
 
+
 // Function to load 3D-text font
 // input variable startNum conatains displayed string
 function getStartText(startNum)
 {
-loader.load( 'lib/normaltextfont.js', function ( font ) {
+    //'lib/normaltextfont.js'
 
-  var textGeometry = new THREE.TextGeometry( startNum, {
+            loader.load( 'lib/three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-    font: font,
+        var textGeometry = new THREE.TextGeometry( startNum, {
 
-    size: 1,
-    height: 0.5,
-    curveSegments: 12,
+            font: font,
+            size: 1.5,
+            height: 0.5,
+            curveSegments: 12,
+            bevelThickness: 0.05,
+            bevelSize: 0.05,
+            bevelEnabled: true
 
-    bevelThickness: 0.05,
-    bevelSize: 0.05,
-    bevelEnabled: true
+        });
 
-  });
+        textMaterial = new THREE.MeshPhongMaterial( 
+            { color: 0xff0000, specular: 0xffffff }
+        );
 
-  textMaterial = new THREE.MeshPhongMaterial( 
-    { color: 0xff0000, specular: 0xffffff }
-  );
+        textMesh = new THREE.Mesh( textGeometry, textMaterial );
+        textMesh.position.x = -1;
+        textMesh.position.y = 0;
+        textMesh.position.z = 2;
 
-  textMesh = new THREE.Mesh( textGeometry, textMaterial );
+        scene.add( textMesh );
+
+        });
+
+}
+
+function get3Dscore(scoreNum)
+{
+
+            loader.load( 'lib/three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+        var text3DGeometry = new THREE.TextGeometry( scoreNum, {
+
+            font: font,
+            size: 1.2,
+            height: 0.5,
+            curveSegments: 12,
+            bevelThickness: 0.09,
+            bevelSize: 0.05,
+            bevelEnabled: true
+
+        });
+
+        scoreTextMaterial = new THREE.MeshPhongMaterial( 
+            { color: 0x0000ff, specular: 0xffffff }
+        );
+
+        scoreTextMesh = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
+        scoreTextMesh.position.x = -7;
+        scoreTextMesh.position.y = 4;
+        scoreTextMesh.position.z = 2;
+
+        scene.add( scoreTextMesh );
+
+        scoreTextMesh.rotation.x = 3*Math.PI/45;
+        scoreTextMesh.rotation.y = 15*Math.PI/45;
+
+        });
+
+}
 
 
-  textMesh.position.x = -1;
-  textMesh.position.y = 0;
-  textMesh.position.z = 2;
+function update3Dscore() {
 
-  scene.add( textMesh );
+        scene.remove(scoreTextMesh);
 
-});
+        get3Dscore(getScore());
+
 
 }
 

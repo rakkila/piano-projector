@@ -59,6 +59,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
                 aPoint = pArray[i].points;
                 //Removing one element in the array from place i
                 pArray.splice(i, 1);
+                update3Dscore();
                 break;
             }
             //If the time difference between the notes stop time and the time the block is released is smaller than 200
@@ -69,6 +70,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
                 aPoint = pArray[i].points;
                 //Removing one element in the array from place i
                 pArray.splice(i, 1);
+                update3Dscore();
                 break;
             }
 
@@ -83,6 +85,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
         }
     }
 
+    
     return aPoint;
 
 }
