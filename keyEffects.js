@@ -29,7 +29,7 @@ function lightOff(key, stopTime)
         if(noteBlockArray[i].note == key && noteBlockArray[i].stopTime == stopTime)
 
         {   
-            removeShine(noteBlockArray[i], i);
+            removeShine(i);
             noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
             noteBlockArray[i].mesh.position.z = 0;
 

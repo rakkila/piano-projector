@@ -1,3 +1,5 @@
+//Creating an array with "sprites", the same size as noteBlockArray
+//Two booleans (bigShine and removing) and three scale variables for every sprite
 function loadShine()
 {
     let size = noteBlockArray.length;
@@ -16,39 +18,41 @@ function loadShine()
     return shineArray;
 }  
 
+//Adding shine to the scene at a noteBlocks position
 function addShine(noteBlock, index){
     var xPos = getPositionX(noteBlock.note);
-    shineArray[index].position.x = xPos;
-    shineArray[index].position.y = -blockpos+1.5;
-    shineArray[index].position.z = 2;
+    shineArray[index].position.x = xPos; //At the noteBlocks x position
+    shineArray[index].position.y = -blockpos+1.5; //By the keys vertically
+    shineArray[index].position.z = 2; //In front of the noteBlocks from users perspective
     shineArray[index].scale.set(sx[index],sy[index],sz[index]);
     scene.add(shineArray[index]);
 }
 
-function removeShine(noteBlock, index){
+//Scale the shine bigger if it has been added or smaller if it should be removed  
+function removeShine(index){
     removing[index] = true;
 }
 
 function scaleShine(index)
 {
-    if(bigShine[index] == false)
+    if(bigShine[index] == false) //Shine is not its max size, enlarge
     {
         sx[index] = sx[index] + 0.01;
         sy[index] = sy[index] + 0.01;
         sz[index] = sz[index] + 0.01;
         shineArray[index].scale.set(sx[index],sy[index],sz[index]);
 
-        if(sx[index] == 2){
+        if(sx[index] == 2){ //Shine is its max size
             bigShine[index] = true;
         }
     }
-    if(removing[index] == true)
+    if(removing[index] == true) //Remove shine by reducing its size
     {
         sx[index] = sx[index] - 0.1;
         sy[index] = sy[index] - 0.1;
         sz[index] = sz[index] - 0.1;
         shineArray[index].scale.set(sx[index],sy[index],sz[index]);
-        if(sx[index] < 1)
+        if(sx[index] < 1) //Remove shine from the scene
         {
             scene.remove(shineArray[index]);
             removing[index] = false;

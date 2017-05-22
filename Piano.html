@@ -334,7 +334,7 @@ function animate(){
     for(var i = 0; i < blockIndex; i++){
         
         if( noteBlockArray[i].active == true && elapsedTime > Math.round(noteBlockArray[i].stopTime)){
-            removeShine(noteBlockArray[i], i);
+            removeShine(i);
             scene.remove(noteBlockArray[i].mesh);
             noteBlockArray[i].active = false;
         }
