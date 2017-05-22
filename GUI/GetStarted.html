@@ -27,16 +27,16 @@
                                 key = note + octave;
                             //Button animation on key pressed
                             if(key == 'C4'){
-                                document.getElementById('49').style.background = "green";
+                                document.getElementById('49').style.background = "red";
                             }
                             else if(key == 'D4'){
-                                document.getElementById('61').style.background = "yellow";
+                                document.getElementById('61').style.background = "green";
                             }
                             else if(key == 'E4'){
-                                document.getElementById('88').style.background = "red";                               
+                                document.getElementById('88').style.background = "blue";                               
                             }
                             else if(key == 'G4'){
-                                document.getElementById('goBack').style.background = "blue";                               
+                                document.getElementById('goBack').style.background = "yellow";                               
                             }
                         });
                         //Listening for a 'note off' message (on all channels) 
@@ -66,9 +66,9 @@
         <div class ="left">
             <h2>1. How many keys do your keyboard have?</h2>
             <ul id="meny">
-                <li><a id ="49" class="green" onclick="sendID(this.id);">49</a></li>
-                <li><a id ="61" class="yellow" onclick="sendID(this.id);">61</a></li>
-                <li><a id ="88" class ="red" onclick="sendID(this.id);">88</a></li>
+                <li><a id ="49" class="red" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" class="green" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" class ="blue" onclick="sendID(this.id);">88</a></li>
             </ul>
             <ul id="back">
                 <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
@@ -78,9 +78,9 @@
         <div class ="right">
             <h2>1. How many keys do your keyboard have?</h2>
             <ul id="meny">
-                <li><a id ="49" class="green" onclick="sendID(this.id);">49</a></li>
-                <li><a id ="61" class ="yellow" onclick="sendID(this.id);">61</a></li>
-                <li><a id ="88" class ="red" onclick="sendID(this.id);">88</a></li>
+                <li><a id ="49" class="red" onclick="sendID(this.id);">49</a></li>
+                <li><a id ="61" class ="green" onclick="sendID(this.id);">61</a></li>
+                <li><a id ="88" class ="blue" onclick="sendID(this.id);">88</a></li>
             </ul>
             <ul id="back">
                 <li><a href="javascript:history.back()" target="_self">Go back</a></li>

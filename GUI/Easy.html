@@ -31,16 +31,16 @@
                             key = note + octave;
                         //Button animation on key pressed
                         if(key == 'C4'){
-                            document.getElementById('jason_mraz').style.background = "green";
+                            document.getElementById('jason_mraz').style.background = "red";
                         }
                         else if(key == 'D4'){
-                            document.getElementById('roses').style.background = "yellow";
+                            document.getElementById('roses').style.background = "green";
                         }
                         else if(key == 'E4'){
-                            document.getElementById('korv').style.background = "red";                               
+                            document.getElementById('korv').style.background = "blue";                               
                         }
                         else if(key == 'G4'){
-                                document.getElementById('goBack').style.background = "blue";                               
+                                document.getElementById('goBack').style.background = "yellow";                               
                         }
                     });
                     //Listening for a 'note off' message (on all channels) 
@@ -75,9 +75,9 @@
             <p>Pick a song you would like to play</p>
             <div class ="songList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="green" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="yellow" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="red" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="jason_mraz" class="red" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
@@ -92,9 +92,9 @@
             <p>Pick a song you would like to play</p>
             <div class ="songList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="green"  onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="yellow" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="red" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="jason_mraz" class="red"  onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
+                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
+                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>

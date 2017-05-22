@@ -14,6 +14,43 @@
             function getID(){
             return location.search.substring(1).split("?")[0];
         }
+
+                    //Enabling keyboard input
+            WebMidi.enable(function(err){ 
+                if(err) 
+                    console.log("WebMidi could not be enabled");
+                else
+                    console.log("WebMidi is enabled!");
+                //Fetching MIDI input
+                var input = WebMidi.inputs[0];
+                //Checking if MIDI input is connected
+                if(typeof input != 'undefined'){
+                    //Listening for a 'note on' message (on all channels) 
+                    input.addListener('noteon', "all", function(e){ 
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,   
+                            key = note + octave;
+                        //Button animation on key pressed
+                        if(key == 'G4')
+                            document.getElementById('goBack').style.background = "yellow";
+
+                
+                    });
+                    //Listening for a 'note off' message (on all channels) 
+                    input.addListener('noteoff', 'all', function(e){
+                        let octave = e.note.octave + 2,
+                            note = e.note.name,
+                            key = note + octave;
+                        //Checking which key is pressed and going to next page with that information
+                        if(key == 'G4')
+                            window.location.href = "javascript:history.back()";
+                            
+                    });
+                }
+                else
+                    console.log('MIDI input not connected');
+            })
+
         </script>
 
     </head>
@@ -26,7 +63,7 @@
                     <li><a id ="#" onclick="sendID(this.id);">song name...</a></li>
                 </ul>
                 <ul id="back">
-                    <li><a href="javascript:history.back()" target="_self">Go back</a></li>
+                    <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
                 </ul>
         </div>
 
