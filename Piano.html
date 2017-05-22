@@ -259,13 +259,13 @@ function animate(){
     elapsedTime = getCurrentTime() - startTime;
 
     //"Let's go"-text for a fixed time//
-    if(elapsedTime >= 1000 && letsGo == -1)
+    if(elapsedTime >= 200 && letsGo == -1)
     {
         getStartText('HERE WE GO!')
         letsGo = 1;
     }
 
-    if(elapsedTime >= 2500)
+    if(elapsedTime >= 3100)
         scene.remove(textMesh);
 
     //WTF is happening here???
@@ -547,7 +547,7 @@ function getStartText(startNum)
         });
 
         textMaterial = new THREE.MeshPhongMaterial( 
-            { color: 0xff0000, specular: 0xffffff }
+            { color: 0x0000fff, specular: 0xc5d1e2 }
         );
 
         textMesh = new THREE.Mesh( textGeometry, textMaterial );
@@ -579,7 +579,7 @@ function get3Dscore(scoreNum)
         });
 
         scoreTextMaterial = new THREE.MeshPhongMaterial( 
-            { color: 0x0000ff, specular: 0xffffff }
+            { color: 0x0000ff, specular: 0xc7cfdb }
         );
 
         scoreTextMesh = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
