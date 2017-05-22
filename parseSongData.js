@@ -15,9 +15,6 @@ function parseSongData(theSong) {
         parsedArray[i] = new EventReader(songData[j], songData[j+1], songData[j+2], 0);
         j += 3;
 
-        //console.log(parsedArray[i].note + ' ' + parsedArray[i].starttime + ' ' + parsedArray[i].stoptime);
     }
-
     return parsedArray;
-
 }

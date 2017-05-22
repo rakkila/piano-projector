@@ -15,7 +15,7 @@
                        location.search.substring(1).split("?")[2];
             }
 
-                 //Enabling keyboard input
+            //Enabling keyboard input
             WebMidi.enable(function(err){ 
                 if(err) 
                     console.log("WebMidi could not be enabled");
@@ -32,16 +32,16 @@
                             key = note + octave;
                         //Button animation on key pressed
                         if(key == 'C4'){
-                            document.getElementById('Easy').style.background = "red";
+                            document.getElementById('Easy').style.background = "green";
                         }
                         else if(key == 'D4'){
-                            document.getElementById('Medium').style.background = "green";
+                            document.getElementById('Medium').style.background = "yellow";
                         }
                         else if(key == 'E4'){
-                            document.getElementById('Hard').style.background = "blue";                               
+                            document.getElementById('Hard').style.background = "red";                               
                         }
                         else if(key == 'G4'){
-                                document.getElementById('goBack').style.background = "yellow";                               
+                                document.getElementById('goBack').style.background = "blue";                               
                         }
                     });
                     //Listening for a 'note off' message (on all channels) 
@@ -75,9 +75,9 @@
             <p>The level of difficulty determines the complexity of the song, not the tempo. You can choose tempo once you have chosen a song</p>
 
             <ul id="meny">
-                <li><a id ="Easy" class="red" onclick ="sendID(this.id)">Easy</a></li>
-                <li><a id ="Medium" class="green" onclick ="sendID(this.id)">Medium</a></li>
-                <li><a id="Hard" href="Hard.html" class="blue" target="_self">Hard</a></li>
+                <li><a id ="Easy" class="green" onclick ="sendID(this.id)">Easy</a></li>
+                <li><a id ="Medium" class="yellow" onclick ="sendID(this.id)">Medium</a></li>
+                <li><a id="Hard" href="Hard.html" class="red" target="_self">Hard</a></li>
             </ul>
 
             <ul id="back">
@@ -93,9 +93,9 @@
              <p>The level of difficulty determines the complexity of the song, not the tempo. You can choose tempo once you have chosen a song</p>
 
             <ul id="meny">
-                <li><a id ="Easy" class="red" onclick ="sendID(this.id)">Easy</a></li>
-                <li><a id ="Medium" href="Medium.html" class="green" target="_self">Medium</a></li>
-                <li><a id="Hard" href="Hard.html" class="blue" target="_self">Hard</a></li>
+                <li><a id ="Easy" class="green" onclick ="sendID(this.id)">Easy</a></li>
+                <li><a id ="Medium" href="Medium.html" class="yellow" target="_self">Medium</a></li>
+                <li><a id="Hard" href="Hard.html" class="red" target="_self">Hard</a></li>
             </ul>
 
             <ul id="back">

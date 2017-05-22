@@ -46,8 +46,6 @@
             renderer.setClearColor( 0x000000 );
             document.body.appendChild( renderer.domElement );
             cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
-            //var helper1 = new THREE.CameraHelper(cameraLeft);
-            //scene.add(helper1);
             cameraLeft.position.set( 0, 0, 10 );
             scene.add(cameraLeft);
             cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
@@ -103,9 +101,8 @@
                             if(key == 'D4')
                                 document.getElementById('play').style.background = "green";
                             
-                            // Change linePositions
-
-                            // move left line
+                            
+                            //Move left line in x-position
                             if(key == 'C2')
                             {
                                 theLine2.position.x -= 0.05;
@@ -117,7 +114,7 @@
                                 renderCal();
                             }
 
-                            // move right line
+                            // Move right line in x-position
                             if(key == 'C3')
                             {
                                 theLine.position.x -= 0.05;
@@ -132,7 +129,7 @@
                                 
                         });
                          //Listening for a 'note off' message (on all channels) 
-                        input.addListener('noteoff', 'all', function(e){
+                         input.addListener('noteoff', 'all', function(e){
                             let octave = e.note.octave + 2,
                                 note = e.note.name,
                                 key = note + octave;
