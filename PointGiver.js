@@ -55,6 +55,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
                 //lightOff(pArray[i].note, pArray[i].stoptime);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
+                update3Dscore();
                 break;
             }
 
@@ -63,6 +64,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
                 //lightOff(pArray[i].note, pArray[i].stoptime);
                 aPoint = pArray[i].points;
                 pArray.splice(i, 1);
+                update3Dscore();
                 break;
             }
 
@@ -75,6 +77,7 @@ function noteoff(keyOff, timeOff, pArray, aPoint) {
         }
     }
 
+    
     return aPoint;
 
 }
