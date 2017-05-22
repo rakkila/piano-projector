@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="GUI/stylesheet.css" type="text/css" media="screen">
     <meta name="viewport" charset="UTF-8" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Piano-projector</title>
+    <title>Notes 3D</title>
 
     <!-- Midi.js package -->
     <script src="lib/MIDI.js-master/inc/shim/Base64.js" type="text/javascript"></script>
@@ -54,7 +54,6 @@
     <script src="lib\three.js-master\examples\js\postprocessing\RenderPass.js"></script>
     <script src="lib\three.js-master\examples\js\shaders\CopyShader.js"></script>
     <script src="lib\three.js-master\examples\js\postprocessing\ShaderPass.js"></script>
-    <script src = "lib/normaltextfont.js"></script>
 
             
     <!-- Internal js files -->
@@ -73,7 +72,6 @@
     <script src="midi-player.js"></script>
     <script src="Shine.js"></script>
     
-//>>>>>>> RasmusAdd
 
 
 </head>
@@ -84,15 +82,9 @@
 
     var keyboard = new Keyboard();
     var song = new Song(location.search.substring(1).split("?")[3]);
-    var jingleBells2  = new Song('jingleBells2');
-    var jingleIntro = new Song('jingleIntro2');
-    var jingleTest = new Song('jingleBellsNoIntro');
     var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
     var velocity = tempo * 1000;
     var elapsedTime = 0;
-
-    song.setVolume(0.4);
-    jingleBells2.setVolume(0.4);
 
     var asd = -1;
     var asd2 = -1;
@@ -306,11 +298,11 @@ function animate(){
     }
 
     //WTF is happening here???
-        if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
+    if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
     {
         console.log('Nu hände de');
-        jingleTest.setVolume(0.4);
-        jingleTest.playSong();
+        song.setVolume(0.4);
+        song.playSong();
         asd2 = 1;
     }
 
@@ -491,15 +483,16 @@ function updatePositions(elapsedTime, blockpos){
 
         var chosenTempo = location.search.substring(1).split("?")[4];
 
-            if ( chosenTempo == "Low" && s == 'korv' ) {chosenTempo = 0.0035;}
-            if ( chosenTempo == "Medium" && s == 'korv' ) {chosenTempo = 0.005;}
-            if ( chosenTempo == "High" && s == 'korv' ) {chosenTempo = 0.007;}
+            if ( chosenTempo == "Low") {chosenTempo = 0.0035;}
+            if ( chosenTempo == "Medium") {chosenTempo = 0.005;}
+            if ( chosenTempo == "High") {chosenTempo = 0.007;}
 
         switch(s){
 
             case 'roses': tempo = 0.01; break;
             case 'jason_mraz': tempo = 0.005; break;
             case 'korv': tempo = chosenTempo; break;
+            case 'paris': tempo = chosenTempo; break;
             default: tempo = 0.001; break;
         }
         return tempo;

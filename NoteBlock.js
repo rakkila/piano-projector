@@ -53,20 +53,17 @@ function loadNoteBlocks(){
         if(note.includes("b"))
         {
             noteWidth = blackNoteWidth;
-            keyColor = 0x00000ff;    
+            keyColor = 0x0000ff;    
         }
 
         else
         {
             noteWidth =  whiteNoteWidth;
-            keyColor = 0x0000ff;
+            keyColor = 0x0000fff;
         }
             
         noteBlockArray[i] = new NoteBlock(songArray[i].note, noteWidth, songArray[i].starttime, songArray[i].stoptime, keyColor);
     }
-
-  //  console.log('key:' + noteBlockArray[0].note + ' startTime: ' + noteBlockArray[0].startTime + 'StopTime: ' + noteBlockArray[0].stopTime);
-  //  console.log('key:' + noteBlockArray[1].note + ' startTime: ' + noteBlockArray[1].startTime + 'StopTime: ' + noteBlockArray[1].stopTime);
 
     return noteBlockArray;
     

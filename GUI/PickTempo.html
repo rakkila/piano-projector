@@ -7,6 +7,7 @@
        <script>
             //Sending songID from clicked button
             function sendID(id){
+                console.log("id: " + id);
                 window.location.href = "../Piano.html?" + getID() + "?" + id;
             }
                 function getID(){
@@ -75,9 +76,9 @@
             <h1>Choose tempo</h1>
             <div class ="tempoList">
                 <ul id="meny">
-                    <li><a class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
-                    <li><a class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
-                    <li><a class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
+                    <li><a id="High" class="red" onclick="sendID(this.id);"><h3>High</h3></a></li>
+                    <li><a id ="Medium" class="green" onclick="sendID(this.id);"><h3>Medium</h3></a></li>
+                    <li><a id ="Low" class ="blue" onclick="sendID(this.id);"><h3>Low</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
