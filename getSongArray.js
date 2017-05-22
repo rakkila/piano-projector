@@ -54,22 +54,10 @@ const paris = ["G3",6600,8700,"G4",6600,8700,"A4",8700,9000,"B3",9000,11000,"B4"
 function getSongArray(song) {
 
     switch(song) {
-
-        case 'jason_mraz':
-            return jason_mraz;
-
-        case 'roses':
-            return roses;;
-
-        case 'korv':
-            return korv;
-
-        case 'paris':
-            return paris;
-
-
-        default:
-            break;
+        case 'jason_mraz': return jason_mraz;
+        case 'roses': return roses;;
+        case 'korv': return korv;
+        case 'paris': return paris;
+        default: break;
     }
-
 }

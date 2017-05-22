@@ -1,5 +1,5 @@
 /**
- * Class: Noteblocks (visualization)
+ * Class: Noteblocks representing the translating blocks as notes (visualization)
  */
 
 class NoteBlock{

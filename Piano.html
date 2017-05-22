@@ -266,9 +266,7 @@ function animate(){
     }
 
     if(elapsedTime >= 2500)
-    {
         scene.remove(textMesh);
-    }
 
     //WTF is happening here???
     if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
@@ -293,17 +291,11 @@ function animate(){
     
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
-        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
-        {
-            
-            //Adding group of note blocks
-            addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
 
-        }
+        if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
+            addChordNoteBlocks(noteBlockArray[blockIndex], noteBlockArray[blockIndex+1]);
         else
-        {
             addSingleNoteBlock(noteBlockArray[blockIndex]);
-        }
 
     }
      
