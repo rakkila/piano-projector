@@ -18,8 +18,10 @@
                 </h1>
 
                 <ul id="replay">
-                    <li><a id="replay" onclick="sendID();">Play again</a></li>
+                    <li><a id="playAgain" onclick="sendID(this.id);">Play song again</a></li>
+                    <li><a id="toMenu" onclick="sendID(this.id);">Return to menu</a></li>
                 </ul>
+
             </div>
             <div class ="right">
                 <h1 id="gameover">Game Over
@@ -30,28 +32,43 @@
             
 
                 <ul id="replay">
-                    <li><a id="playAgain" onclick="sendID();">Play again</a></li>
+                    <li><a id="playAgain" onclick="sendID(this.id);">Play song again</a></li>
+                    <li><a id="toMenu" onclick="sendID(this.id);">Return to menu</a></li>
                 </ul>
             </div>
     </body>
     <script>
 
     //Go to menu.html
-    function sendID(){
+    function sendID(option){
+
+        if(option== "toMenu")
+        {
             window.location.href = "Menu.html" + '?' +
             location.search.substring(1).split("?")[0] + '?' +
             location.search.substring(1).split("?")[1] + '?' +
             location.search.substring(1).split("?")[2];
+        }
+        else if(option == "playAgain")
+        {
+            window.location.href = "../Piano.html" + '?' +
+            location.search.substring(1).split("?")[0] + '?' +
+            location.search.substring(1).split("?")[1] + '?' +
+            location.search.substring(1).split("?")[2] + '?' +
+            location.search.substring(1).split("?")[3] + '?' +
+            location.search.substring(1).split("?")[4];
+        }
+
     }
 
     //Calculate score in percentage
     function getScorePercentage(){
-        return Math.round((location.search.substring(1).split("?")[3]/location.search.substring(1).split("?")[4] * 100));
+        return Math.round((location.search.substring(1).split("?")[5]/location.search.substring(1).split("?")[6] * 100));
     }
 
     //Displaying score 
-    document.getElementById('scoreLeft').innerHTML = 'You scored ' + location.search.substring(1).split("?")[3] + ' points';
-    document.getElementById('scoreRight').innerHTML = 'You scored ' + location.search.substring(1).split("?")[3] + ' points';
+    document.getElementById('scoreLeft').innerHTML = 'You scored ' + location.search.substring(1).split("?")[5] + ' points';
+    document.getElementById('scoreRight').innerHTML = 'You scored ' + location.search.substring(1).split("?")[5] + ' points';
     document.getElementById('percentageLeft').innerHTML = getScorePercentage() + '%';
     document.getElementById('percentageRight').innerHTML = getScorePercentage() + '%';
 
@@ -176,9 +193,10 @@
                         key = note + octave;
 
                     //Button animation on key pressed
-                    if(key == 'E4')
-                        document.getElementById('playAgain').style.background = "blue";
-                        
+                    if(key == 'C4')
+                        document.getElementById('playAgain').style.background = "red";
+                    else if(key == 'D4')
+                        document.getElementById('toMenu').style.background = "green";
                 });
 
                     //Listening for a 'note off' message (on all channels) 
@@ -188,8 +206,10 @@
                         key = note + octave;
 
                     //Checking which key is pressed and going to next page with that information
-                    if(key == 'E4')
-                        sendID();
+                    if(key == 'C4')
+                        sendID("playAgain");
+                    else if(key == 'D4')
+                        sendID("toMenu");
                         
                 });
 

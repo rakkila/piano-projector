@@ -311,7 +311,8 @@ function animate(){
     particleSystem.rotation.y += 0.001;
     
     //Trigger game over animation if song has ended
-    if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    //if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
+    if(blockIndex > 1)
         initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
@@ -504,6 +505,8 @@ function sendID(){
                            location.search.substring(1).split("?")[0] + '?' +
                            location.search.substring(1).split("?")[1] + '?' +
                            location.search.substring(1).split("?")[2] + '?' +
+                           location.search.substring(1).split("?")[3] + '?' +
+                           location.search.substring(1).split("?")[4] + '?' +
                            totalpoints + '?' + getMaximumScore();
 }
 
