@@ -32,9 +32,6 @@ function loadNoteBlocks(){
     var noteBlockArray = new Array(size);
     let keyColor;
 
-   // let left = -10.20,
-  //  right = 11.05;
-
            let noWhiteKeys = getSetupInfo()[0],
                noBlackKeys = getSetupInfo()[1],
                noKeys = noWhiteKeys + noBlackKeys,

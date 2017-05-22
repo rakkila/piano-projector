@@ -9,7 +9,7 @@ function startMidiPlayer(){
         console.log('Loaded MIDI file contains following instruments: ');
         console.log(player.getFileInstruments());
 
-        //Loading required soundfonts for playing the MIDi file
+        //Loading required soundfonts for playing the MIDI file
         MIDI.loadPlugin({
             soundfontUrl: './soundfonts/',
             instruments: player.getFileInstruments(),
