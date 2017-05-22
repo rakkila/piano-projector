@@ -26,14 +26,6 @@ function noteon(keyOn, timeOn, pArray)
             }
             
        }
-       /* 
-        else
-           { 
-               /*lightWrong(keyOn, pArray[i].starttime);
-               //fullScoreCounter = 0;
-               //starPower = false;
-        }
-        */
     }
 }
 
