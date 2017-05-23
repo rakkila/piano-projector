@@ -146,13 +146,28 @@
 
     document.body.appendChild(renderer.domElement);
 
-    //Creating 3D camera
+    /*//Creating 3D camera
     cameraLeft = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
     cameraLeft.position.set( 0, 0, 10 );
     scene.add(cameraLeft);
     cameraRight = new THREE.PerspectiveCamera( 75, (window.innerWidth / 2) / window.innerHeight, 1, 4000 );
     cameraRight.position.set( 0, 0, 10);
+    scene.add(cameraRight);*/
+
+    /* Create two cameras for side-by-side 3D projection*/
+    cameraL = new THREE.Camera();
+    cameraL.position.set(-0.206 * 4, -3.89 * 4, 5.16 * 4);
+    // cameraL.position.set(-0.032, -0.6025, 0.80);
+    cameraLeft = realView(cameraL);
+    scene.add(cameraLeft);
+
+    cameraR = new THREE.Camera();
+    cameraR.position.set(0.206 * 4, -3.89 * 4, 5.16 * 4);
+    // cameraR.position.set(0.032, -0.6025, 0.80);
+    cameraRight = realView(cameraR);
     scene.add(cameraRight);
+
+
     let width = Math.round(window.innerWidth / 2),
         height = window.innerHeight;
 
@@ -325,7 +340,7 @@ function animate(){
     renderer.setScissor( 0, 0, width, height);
     renderer.setScissorTest ( true );
     cameraLeft.aspect = width * 2 / height;
-    cameraLeft.updateProjectionMatrix();
+    // cameraLeft.updateProjectionMatrix();
     renderer.render(scene, cameraLeft);
 
     //Right camera
@@ -333,7 +348,7 @@ function animate(){
     renderer.setScissor( width, 0, width, height);
     renderer.setScissorTest ( true );
     cameraRight.aspect = width * 2 / height;
-    cameraRight.updateProjectionMatrix();
+    // cameraRight.updateProjectionMatrix();
     renderer.render(scene, cameraRight);
    
 }
@@ -369,9 +384,21 @@ function renderParticles(noteblock){
     function loadGeometries(){
 
         var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
-       // light.position.set( 5, -3.5, 5 );
-       light.position.set( 5, 5, 5 );
+        // light.position.set( 5, -3.5, 5 );
+        light.position.set( 5, 5, 5 );
         scene.add( light );
+       /* var light2 = new THREE.PointLight(0xb4e7f2, 2);
+        light2.position.set(-10, 8, 8);
+        scene.add(light2);
+
+        var light3 = new THREE.PointLight(0xb4e7f2, 2);
+        light3.position.set(0, -8, 2);
+        scene.add(light3);
+        
+        var light4 = new THREE.PointLight(0xb4e7f2, 2);
+        light3.position.set(0, -4, 0);
+        scene.add(light4);*/
+        
         scene.add(particleSystem);
 
         //Loading note blocks from picked song
@@ -444,6 +471,8 @@ function updatePositions(elapsedTime, blockpos){
     meshGroup.position.y = -elapsedTime * tempo;
     // axis.position.y = cameraLeft.position.y +5;
 }
+
+
 
     //Setting tempo depending on picked song
     function getSongTempo(s){
@@ -611,6 +640,49 @@ function update3Dscore() {
 
 
 }
+
+function realView(camera) {
+            //cameraL.position.set(-0.206, -3.89, 5.16);
+            var viewPosition = camera.position;
+            const near = 1;
+            const far = 1000;
+            
+            var screenCoordTR = new THREE.Vector3(3.45 * 4, 1.95 * 4, 0 * 4);
+            var screenCoordLL = new THREE.Vector3(-3.45 * 4, -1.95 * 4, 0 * 4);
+            // var screenCoordUp = new THREE.Vector3(0.535, 0.3025, 0);
+            // var screenCoordLow = new THREE.Vector3(-0.535, -0.3025, 0);
+            var center = new THREE.Vector3();
+            var normal = new THREE.Vector3();
+            var projPosition = new THREE.Vector3();
+            var look = new THREE.Vector3(viewPosition.x, viewPosition.y, 0)
+            const up = new THREE.Vector3(0, 1, 0);
+            
+            center.addVectors(screenCoordTR, screenCoordLL).multiplyScalar(0.5);
+            normal.subVectors(screenCoordTR, screenCoordLL).cross(up);
+            normal.normalize();
+            
+            var distance = (new THREE.Vector3).subVectors(viewPosition, center).dot(normal);
+            
+            var ratio = near / distance;
+            var centerX = ratio * (center.x - look.x);
+            var centerY = ratio * (center.y - look.y);
+            var halfWidth = 0.5 * ratio * (screenCoordTR.x - screenCoordLL.x);
+            var halfHeight = 0.5 * ratio * (screenCoordTR.y - screenCoordLL.y);
+            
+            var left = centerX - halfWidth;
+            var right = centerX + halfWidth;
+            var top = centerY + halfHeight;
+            var bottom = centerY - halfHeight;
+            
+            console.log('Left: ' + left + ' Right: ' + right + ' Top: ' + top + ' Bottom: ' + bottom);
+            camera.projectionMatrix = new THREE.Matrix4().makePerspective(left, right, top, bottom, near, far);
+            // camera.projectionMatrix = new THREE.Matrix4().makeOrthographic(left, right, top, bottom, near, far);
+            camera.lookAt(look);
+            // camera.updateProjectionMatrix();
+            camera.updateMatrixWorld(true);
+            // camera.matrixAutoUpdate = false;
+            return camera;
+        }
 
 </script>
 </body>
