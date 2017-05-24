@@ -21,9 +21,10 @@ function loadShine()
 //Adding shine to the scene at a noteBlocks position
 function addShine(noteBlock, index){
     var xPos = getPositionX(noteBlock.note);
+
     shineArray[index].position.x = xPos; //At the noteBlocks x position
-    shineArray[index].position.y = -blockpos+1.5; //By the keys vertically
-    shineArray[index].position.z = 2; //In front of the noteBlocks from users perspective
+    shineArray[index].position.y = -blockpos; //By the keys vertically
+    shineArray[index].position.z = 0.01; //In front of the noteBlocks from users perspective
     shineArray[index].scale.set(sx[index],sy[index],sz[index]);
     scene.add(shineArray[index]);
 }

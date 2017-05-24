@@ -77,7 +77,8 @@
 <script>
 
     //// Global variables ////
-
+    var AllScores = [];
+    let textIndex = 0;
     var keyboard = new Keyboard();
     var song = new Song(location.search.substring(1).split("?")[3]);
     var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
@@ -103,6 +104,7 @@
     var delBlockArray = [];
     var blockIndex = 0;
     var startTime;
+
     var shineArray = [];
     let size = noteBlockArray.length;
     var bigShine = new Array(size);
@@ -125,6 +127,7 @@
     var particleSystem_keyPressed = [];
         
     const meshGroup = new THREE.Object3D();
+    const meshGroupText = new THREE.Object3D();
 
     //Creating scene
     const scene = new THREE.Scene();
@@ -136,10 +139,11 @@
 
         //Create black line at bottom of scene
         const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.2, 1);
-        const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.8 });
-        const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.8 });
+        const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.5 });
+        const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 0.5 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
+        line.position.z = -0.5;
 
 
     document.body.appendChild(renderer.domElement);
@@ -196,6 +200,18 @@
     l2.position.x = getPositionX('C3')-noteWidth/2;
     l3.position.x = getPositionX('C4')-noteWidth/2;
     l4.position.x = getPositionX('C5')-noteWidth/2;
+
+            const linegeometry2 = new THREE.Geometry();
+            const linematerial2 = new THREE.LineBasicMaterial({ color: 0x0000ff });
+            linegeometry2.vertices.push(new THREE.Vector3(-10, 0, 0));
+            linegeometry2.vertices.push(new THREE.Vector3(10, 0, 0));
+            var theYLine = new THREE.Line(linegeometry2, linematerial2);
+            var theYLine2 = new THREE.Line(linegeometry2, linematerial2);
+            scene.add(theYLine);
+            scene.add(theYLine2);
+            theYLine.position.y = -Math.tan(75*0.5*(Math.PI/180))*10+0.001;
+            theYLine2.position.y = -Math.tan(75*0.5*(Math.PI/180))*10+0.001;
+
 
     function init() {
 
@@ -273,8 +289,6 @@ function animate(){
     //WTF is happening here???
     if(elapsedTime >= noteBlockArray[0].startTime && asd2 == -1)
     {
-
-        console.log('Nu hände de');
         song.setVolume(0.4);
         song.playSong();
         asd2 = 1;
@@ -289,10 +303,12 @@ function animate(){
         initEndingAnimation(getScore());
 
     if(blockIndex < noteBlockArray.length)
-        var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
+     //   var lengthToTravel = 2 * blockpos - noteBlockArray[blockIndex].noteLength/2;
+      var lengthToTravel = 2 * blockpos;
     
     //Adding note blocks to scene (depending on song)
     while(blockIndex < noteBlockArray.length && elapsedTime >= Math.round(Math.abs(noteBlockArray[blockIndex].startTime - 1000*lengthToTravel/velocity))){
+        console.log('1000*lengthToTravel/velocity = ' + 1000*lengthToTravel/velocity)
         if(blockIndex+1 < noteBlockArray.length && noteBlockArray[blockIndex].startTime == noteBlockArray[blockIndex+1].startTime)
         {
             
@@ -317,6 +333,17 @@ function animate(){
         }
         scaleShine(i);
     }      
+
+    // Removing 3D text
+        if(AllScores.length > 1)
+        {
+            while(AllScores.length > 1)
+            {
+                scene.remove(AllScores[0]);
+                AllScores.splice(0, 1);
+            }
+        }
+
 
     requestAnimationFrame(animate);
     updatePositions(elapsedTime, blockpos);
@@ -458,8 +485,7 @@ function updatePositions(elapsedTime, blockpos){
 
         switch(s){
 
-            case 'roses': tempo = 0.01; break;
-            case 'jason_mraz': tempo = 0.005; break;
+            case 'jingleBells': tempo = chosenTempo; break;
             case 'korv': tempo = chosenTempo; break;
             case 'paris': tempo = chosenTempo; break;
             default: tempo = 0.001; break;
@@ -559,9 +585,9 @@ function getStartText(startNum)
         );
 
         textMesh = new THREE.Mesh( textGeometry, textMaterial );
-        textMesh.position.x = -1;
+        textMesh.position.x = -6;
         textMesh.position.y = 0;
-        textMesh.position.z = 2;
+        textMesh.position.z = 1;
 
         scene.add( textMesh );
 
@@ -571,6 +597,7 @@ function getStartText(startNum)
 
 function get3Dscore(scoreNum)
 {
+
 
             loader.load( 'lib/three.js-master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
@@ -589,31 +616,30 @@ function get3Dscore(scoreNum)
         scoreTextMaterial = new THREE.MeshPhongMaterial( 
             { color: 0x0000ff, specular: 0xffffff }
         );
+     
+        AllScores[textIndex] = scoreTextMesh;
+        AllScores[textIndex] = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
+        AllScores[textIndex].position.x = -7;
+        AllScores[textIndex].position.y = 4;
+        AllScores[textIndex].position.z = 2;
 
-        scoreTextMesh = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
-        scoreTextMesh.position.x = -7;
-        scoreTextMesh.position.y = 4;
-        scoreTextMesh.position.z = 2;
+        scene.add( AllScores[textIndex] );
 
-        scene.add( scoreTextMesh );
+        AllScores[textIndex].rotation.x = 3*Math.PI/45;
+        AllScores[textIndex].rotation.y = 15*Math.PI/45;
 
-        scoreTextMesh.rotation.x = 3*Math.PI/45;
-        scoreTextMesh.rotation.y = 15*Math.PI/45;
+        textIndex++;
 
         });
 
 }
 
-
 function update3Dscore() {
 
-        scene.remove(scoreTextMesh);
-
-        get3Dscore(getScore());
+get3Dscore(getScore());
 
 
 }
-
 </script>
 </body>
 

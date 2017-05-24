@@ -50,6 +50,8 @@ class Keyboard{
                             //console.log(getCurrentTime()-startTime);
                             noteon(key, getCurrentTime()-startTime, pArray);
 
+                            console.log("KEY PUSHED = " + key);
+
                             //Play pressed note (0 delay)
                             MIDI.noteOn(0, MIDI.keyToNote[key], e.rawVelocity + 15, 0);
 
@@ -75,6 +77,7 @@ class Keyboard{
                                 //Stop playing the note corresponding to the 'noteoff' message
                                 //0 delay, add delay for "sustain pedal"-effect
                                 MIDI.noteOff(0, MIDI.keyToNote[key], 0);
+                                
                             });
 
                         }
@@ -105,6 +108,7 @@ function sharpToFlat(note){
 
 
 function getScore(){
+    
     return totalpoints;
 }
  

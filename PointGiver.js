@@ -12,11 +12,11 @@ function noteon(keyOn, timeOn, pArray)
         //If keyOn is equal to the current note
         if (keyOn == pArray[i].note)
         {
-            console.log(Math.abs(pArray[i].starttime - timeOn));
 
             //If the time difference between the notes start time and the time the block is pressed is smaller than 250
             if( Math.abs(pArray[i].starttime - timeOn) < 250)
             {
+                console.log("Pointgiver, note: " +  pArray[i].note + "getPosX = " + getPositionX(pArray[i].note));
                 //Calling the lightUp function
                 lightUp(keyOn, pArray[i].starttime);
                 //Add 50 points 

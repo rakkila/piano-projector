@@ -37,8 +37,12 @@ function lightOff(key, stopTime)
         {   
             //Calling the removeShine function
             removeShine(i);
+
             //Set the current note block to red
-            noteBlockArray[i].mesh.material.color.setHex(0x0000ff);
+            if(key.includes("b"))
+                noteBlockArray[i].mesh.material.color.setHex(0x000d33);
+            else
+                noteBlockArray[i].mesh.material.color.setHex(0x002db3);
             //Setting the blocks z-position to 0
             noteBlockArray[i].mesh.position.z = 0;
 

@@ -31,13 +31,13 @@
                             key = note + octave;
                         //Button animation on key pressed
                         if(key == 'C4'){
-                            document.getElementById('jason_mraz').style.background = "red";
+                            document.getElementById('jingleBells').style.background = "red";
                         }
                         else if(key == 'D4'){
-                            document.getElementById('roses').style.background = "green";
+                            document.getElementById('korv').style.background = "green";
                         }
                         else if(key == 'E4'){
-                            document.getElementById('korv').style.background = "blue";                               
+                            document.getElementById('paris').style.background = "blue";                               
                         }
                         else if(key == 'G4'){
                                 document.getElementById('goBack').style.background = "yellow";                               
@@ -50,11 +50,11 @@
                             key = note + octave;
                         //Checking which key is pressed and going to next page with that information
                         if(key == 'C4')
-                            sendID('jason_mraz');
+                            sendID('jingleBells');
                         else if(key == 'D4')
-                            sendID('roses');
-                        else if(key == 'E4')
                             sendID('korv');
+                        else if(key == 'E4')
+                            sendID('paris');
                         else if(key == 'G4')
                             window.location.href = "javascript:history.back()";
                             
@@ -75,9 +75,9 @@
             <p>Pick a song you would like to play</p>
             <div class ="songList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="red" onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="jingleBells" class="red"  onclick="sendID(this.id);"><h3>Jingle Bells</h3></a></li>
+                    <li><a id ="korv" class="green" onclick="sendID(this.id);"><h3>Köp varm korv</h3></a></li>
+                    <li><a id ="paris" class ="blue" onclick="sendID(this.id);"><h3>Paris</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a id="goBack" href="javascript:history.back()" target="_self">Go back</a></li>
@@ -92,9 +92,9 @@
             <p>Pick a song you would like to play</p>
             <div class ="songList">
                 <ul id="meny">
-                    <li><a id ="jason_mraz" class="red"  onclick="sendID(this.id);"><h3>Jason Mraz - I'm Yours</h3></a></li>
-                    <li><a id ="roses" class="green" onclick="sendID(this.id);"><h3>The Chainsmokers - Roses</h3></a></li>
-                    <li><a id ="korv" class ="blue" onclick="sendID(this.id);"><h3>Köp varm korv med hård kick</h3></a></li>
+                    <li><a id ="jingleBells" class="red"  onclick="sendID(this.id);"><h3>Jingle Bells</h3></a></li>
+                    <li><a id ="korv" class="green" onclick="sendID(this.id);"><h3>Köp varm korv</h3></a></li>
+                    <li><a id ="paris" class ="blue" onclick="sendID(this.id);"><h3>Paris</h3></a></li>
                 </ul>
                 <ul id="back">
                     <li><a href="javascript:history.back()" target="_self">Go back</a></li>
