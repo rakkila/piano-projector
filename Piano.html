@@ -112,13 +112,13 @@
     var removing = new Array(size);
     
     //Create the particle variables
-    const particleCount = 500;
+    const particleCount = 100;
     const particleCount2 = 30;
     const particles = new THREE.Geometry();
     const particles2 = new THREE.Geometry();
     var pMaterial, pMaterial2;
-    var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
-    var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 0.6, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 0.1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
     
     //Create the particle system
     var particleSystem;
@@ -299,7 +299,7 @@ function animate(){
 
     updatePositions(elapsedTime, blockpos);
 
-    particleSystem.rotation.y += 0.001;
+    particleSystem.rotation.y += 0.0007;
     
     //Trigger game over animation if song has ended
     if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
@@ -385,11 +385,14 @@ function renderParticles(noteblock){
 
         var light = new THREE.DirectionalLight( 0xb4e7f2, 5 );
         // light.position.set( 5, -3.5, 5 );
-        light.position.set( 5, 5, 5 );
+        light.position.set( 5, 2, 5 );
         scene.add( light );
-       /* var light2 = new THREE.PointLight(0xb4e7f2, 2);
-        light2.position.set(-10, 8, 8);
+
+       var light2 = new THREE.PointLight(0xb4e7f2, 2);
+        light2.position.set(5, -10, 5);
         scene.add(light2);
+
+        /*
 
         var light3 = new THREE.PointLight(0xb4e7f2, 2);
         light3.position.set(0, -8, 2);
@@ -410,9 +413,9 @@ function renderParticles(noteblock){
 function setUpParticleSystem(){
     for (var p = 0; p < particleCount; p++){
     // create a particle with random postion values
-    var pX = Math.random() * 10 - 5,
-        pY = Math.random() * 500 - 250,
-        pZ = Math.random() * 20 - 10,
+    var pX = Math.random() * 25 - 10,
+        pY = Math.random() * 20 - 10,
+        pZ = Math.random() * 15 - 10,
         particle = new THREE.Vector3(pX, pY, pZ);
     particleSystem = new THREE.Points( particles, pMaterial);
     // add it to the geometry
@@ -437,6 +440,8 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
     noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
     noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2 + barHeight;
     noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
+    //noteBlock1.mesh.position.z = 4;
+    //noteBlock2.mesh.position.z = 4;
     blockIndex += 2;
 }
 
@@ -450,6 +455,7 @@ function addSingleNoteBlock(noteBlock){
     let barHeight = 0.8;
 
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
+    //noteBlock.mesh.position.z = 4;
 
     // ERROR here. This particular noteblock gets misplaced. This fixes it temporarily
    if(noteBlock.note == 'G4' && noteBlock.startTime == 11200)
@@ -586,9 +592,10 @@ function getStartText(startNum)
         );
 
         textMesh = new THREE.Mesh( textGeometry, textMaterial );
-        textMesh.position.x = -1;
-        textMesh.position.y = 0;
-        textMesh.position.z = 2;
+        textMesh.position.x = -6;
+        textMesh.position.y = 2;
+        textMesh.position.z = 1;
+        textMesh.rotation.x = Math.PI/5;
 
         scene.add( textMesh );
 
@@ -618,14 +625,15 @@ function get3Dscore(scoreNum)
         );
 
         scoreTextMesh = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
-        scoreTextMesh.position.x = -7;
+        scoreTextMesh.position.x = -9;
         scoreTextMesh.position.y = 4;
-        scoreTextMesh.position.z = 2;
+        scoreTextMesh.position.z = 1;
 
         scene.add( scoreTextMesh );
 
-        scoreTextMesh.rotation.x = 3*Math.PI/45;
-        scoreTextMesh.rotation.y = 15*Math.PI/45;
+        scoreTextMesh.rotation.x = 16*Math.PI/45;
+        scoreTextMesh.rotation.y = 1*Math.PI/45;
+        scoreTextMesh.rotation.y = Math.PI/4;
 
         });
 
