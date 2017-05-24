@@ -117,7 +117,7 @@
     const particles = new THREE.Geometry();
     const particles2 = new THREE.Geometry();
     var pMaterial, pMaterial2;
-    var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
+    var pMaterial = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare_0.png"), blending: THREE.AdditiveBlending, transparent: true});
     var pMaterial2 = new THREE.PointsMaterial({color: 0xFFFFFF, size: 1, map: THREE.ImageUtils.loadTexture("lib/three.js-master/examples/textures/lensflare/lensflare0.png"), blending: THREE.AdditiveBlending, transparent: true});
     
     //Create the particle system
@@ -284,7 +284,7 @@ function animate(){
 
     updatePositions(elapsedTime, blockpos);
 
-    particleSystem.rotation.y += 0.001;
+    particleSystem.rotation.y += -0.0005;
     
     //Trigger game over animation if song has ended
     if(elapsedTime > noteBlockArray[noteBlockArray.length-1].stopTime + 1000 )
@@ -383,9 +383,9 @@ function renderParticles(noteblock){
 function setUpParticleSystem(){
     for (var p = 0; p < particleCount; p++){
     // create a particle with random postion values
-    var pX = Math.random() * 10 - 5,
-        pY = Math.random() * 500 - 250,
-        pZ = Math.random() * 20 - 10,
+    var pX = Math.random() * 20 - 10,
+        pY = Math.random() * 100 - 50,
+        pZ = Math.random() * 10 - 5,
         particle = new THREE.Vector3(pX, pY, pZ);
     particleSystem = new THREE.Points( particles, pMaterial);
     // add it to the geometry
