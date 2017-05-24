@@ -384,7 +384,7 @@ function setUpParticleSystem(){
     for (var p = 0; p < particleCount; p++){
     // create a particle with random postion values
     var pX = Math.random() * 20 - 10,
-        pY = Math.random() * 100 - 50,
+        pY = Math.random() * 20 - 10,
         pZ = Math.random() * 10 - 5,
         particle = new THREE.Vector3(pX, pY, pZ);
     particleSystem = new THREE.Points( particles, pMaterial);
