@@ -12,7 +12,7 @@ function loadShine()
     for(let i = 0; i < size; ++i){
         shineArray[i] = new THREE.Sprite( shinematerial);
         bigShine[i] = new Boolean(false);
-        sx[i] = 1;
+        sx[i] = 1.4;
         sy[i] = 0.5;
         sz[i] = 0.5;
         removing[i] = false;
@@ -24,8 +24,8 @@ function loadShine()
 function addShine(noteBlock, index){
     var xPos = getPositionX(noteBlock.note);
     shineArray[index].position.x = xPos; //At the noteBlocks x position
-    shineArray[index].position.y = -blockpos+1.5; //By the keys vertically
-    shineArray[index].position.z = 2; //In front of the noteBlocks from users perspective
+    shineArray[index].position.y = -blockpos - 0.1; //By the keys vertically
+    shineArray[index].position.z = 0.201; //In front of the noteBlocks from users perspective
     shineArray[index].scale.set(sx[index],sy[index],sz[index]);
     scene.add(shineArray[index]);
 }
@@ -37,31 +37,35 @@ function removeShine(index){
 
 function scaleShine(index)
 {
+    
+    if(sx[index] == 1.1){ 
+        //Shine is its max size
+        bigShine[index] = true;
+    }
+
     //Shine is not its max size, enlarge
     if(bigShine[index] == false) 
     {
-        sx[index] = sx[index] + 0.01;
-        sy[index] = sy[index] + 0.01;
-        sz[index] = sz[index] + 0.01;
+        sx[index] = sx[index] ;
+        sy[index] = sy[index] ;
+        sz[index] = sz[index] ;
         shineArray[index].scale.set(sx[index],sy[index],sz[index]);
 
-        if(sx[index] == 2){ 
-            //Shine is its max size
-            bigShine[index] = true;
-        }
     }
     //Remove shine by reducing its size
     if(removing[index] == true) 
     {
+        /*
         sx[index] = sx[index] - 0.1;
         sy[index] = sy[index] - 0.1;
         sz[index] = sz[index] - 0.1;
         shineArray[index].scale.set(sx[index],sy[index],sz[index]);
+        */
         //Remove shine from the scene
-        if(sx[index] < 1) 
-        {
+        //if(sx[index] < 1) 
+        //{
             scene.remove(shineArray[index]);
             removing[index] = false;
-        }
+       // }
     }
 }

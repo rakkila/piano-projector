@@ -77,7 +77,8 @@
 <script>
 
     //// Global variables ////
-
+    var AllScores = [];
+    let textIndex = 0;
     var keyboard = new Keyboard();
     var song = new Song(location.search.substring(1).split("?")[3]);
     var tempo = getSongTempo(location.search.substring(1).split("?")[3]);
@@ -137,11 +138,11 @@
 
 
         //Create black line at bottom of scene
-        const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.8, 0.4);
-        const material = new THREE.MeshPhongMaterial({ color: 0x3e4049, transparent: true, opacity: 0.8 });
+        const geometry = new THREE.BoxGeometry(rightLinePos-leftLinePos, 0.38, 0.01);
+        const material = new THREE.MeshPhongMaterial({ color: 0x050505, transparent: true, opacity: 0.3 });
         var line = new THREE.Mesh(geometry, material);
         scene.add(line);
-
+        line.position.z = -0.1;
 
 
     document.body.appendChild(renderer.domElement);
@@ -267,7 +268,7 @@ main();
 
 //Spawn-points for the falling blocks.
 var blockpos = Math.tan(75*0.5*(Math.PI/180))*10;
-        line.position.y = -blockpos;
+        line.position.y = -blockpos-0.1;
 
 //"GIVE MY CREATION... LIIIIIFE!"
 function animate(){
@@ -327,7 +328,17 @@ function animate(){
             noteBlockArray[i].active = false;
         }
         scaleShine(i);
-    }      
+    } 
+
+        // Removing 3D text
+        if(AllScores.length > 1)
+        {
+            while(AllScores.length > 1)
+            {
+                scene.remove(AllScores[0]);
+                AllScores.splice(0, 1);
+            }
+        }     
 
     requestAnimationFrame(animate);
 
@@ -429,8 +440,6 @@ function setUpParticleSystem(){
 //Multiple blocks falling
 function addChordNoteBlocks(noteBlock1, noteBlock2){
 
-    let barHeight = 0.8;
-
     meshGroup.add(noteBlock1.mesh);
     meshGroup.add(noteBlock2.mesh);
     scene.add(meshGroup);
@@ -438,7 +447,7 @@ function addChordNoteBlocks(noteBlock1, noteBlock2){
     noteBlock2.active = true;
     noteBlock1.mesh.position.x = getPositionX(noteBlock1.note);
     noteBlock2.mesh.position.x = getPositionX(noteBlock2.note);
-    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2 + barHeight;
+    noteBlock1.mesh.position.y = -meshGroup.position.y + blockpos + noteBlock1.noteLength/2;
     noteBlock2.mesh.position.y = noteBlock1.mesh.position.y + (noteBlock2.noteLength)/2 - (noteBlock1.noteLength)/2;
     //noteBlock1.mesh.position.z = 4;
     //noteBlock2.mesh.position.z = 4;
@@ -452,7 +461,6 @@ function addSingleNoteBlock(noteBlock){
     scene.add(meshGroup);
     noteBlock.active = true;
 
-    let barHeight = 0.8;
 
     noteBlock.mesh.position.x = getPositionX(noteBlock.note);
     //noteBlock.mesh.position.z = 4;
@@ -461,11 +469,11 @@ function addSingleNoteBlock(noteBlock){
    if(noteBlock.note == 'G4' && noteBlock.startTime == 11200)
     {
 
-        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/4 + barHeight;
+        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/4;
     }
     else
     {
-        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2 + barHeight;
+        noteBlock.mesh.position.y = - meshGroup.position.y + blockpos + noteBlock.noteLength/2;
     }
     
     blockIndex++;
@@ -624,16 +632,15 @@ function get3Dscore(scoreNum)
             { color: 0x0000ff, specular: 0xc7cfdb }
         );
 
-        scoreTextMesh = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
-        scoreTextMesh.position.x = -9;
-        scoreTextMesh.position.y = 4;
-        scoreTextMesh.position.z = 1;
-
-        scene.add( scoreTextMesh );
-
-        scoreTextMesh.rotation.x = 16*Math.PI/45;
-        scoreTextMesh.rotation.y = 1*Math.PI/45;
-        scoreTextMesh.rotation.y = Math.PI/4;
+        AllScores[textIndex] = scoreTextMesh;
+        AllScores[textIndex] = new THREE.Mesh( text3DGeometry, scoreTextMaterial );
+        AllScores[textIndex].position.x = -7;
+        AllScores[textIndex].position.y = 3;
+        AllScores[textIndex].position.z = 2;
+        scene.add( AllScores[textIndex] );
+        AllScores[textIndex].rotation.x = 2*Math.PI/45;
+        AllScores[textIndex].rotation.y = 11*Math.PI/45;
+        textIndex++;
 
         });
 
@@ -642,7 +649,7 @@ function get3Dscore(scoreNum)
 
 function update3Dscore() {
 
-        scene.remove(scoreTextMesh);
+    //    scene.remove(scoreTextMesh);
 
         get3Dscore(getScore());
 

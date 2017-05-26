@@ -17,7 +17,7 @@ class ParticleSystem_KeyPressed {
             colorRandomness: 1.5,
         //	turbulence: .5,
             turbulence: 0.07,
-            lifetime: 3,
+            lifetime: 0.00001,
             size: 7,
             sizeRandomness: 1.2
         };
