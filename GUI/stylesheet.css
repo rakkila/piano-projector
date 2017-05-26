@@ -59,7 +59,7 @@ h3{
 }
 
 .red{
-	border: 4px solid red;
+	border: 4px solid rgb(255, 92, 51);
 	text-decoration: none;
 }
 .green{
@@ -194,7 +194,7 @@ ul {
 }
 
 .songList .red{
-	border: solid 4px red;
+	border: solid 4px rgb(255, 92, 51);
 }
 .songList .green{
 	border: solid 4px green;
